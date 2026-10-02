@@ -227,7 +227,7 @@
     <main class="page">
     <header>
       <h1>Study Playlist</h1>
-      <p>YouTube playlist player with automatic 8-second skip on the first video.</p>
+      <p>YouTube playlist player with an automatic 8-second skip on every video.</p>
     </header>
 
     <section class="layout">
@@ -268,7 +268,7 @@
     const FIRST_VIDEO_SKIP_SECONDS = 8;
 
     let player = null;
-    let firstVideoHandled = false;
+    let lastSkippedVideoId = null;
     let playlistIds = [];
 
     // YouTube Error 153 occurs when this page is opened directly as
@@ -323,48 +323,62 @@
       setTimeout(() => {
         syncPlaylist();
 
-        // The playlist supplied by the user starts with zMl-pK6YcNI.
-        // If YouTube starts on that first item, seek forward by 8 seconds.
-        if (player && player.getPlaylistIndex() === 0) {
-          setTimeout(() => {
-            if (player && typeof player.seekTo === "function") {
-              player.seekTo(FIRST_VIDEO_SKIP_SECONDS, true);
-            }
-          }, 500);
-        }
+        // Every video in the playlist skips its first 8 seconds.
+        setTimeout(skipCurrentVideoIntro, 500);
       }, 1200);
 
       document.getElementById("currentPosition").textContent =
-        "First video automatically skips the first 8 seconds.";
+        "Every video automatically skips the first 8 seconds.";
     }
 
     function onPlayerStateChange(event) {
       if (!player) return;
 
       const index = player.getPlaylistIndex();
+      const videoId = player.getVideoData()?.video_id || playlistIds[index];
 
-      // Make absolutely sure the first video begins at 00:08.
-      if (
-        index === 0 &&
-        !firstVideoHandled &&
-        event.data === YT.PlayerState.PLAYING
-      ) {
-        firstVideoHandled = true;
-
+      // Every video gets the same 8-second skip.
+      if (event.data === YT.PlayerState.PLAYING) {
         const currentTime = player.getCurrentTime();
 
-        if (currentTime < FIRST_VIDEO_SKIP_SECONDS) {
+        // If a video starts/restarts from the beginning, allow it to be
+        // skipped again even if it is the same video.
+        if (currentTime < 1) {
+          lastSkippedVideoId = null;
+        }
+
+        if (videoId && lastSkippedVideoId !== videoId && currentTime < FIRST_VIDEO_SKIP_SECONDS) {
+          lastSkippedVideoId = videoId;
           player.seekTo(FIRST_VIDEO_SKIP_SECONDS, true);
         }
+
+        syncPlaylist();
       }
 
-      // Re-sync the sidebar whenever YouTube changes videos.
-      if (
-        event.data === YT.PlayerState.PLAYING ||
-        event.data === YT.PlayerState.CUED ||
-        event.data === YT.PlayerState.ENDED
-      ) {
+      // When a video ends, reset the tracker so replaying it also skips 8 sec.
+      if (event.data === YT.PlayerState.ENDED) {
+        lastSkippedVideoId = null;
         syncPlaylist();
+      }
+
+      if (event.data === YT.PlayerState.CUED) {
+        syncPlaylist();
+      }
+    }
+
+    function skipCurrentVideoIntro() {
+      if (!player) return;
+
+      const videoId = player.getVideoData()?.video_id;
+      const currentTime = player.getCurrentTime();
+
+      if (
+        videoId &&
+        currentTime < FIRST_VIDEO_SKIP_SECONDS &&
+        lastSkippedVideoId !== videoId
+      ) {
+        lastSkippedVideoId = videoId;
+        player.seekTo(FIRST_VIDEO_SKIP_SECONDS, true);
       }
     }
 
@@ -397,7 +411,7 @@
 
       document.getElementById("currentPosition").textContent =
         currentIndex === 0
-          ? "First video starts at 00:08"
+          ? "Starts at 00:08"
           : "Playing from the beginning";
     }
 
@@ -443,7 +457,7 @@
         meta.textContent =
           index === 0
             ? "Starts at 00:08"
-            : "Starts at 00:00";
+            : "Starts at 00:08";
 
         details.appendChild(title);
         details.appendChild(meta);
@@ -457,7 +471,7 @@
           // playVideoAt uses zero-based playlist indexes.
           player.playVideoAt(index);
 
-          // Only the first video is skipped.
+          // Every video is skipped by 8 seconds.
           if (index === 0) {
             setTimeout(() => {
               if (player) {
