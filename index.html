@@ -1272,7 +1272,7 @@
     
 
         /* ==========================================================
-         * CIRCLE LMS / SATYA.AI UNIFIED UX REDESIGN
+         * CIRCLE LMS / Circle.AI UNIFIED UX REDESIGN
          * The underlying AI logic remains intact. This layer changes
          * information architecture, presentation, and navigation.
          * ========================================================== */
@@ -1814,7 +1814,7 @@
         }
 
         /* ==========================================================
-         * SATYA.AI VIEW
+         * Circle.AI VIEW
          * ========================================================== */
         #satya-view {
             flex-direction: column;
@@ -1832,7 +1832,7 @@
         }
 
         #satya-view .brand-title::after {
-            content: 'Satya.AI';
+            content: 'Circle.AI';
         }
 
         #satya-view .brand-title {
@@ -1872,7 +1872,7 @@
             flex: 0 0 auto;
         }
 
-        /* Satya.AI is intentionally context-free: do not show the current Learn video/course here. */
+        /* Circle.AI is intentionally context-free: do not show the current Learn video/course here. */
         .satya-context-pill {
             display: none !important;
         }
@@ -2136,7 +2136,7 @@
 
                 <nav class="circle-mode-nav" aria-label="Main navigation">
                     <button id="learn-nav-btn" class="circle-mode-tab active" type="button">Learn</button>
-                    <button id="satya-nav-btn" class="circle-mode-tab" type="button">Satya.AI</button>
+                    <button id="satya-nav-btn" class="circle-mode-tab" type="button">Circle.AI</button>
                 </nav>
 
                 <div class="circle-header-actions">
@@ -2241,14 +2241,14 @@
                 </div>
             </section>
 
-            <section id="satya-view" class="circle-view" aria-label="Satya.AI">
+            <section id="satya-view" class="circle-view" aria-label="Circle.AI">
                 <div id="header-container">
                     <h1 class="brand-title font-ui">Circle AI.</h1>
                     <div id="greeting-rotator" class="font-ui anim-element anim-enter hidden"></div>
                 </div>
 
                 <div id="chat-container">
-                    <!-- Existing Satya.AI chat messages are injected here. -->
+                    <!-- Existing Circle.AI chat messages are injected here. -->
                 </div>
 
                 <div id="input-container">
@@ -2267,7 +2267,7 @@
                 </div>
 
                 <div id="footer-disclaimer" class="font-ui">
-                    Satya.AI can make mistakes. Check important information in the relevant course materials.
+                    Circle.AI can make mistakes. Check important information in the relevant course materials.
                 </div>
             </section>
         </div>
@@ -3444,7 +3444,7 @@
 
             document.getElementById('share-btn').classList.remove('hidden');
 
-            /* Learn is the default home. Satya.AI is one click away. */
+            /* Learn is the default home. Circle.AI is one click away. */
             showCircleView('learn');
             initializeLearnView();
         }
@@ -4668,7 +4668,7 @@ setInterval(() => {
         }
 
         function updateSatyaContext() {
-            /* Intentionally blank. Satya.AI should never display the name of the
+            /* Intentionally blank. Circle.AI should never display the name of the
                currently watched Learn course or video. Keep this function as a
                compatibility no-op because existing navigation code calls it. */
         }
