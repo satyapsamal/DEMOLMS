@@ -40,6 +40,7 @@
             
             --bg-color: #000000;
             --text-primary: #ffffff;
+            --circle-header-height: 70px;
             --text-secondary: #808080;
             --user-bubble: #005cff;
             --ai-text: #f0f0f0;
@@ -1277,10 +1278,12 @@
          * ========================================================== */
 
         .circle-app-header {
-            position: sticky;
-            top: 0;
+            position: relative;
+            top: auto;
             z-index: 80;
-            height: 70px;
+            height: var(--circle-header-height);
+            min-height: var(--circle-header-height);
+            flex: 0 0 var(--circle-header-height);
             width: 100%;
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -1869,16 +1872,9 @@
             flex: 0 0 auto;
         }
 
+        /* Satya.AI is intentionally context-free: do not show the current Learn video/course here. */
         .satya-context-pill {
-            position: absolute;
-            top: 82px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #666;
-            font: 400 10px var(--font-conversational);
-            white-space: nowrap;
-            pointer-events: none;
-            opacity: .85;
+            display: none !important;
         }
 
         /* Hide legacy floating controls. They remain in the DOM because
@@ -1927,9 +1923,13 @@
 
         /* Mobile */
         @media (max-width: 900px) {
+            :root { --circle-header-height: 62px; }
+
             .circle-app-header {
                 grid-template-columns: 1fr auto;
-                height: 62px;
+                height: var(--circle-header-height);
+                min-height: var(--circle-header-height);
+                flex-basis: var(--circle-header-height);
                 padding: 0 16px;
             }
 
@@ -2219,7 +2219,7 @@
                             </div>
                             <div class="learn-lesson-info">
                                 <div id="learn-lesson-title" class="learn-lesson-title">Loading lesson…</div>
-                                <div id="learn-lesson-meta" class="learn-lesson-meta">Video starts after the 9-second intro.</div>
+                                <div id="learn-lesson-meta" class="learn-lesson-meta">Video starts after the 10-second intro.</div>
                             </div>
                             <div class="learn-lesson-actions">
                                 <button id="learn-prev-btn" class="learn-nav-btn" type="button">← Previous</button>
@@ -2242,8 +2242,6 @@
             </section>
 
             <section id="satya-view" class="circle-view" aria-label="Satya.AI">
-                <div id="satya-context-pill" class="satya-context-pill"></div>
-
                 <div id="header-container">
                     <h1 class="brand-title font-ui">Circle AI.</h1>
                     <div id="greeting-rotator" class="font-ui anim-element anim-enter hidden"></div>
@@ -4530,7 +4528,7 @@ setInterval(() => {
          * CIRCLE LMS ENGINE
          * ========================================================== */
         const CIRCLE_LEARN_STORAGE_KEY = 'circleLearnProgress.v2';
-        const CIRCLE_LEARN_INTRO_SKIP = 9;
+        const CIRCLE_LEARN_INTRO_SKIP = 10;
 
         const LEARN_COURSES = {
             businessCommunication: {
@@ -4670,12 +4668,9 @@ setInterval(() => {
         }
 
         function updateSatyaContext() {
-            const pill = document.getElementById('satya-context-pill');
-            if (!pill) return;
-            const course = getLearnCourse();
-            const state = ensureLearnCourseProgress(learnActiveCourseId);
-            const lesson = (Number(state.lastIndex) || 0) + 1;
-            pill.textContent = `${course.name} · Lesson ${lesson}`;
+            /* Intentionally blank. Satya.AI should never display the name of the
+               currently watched Learn course or video. Keep this function as a
+               compatibility no-op because existing navigation code calls it. */
         }
 
         function initializeLearnView() {
