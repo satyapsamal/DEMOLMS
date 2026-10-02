@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Study Playlist</title>
+
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --panel: #181818;
+      --panel-hover: #242424;
+      --border: #2b2b2b;
+      --text: #f5f5f5;
+      --muted: #a5a5a5;
+      --accent: #ff0033;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .page {
+      width: min(1500px, 96vw);
+      margin: 0 auto;
+      padding: 24px 0;
+    }
+
+    header {
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    header p {
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .player-card,
+    .playlist-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .player-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+
+    #player {
+      width: 100%;
+      height: 100%;
+    }
+
+    .player-info {
+      padding: 16px 18px;
+    }
+
+    .player-info h2 {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .player-info p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .playlist-header {
+      padding: 17px 18px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--panel);
+      z-index: 2;
+    }
+
+    .playlist-header h2 {
+      font-size: 17px;
+    }
+
+    .playlist-header p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    #playlist {
+      max-height: calc(100vh - 150px);
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .video-item {
+      display: grid;
+      grid-template-columns: 116px 1fr;
+      gap: 10px;
+      padding: 8px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      margin-bottom: 2px;
+    }
+
+    .video-item:hover {
+      background: var(--panel-hover);
+    }
+
+    .video-item.active {
+      background: #292929;
+      outline: 1px solid #3b3b3b;
+    }
+
+    .thumb {
+      width: 116px;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 6px;
+      background: #000;
+    }
+
+    .video-title {
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 600;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .video-meta {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .status {
+      padding: 10px 14px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .error {
+      color: #ff7070;
+    }
+
+    @media (max-width: 950px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      #playlist {
+        max-height: 520px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        width: 100%;
+        padding: 12px;
+      }
+
+      .layout {
+        gap: 12px;
+      }
+
+      .video-item {
+        grid-template-columns: 105px 1fr;
+      }
+
+      .thumb {
+        width: 105px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="localWarning" style="
+      display:none;
+      margin: 12px auto 0;
+      width: min(1500px, 96vw);
+      padding: 14px 16px;
+      border: 1px solid #5a3b00;
+      background: #241b0b;
+      color: #ffd88a;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+    ">
+      <strong>Run this page through a local web server.</strong><br>
+      YouTube now requires an HTTP Referer for embedded playback. Opening
+      <code>index.html</code> directly with <code>file://</code> causes YouTube Error 153.
+      In the folder containing this file, run
+      <code>python -m http.server 8000</code>
+      and open <code>http://localhost:8000</code>.
+    </div>
+
+    <main class="page">
+    <header>
+      <h1>Study Playlist</h1>
+      <p>YouTube playlist player with automatic 8-second skip on the first video.</p>
+    </header>
+
+    <section class="layout">
+      <div class="player-card">
+        <div class="player-wrap">
+          <div id="player"></div>
+        </div>
+
+        <div class="player-info">
+          <h2 id="currentTitle">Loading playlist...</h2>
+          <p id="currentPosition">Preparing player</p>
+        </div>
+      </div>
+
+      <aside class="playlist-card">
+        <div class="playlist-header">
+          <h2>Up next</h2>
+          <p id="playlistCount">Loading videos...</p>
+        </div>
+
+        <div id="playlist">
+          <div class="status">Loading playlist...</div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    /*
+      Playlist supplied by the user:
+      https://www.youtube.com/watch?v=zMl-pK6YcNI&list=PLLMJCuaH86dA
+
+      Playlist ID:
+      PLLMJCuaH86dA
+    */
+
+    const PLAYLIST_ID = "PLLMJCuaH86dA";
+    const FIRST_VIDEO_SKIP_SECONDS = 8;
+
+    let player = null;
+    let firstVideoHandled = false;
+    let playlistIds = [];
+
+    // YouTube Error 153 occurs when this page is opened directly as
+    // file:// because the browser cannot send an HTTP Referer.
+    if (window.location.protocol === "file:") {
+      document.getElementById("localWarning").style.display = "block";
+    }
+
+    // Load YouTube IFrame Player API.
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player("player", {
+        width: "100%",
+        height: "100%",
+
+        playerVars: {
+          listType: "playlist",
+          list: PLAYLIST_ID,
+          autoplay: 0,
+          controls: 1,
+          playsinline: 1,
+          rel: 0,
+
+          // When hosted over HTTP/HTTPS, identify the embedding origin.
+          // This complements the browser's Referer header.
+          ...(window.location.protocol !== "file:" ? {
+            origin: window.location.origin,
+            widget_referrer: window.location.origin
+          } : {})
+        },
+
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange,
+          onError: onPlayerError
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      // Get the playlist IDs after YouTube has loaded it.
+      // Explicitly preserve the recommended referrer policy on the
+      // generated YouTube iframe.
+      const iframe = document.querySelector("#player iframe");
+      if (iframe) {
+        iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+      }
+
+      setTimeout(() => {
+        syncPlaylist();
+
+        // The playlist supplied by the user starts with zMl-pK6YcNI.
+        // If YouTube starts on that first item, seek forward by 8 seconds.
+        if (player && player.getPlaylistIndex() === 0) {
+          setTimeout(() => {
+            if (player && typeof player.seekTo === "function") {
+              player.seekTo(FIRST_VIDEO_SKIP_SECONDS, true);
+            }
+          }, 500);
+        }
+      }, 1200);
+
+      document.getElementById("currentPosition").textContent =
+        "First video automatically skips the first 8 seconds.";
+    }
+
+    function onPlayerStateChange(event) {
+      if (!player) return;
+
+      const index = player.getPlaylistIndex();
+
+      // Make absolutely sure the first video begins at 00:08.
+      if (
+        index === 0 &&
+        !firstVideoHandled &&
+        event.data === YT.PlayerState.PLAYING
+      ) {
+        firstVideoHandled = true;
+
+        const currentTime = player.getCurrentTime();
+
+        if (currentTime < FIRST_VIDEO_SKIP_SECONDS) {
+          player.seekTo(FIRST_VIDEO_SKIP_SECONDS, true);
+        }
+      }
+
+      // Re-sync the sidebar whenever YouTube changes videos.
+      if (
+        event.data === YT.PlayerState.PLAYING ||
+        event.data === YT.PlayerState.CUED ||
+        event.data === YT.PlayerState.ENDED
+      ) {
+        syncPlaylist();
+      }
+    }
+
+    function onPlayerError(event) {
+      document.getElementById("currentPosition").textContent =
+        "YouTube could not load this video. It may be unavailable for embedding.";
+      document.getElementById("currentPosition").classList.add("error");
+    }
+
+    function syncPlaylist() {
+      if (!player) return;
+
+      const ids = player.getPlaylist();
+
+      if (!ids || !ids.length) {
+        setTimeout(syncPlaylist, 1000);
+        return;
+      }
+
+      playlistIds = ids;
+      renderPlaylist();
+
+      const currentIndex = player.getPlaylistIndex();
+
+      document.getElementById("playlistCount").textContent =
+        `${ids.length} videos`;
+
+      document.getElementById("currentTitle").textContent =
+        `Video ${currentIndex + 1} of ${ids.length}`;
+
+      document.getElementById("currentPosition").textContent =
+        currentIndex === 0
+          ? "First video starts at 00:08"
+          : "Playing from the beginning";
+    }
+
+    function renderPlaylist() {
+      const container = document.getElementById("playlist");
+
+      if (!playlistIds.length) {
+        container.innerHTML =
+          '<div class="status">No playlist videos found.</div>';
+        return;
+      }
+
+      const currentIndex = player.getPlaylistIndex();
+
+      container.innerHTML = "";
+
+      playlistIds.forEach((videoId, index) => {
+        const item = document.createElement("div");
+        item.className = "video-item";
+
+        if (index === currentIndex) {
+          item.classList.add("active");
+        }
+
+        const thumbnail = document.createElement("img");
+        thumbnail.className = "thumb";
+        thumbnail.src =
+          `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`;
+        thumbnail.alt = `Video ${index + 1}`;
+        thumbnail.loading = "lazy";
+
+        const details = document.createElement("div");
+
+        const title = document.createElement("div");
+        title.className = "video-title";
+        title.textContent =
+          index === currentIndex
+            ? `Now playing • Video ${index + 1}`
+            : `Video ${index + 1}`;
+
+        const meta = document.createElement("div");
+        meta.className = "video-meta";
+        meta.textContent =
+          index === 0
+            ? "Starts at 00:08"
+            : "Starts at 00:00";
+
+        details.appendChild(title);
+        details.appendChild(meta);
+
+        item.appendChild(thumbnail);
+        item.appendChild(details);
+
+        item.addEventListener("click", () => {
+          if (!player) return;
+
+          // playVideoAt uses zero-based playlist indexes.
+          player.playVideoAt(index);
+
+          // Only the first video is skipped.
+          if (index === 0) {
+            setTimeout(() => {
+              if (player) {
+                player.seekTo(FIRST_VIDEO_SKIP_SECONDS, true);
+              }
+            }, 500);
+          }
+        });
+
+        container.appendChild(item);
+      });
+
+      // Scroll the active item into view.
+      const active = container.querySelector(".active");
+      if (active) {
+        active.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest"
+        });
+      }
+    }
+
+    /*
+      YouTube may load playlist metadata asynchronously.
+      Keep checking briefly until the playlist is available.
+    */
+    let attempts = 0;
+
+    const playlistWatcher = setInterval(() => {
+      if (!player) return;
+
+      const ids = player.getPlaylist();
+
+      if (ids && ids.length) {
+        playlistIds = ids;
+        renderPlaylist();
+
+        document.getElementById("playlistCount").textContent =
+          `${ids.length} videos`;
+
+        clearInterval(playlistWatcher);
+      }
+
+      attempts++;
+
+      if (attempts > 30) {
+        clearInterval(playlistWatcher);
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
