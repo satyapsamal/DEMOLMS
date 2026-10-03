@@ -2041,6 +2041,187 @@
             }
         }
 
+
+
+        /* =====================================================
+         * LEARN LAYOUT FINAL OVERRIDES
+         * Keep desktop Learn horizontal: video on the left,
+         * compact playlist on the right. Only switch vertical
+         * on actual narrow/mobile viewports.
+         * ===================================================== */
+        :root {
+            --learn-max-width: 1360px;
+            --learn-playlist-width: 300px;
+        }
+
+        #learn-layer {
+            box-sizing: border-box;
+            padding: calc(var(--shell-header-height) + 28px) 24px 32px !important;
+        }
+
+        .learn-shell {
+            width: min(var(--learn-max-width), calc(100vw - 48px)) !important;
+            max-width: var(--learn-max-width) !important;
+            margin: 0 auto !important;
+        }
+
+        .learn-workspace {
+            width: 100% !important;
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) var(--learn-playlist-width) !important;
+            grid-template-rows: auto !important;
+            gap: 16px !important;
+            align-items: stretch !important;
+        }
+
+        .learn-video-stage {
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 16 / 9 !important;
+            min-height: 0 !important;
+            align-self: start !important;
+        }
+
+        #learn-player,
+        #learn-player iframe {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .learn-playlist {
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 0 !important;
+            aspect-ratio: auto !important;
+            align-self: stretch !important;
+            overflow: hidden !important;
+        }
+
+        .learn-thumbnails {
+            width: 100% !important;
+            height: 100% !important;
+            box-sizing: border-box !important;
+            padding: 8px !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+        }
+
+        .learn-thumb {
+            width: 100% !important;
+            aspect-ratio: 16 / 9 !important;
+            margin: 0 0 8px !important;
+            border-radius: 9px !important;
+        }
+
+        .learn-thumb img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+        }
+
+        .learn-controls {
+            width: 100% !important;
+            box-sizing: border-box !important;
+            padding: 14px 2px 0 !important;
+            position: relative !important;
+            z-index: 90000 !important;
+        }
+
+        .learn-lesson-meta {
+            position: relative !important;
+            z-index: 90001 !important;
+        }
+
+        .learn-course-select-wrap {
+            position: static !important;
+            z-index: 100000 !important;
+        }
+
+        #learn-course-btn {
+            position: relative !important;
+            z-index: 100001 !important;
+            min-height: 28px !important;
+            cursor: pointer !important;
+            touch-action: manipulation !important;
+        }
+
+        #learn-course-menu {
+            z-index: 1000000 !important;
+            width: min(320px, calc(100vw - 28px)) !important;
+            max-height: min(320px, 50vh) !important;
+            overflow-y: auto !important;
+        }
+
+        #learn-course-menu.open {
+            display: block !important;
+            visibility: visible !important;
+        }
+
+        /* Keep the horizontal desktop composition down to tablet width. */
+        @media (min-width: 769px) {
+            .learn-workspace {
+                grid-template-columns: minmax(0, 1fr) 300px !important;
+            }
+
+            .learn-playlist {
+                height: 100% !important;
+            }
+
+            .learn-controls {
+                align-items: flex-start !important;
+            }
+        }
+
+        @media (max-width: 1100px) and (min-width: 769px) {
+            #learn-layer {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
+
+            .learn-shell {
+                width: calc(100vw - 40px) !important;
+            }
+
+            .learn-workspace {
+                grid-template-columns: minmax(0, 1fr) 260px !important;
+                gap: 12px !important;
+            }
+
+            .learn-thumb {
+                border-radius: 8px !important;
+                margin-bottom: 7px !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .learn-workspace {
+                grid-template-columns: 1fr !important;
+                grid-template-rows: auto auto !important;
+                gap: 12px !important;
+            }
+
+            .learn-video-stage {
+                aspect-ratio: 16 / 9 !important;
+            }
+
+            .learn-playlist {
+                width: 100% !important;
+                height: 300px !important;
+                aspect-ratio: auto !important;
+            }
+
+            .learn-thumbnails {
+                display: grid !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                align-content: start !important;
+                gap: 8px !important;
+            }
+
+            .learn-thumb {
+                margin: 0 !important;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -3867,8 +4048,12 @@
             document.getElementById('learn-next-btn').addEventListener('click', () => openLearnLesson(learnActiveIndex + 1));
             window.addEventListener('resize', () => {
                 const menu = document.getElementById('learn-course-menu');
-                if (menu && menu.classList.contains('open')) openLearnCourseMenu();
+                if (menu && menu.classList.contains('open')) positionLearnCourseMenu();
             });
+            window.addEventListener('scroll', () => {
+                const menu = document.getElementById('learn-course-menu');
+                if (menu && menu.classList.contains('open')) positionLearnCourseMenu();
+            }, true);
 
             /* First-time profile upload */
             document.getElementById('onboarding-photo-input').addEventListener('change', handleOnboardingPhotoUpload);
@@ -5136,17 +5321,47 @@ setInterval(() => {
             });
         }
 
+        function positionLearnCourseMenu() {
+            const menu = document.getElementById('learn-course-menu');
+            const button = document.getElementById('learn-course-btn');
+            if (!menu || !button || !menu.classList.contains('open')) return;
+
+            const rect = button.getBoundingClientRect();
+            const menuWidth = Math.min(320, Math.max(220, window.innerWidth - 28));
+            const gap = 8;
+            const viewportPadding = 14;
+
+            menu.style.position = 'fixed';
+            menu.style.width = menuWidth + 'px';
+            menu.style.maxHeight = Math.min(320, Math.max(180, window.innerHeight * 0.5)) + 'px';
+
+            let left = rect.left;
+            if (left + menuWidth > window.innerWidth - viewportPadding) {
+                left = window.innerWidth - menuWidth - viewportPadding;
+            }
+            left = Math.max(viewportPadding, left);
+
+            let top = rect.bottom + gap;
+            const menuHeight = menu.getBoundingClientRect().height;
+            if (top + menuHeight > window.innerHeight - viewportPadding) {
+                const above = rect.top - gap - menuHeight;
+                top = above >= viewportPadding ? above : Math.max(viewportPadding, window.innerHeight - menuHeight - viewportPadding);
+            }
+
+            menu.style.left = left + 'px';
+            menu.style.top = top + 'px';
+            menu.style.bottom = 'auto';
+        }
+
         function openLearnCourseMenu() {
             renderLearnCourseMenu();
             const menu = document.getElementById('learn-course-menu');
             const button = document.getElementById('learn-course-btn');
             if (!menu || !button) return;
 
-            menu.style.left = '';
-            menu.style.top = '';
-            menu.style.bottom = '';
             menu.classList.add('open');
             button.setAttribute('aria-expanded', 'true');
+            requestAnimationFrame(positionLearnCourseMenu);
         }
 
         function closeLearnCourseMenu() {
