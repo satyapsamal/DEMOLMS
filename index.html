@@ -2349,6 +2349,65 @@
         .learn-course-select-wrap {
             pointer-events: auto !important;
         }
+
+        /* =====================================================
+         * FINAL LEARN PLAYLIST HEIGHT / SCROLL FIX
+         * ===================================================== */
+        @media (min-width: 769px) {
+            .learn-workspace {
+                align-items: start !important;
+                grid-template-rows: auto !important;
+            }
+
+            .learn-video-stage {
+                align-self: start !important;
+                overflow: hidden !important;
+            }
+
+            .learn-playlist {
+                align-self: start !important;
+                min-height: 0 !important;
+                overflow: hidden !important;
+            }
+
+            #learn-thumbnails {
+                min-height: 0 !important;
+                height: 100% !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+                overscroll-behavior: contain;
+            }
+
+            #learn-thumbnails::-webkit-scrollbar {
+                width: 0 !important;
+                height: 0 !important;
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .learn-playlist {
+                height: 300px !important;
+                min-height: 0 !important;
+                overflow: hidden !important;
+            }
+
+            #learn-thumbnails {
+                height: 100% !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+
+            #learn-thumbnails::-webkit-scrollbar {
+                width: 0 !important;
+                height: 0 !important;
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -3652,6 +3711,7 @@
         let learnPlaylistIds = [];
         let learnActiveIndex = 0;
         let learnLastSkipKey = null;
+        let learnPendingAutoPlay = false;
         let learnProgress = {};
         try {
             learnProgress = JSON.parse(localStorage.getItem('circle_learn_progress_v2') || '{}') || {};
@@ -5086,7 +5146,17 @@ setInterval(() => {
                                 try { learnPlayer.playVideoAt(savedIndex); } catch (_) {}
                             }, 500);
                         }
+
+                        const shouldAutoPlay = learnPendingAutoPlay;
+                        learnPendingAutoPlay = false;
+                        if (shouldAutoPlay) {
+                            setTimeout(() => {
+                                try { learnPlayer.playVideo(); } catch (_) {}
+                            }, Math.max(650, savedIndex > 0 ? 900 : 650));
+                        }
+
                         setTimeout(() => enforceLearnIntroSkip(), 450);
+                        syncLearnPlaylistHeight();
                     },
                     onStateChange: handleLearnPlayerStateChange,
                     onAutoplayBlocked: function() {
@@ -5209,9 +5279,14 @@ setInterval(() => {
         }
 
         function loadLearnCourse(courseId, autoPlay) {
-            if (!learnPlayerReady) return;
-
             const nextCourseId = LEARN_COURSES[courseId] ? courseId : 'businessCommunication';
+            if (!learnPlayerReady) {
+                learnPendingAutoPlay = Boolean(autoPlay);
+                learnActiveCourseId = nextCourseId;
+                try { localStorage.setItem('circle_learn_active_course', learnActiveCourseId); } catch (_) {}
+                return;
+            }
+
             const courseChanged = nextCourseId !== learnActiveCourseId;
             if (!courseChanged) {
                 refreshLearnPlaylist(0);
@@ -5223,13 +5298,16 @@ setInterval(() => {
                 return;
             }
 
+            /* Save the CURRENT course before changing the active course. This
+             * keeps a separate lecture/video position for every course. */
             persistLearnProgress();
+
             learnActiveCourseId = nextCourseId;
-            const course = getLearnCourse(learnActiveCourseId);
             const savedIndex = Math.max(0, getLearnSavedIndex(learnActiveCourseId));
             learnActiveIndex = savedIndex;
             learnLastSkipKey = null;
             learnPlaylistIds = [];
+            learnPendingAutoPlay = Boolean(autoPlay);
 
             try {
                 localStorage.setItem('circle_learn_active_course', learnActiveCourseId);
@@ -5239,36 +5317,27 @@ setInterval(() => {
             renderLearnCourseMenu();
             updateLearnCourseUI();
 
-            if (course.type === 'playlist') {
-                try {
-                    learnPlayer.loadPlaylist({
-                        list: course.playlistId,
-                        listType: 'playlist',
-                        index: savedIndex,
-                        startSeconds: LEARN_INTRO_SKIP_SECONDS
-                    });
-                } catch (error) {
-                    console.warn('Unable to load playlist:', error);
-                    showToast('Unable to load this course.');
+            /* Do not reuse the old YouTube playlist player. Recreate the player
+             * with the NEW playlist URL so a course change can never continue
+             * the previous course's playlist state. */
+            try {
+                if (learnPlayer && typeof learnPlayer.destroy === 'function') {
+                    learnPlayer.destroy();
                 }
-                refreshLearnPlaylist(0);
-            } else if (course.videoId) {
-                try {
-                    learnPlayer.loadVideoById({
-                        videoId: course.videoId,
-                        startSeconds: LEARN_INTRO_SKIP_SECONDS
-                    });
-                } catch (error) {
-                    console.warn('Unable to load lesson:', error);
-                }
-                learnPlaylistIds = [course.videoId];
-                learnActiveIndex = 0;
-                renderLearnThumbnails();
-                saveLearnIndexOnly();
+            } catch (error) {
+                console.warn('Unable to destroy previous Learn player cleanly:', error);
             }
 
-            if (autoPlay) {
-                setTimeout(() => { try { learnPlayer.playVideo(); } catch (_) {} }, 250);
+            learnPlayer = null;
+            learnPlayerReady = false;
+
+            const loading = document.getElementById('learn-loading');
+            if (loading) loading.style.display = 'flex';
+
+            if (window.YT && window.YT.Player) {
+                initializeLearnPlayer();
+            } else {
+                ensureLearnPlayerAPI();
             }
         }
 
@@ -5293,12 +5362,45 @@ setInterval(() => {
                 learnActiveIndex = Math.max(0, Math.min(safeLearnPlaylistIndex(), ids.length - 1));
                 renderLearnThumbnails();
                 updateLearnCourseUI();
+                syncLearnPlaylistHeight();
                 return;
             }
 
             if (attempt < 8) {
                 setTimeout(() => refreshLearnPlaylist(attempt + 1), 350);
             }
+        }
+
+        function syncLearnPlaylistHeight() {
+            const stage = document.querySelector('.learn-video-stage');
+            const playlist = document.querySelector('.learn-playlist');
+            const thumbnails = document.getElementById('learn-thumbnails');
+            if (!stage || !playlist) return;
+
+            if (window.innerWidth <= 768) {
+                playlist.style.height = '';
+                if (thumbnails) thumbnails.style.height = '';
+                return;
+            }
+
+            const height = Math.round(stage.getBoundingClientRect().height);
+            if (height > 0) {
+                playlist.style.height = height + 'px';
+                if (thumbnails) thumbnails.style.height = '100%';
+            }
+        }
+
+        function installLearnPlaylistHeightSync() {
+            syncLearnPlaylistHeight();
+
+            const stage = document.querySelector('.learn-video-stage');
+            if (stage && 'ResizeObserver' in window && !stage.__circleLearnResizeObserver) {
+                const observer = new ResizeObserver(() => syncLearnPlaylistHeight());
+                observer.observe(stage);
+                stage.__circleLearnResizeObserver = observer;
+            }
+
+            window.addEventListener('resize', syncLearnPlaylistHeight);
         }
 
         function renderLearnThumbnails() {
@@ -5791,12 +5893,14 @@ setInterval(() => {
            property so it cannot accumulate duplicate click listeners. */
         document.addEventListener('DOMContentLoaded', function () {
             const btn = document.getElementById('learn-course-btn');
-            if (!btn) return;
-            btn.onclick = function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                toggleLearnCourseMenu();
-            };
+            if (btn) {
+                btn.onclick = function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    toggleLearnCourseMenu();
+                };
+            }
+            installLearnPlaylistHeightSync();
         });
 
     </script>
