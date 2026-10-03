@@ -2351,12 +2351,14 @@
         }
 
         /* =====================================================
-         * FINAL LEARN PLAYLIST HEIGHT / SCROLL FIX
+         * FINAL LEARN PLAYLIST: FIXED TO PLAYER HEIGHT
+         * The right rail never grows with its thumbnail count. JS sets
+         * --learn-fixed-panel-height from the rendered video height.
          * ===================================================== */
         @media (min-width: 769px) {
             .learn-workspace {
                 align-items: start !important;
-                grid-template-rows: auto !important;
+                grid-template-rows: var(--learn-fixed-panel-height, auto) !important;
             }
 
             .learn-video-stage {
@@ -2366,18 +2368,25 @@
 
             .learn-playlist {
                 align-self: start !important;
+                width: 100% !important;
+                height: var(--learn-fixed-panel-height, auto) !important;
                 min-height: 0 !important;
+                max-height: var(--learn-fixed-panel-height, none) !important;
+                aspect-ratio: auto !important;
                 overflow: hidden !important;
+                box-sizing: border-box !important;
             }
 
             #learn-thumbnails {
                 min-height: 0 !important;
                 height: 100% !important;
+                max-height: 100% !important;
                 overflow-y: auto !important;
                 overflow-x: hidden !important;
                 scrollbar-width: none !important;
                 -ms-overflow-style: none !important;
                 overscroll-behavior: contain;
+                box-sizing: border-box !important;
             }
 
             #learn-thumbnails::-webkit-scrollbar {
@@ -2391,11 +2400,13 @@
             .learn-playlist {
                 height: 300px !important;
                 min-height: 0 !important;
+                max-height: 300px !important;
                 overflow: hidden !important;
             }
 
             #learn-thumbnails {
                 height: 100% !important;
+                max-height: 100% !important;
                 overflow-y: auto !important;
                 overflow-x: hidden !important;
                 scrollbar-width: none !important;
@@ -2407,6 +2418,31 @@
                 height: 0 !important;
                 display: none !important;
             }
+        }
+
+        /* Ask keeps the original Circle AI landing surface. */
+        body.circle-ask-mode #main-layer > #header-container {
+            display: flex !important;
+        }
+
+        body.circle-ask-mode:not(.chat-active) #main-layer > #header-container {
+            top: 45% !important;
+            transform: translate(-50%, -50%) !important;
+            z-index: 100 !important;
+        }
+
+        body.circle-ask-mode:not(.chat-active) #main-layer > #header-container .brand-title {
+            font-size: 32px !important;
+            opacity: 1 !important;
+        }
+
+        body.circle-ask-mode.chat-active #main-layer > #header-container {
+            display: flex !important;
+        }
+
+        body.circle-ask-mode.chat-active #main-layer > #header-container .brand-title {
+            font-size: 20px !important;
+            opacity: .6 !important;
         }
     </style>
 </head>
@@ -2519,7 +2555,7 @@
         <header id="app-shell-header" aria-label="Circle navigation">
             <button class="shell-brand" id="circle-brand-home" type="button" aria-label="Circle home">
                 <img src="circle.png" alt="">
-                <span class="shell-brand-name">Circle.</span>
+                <span class="shell-brand-name">Circle</span>
             </button>
 
             <div class="shell-mode-switch" role="tablist" aria-label="Circle mode">
@@ -4984,6 +5020,7 @@ setInterval(() => {
 
             if (!askMode) {
                 persistLearnProgress();
+                greetingLoopActive = false;
                 if ('speechSynthesis' in window) window.speechSynthesis.cancel();
 
                 document.getElementById('learn-layer').classList.add('visible');
@@ -4999,10 +5036,19 @@ setInterval(() => {
                 setShellModeButton('ask');
                 closeMoreMenu();
                 document.getElementById('model-btn').classList.remove('hidden');
+                const header = document.getElementById('header-container');
                 const rot = document.getElementById('greeting-rotator');
-                if (!isChatMode && rot) {
+                if (!isChatMode && header && rot) {
+                    header.style.display = 'flex';
                     rot.classList.remove('hidden');
                     rot.textContent = formatText(greetingsList[0], userName);
+                    greetingLoopActive = false;
+                    setTimeout(() => {
+                        if (!isChatMode && document.body.classList.contains('circle-ask-mode')) {
+                            greetingLoopActive = true;
+                            rotateGreetingsLoop(rot, 0);
+                        }
+                    }, 0);
                 }
                 if (isChatMode) {
                     document.getElementById('app-new-chat-btn').classList.add('visible');
@@ -5375,18 +5421,31 @@ setInterval(() => {
             const stage = document.querySelector('.learn-video-stage');
             const playlist = document.querySelector('.learn-playlist');
             const thumbnails = document.getElementById('learn-thumbnails');
+            const workspace = document.querySelector('.learn-workspace');
             if (!stage || !playlist) return;
 
             if (window.innerWidth <= 768) {
-                playlist.style.height = '';
-                if (thumbnails) thumbnails.style.height = '';
+                playlist.style.removeProperty('height');
+                playlist.style.removeProperty('max-height');
+                if (thumbnails) {
+                    thumbnails.style.height = '100%';
+                    thumbnails.style.maxHeight = '100%';
+                }
+                if (workspace) workspace.style.removeProperty('--learn-fixed-panel-height');
                 return;
             }
 
             const height = Math.round(stage.getBoundingClientRect().height);
             if (height > 0) {
-                playlist.style.height = height + 'px';
-                if (thumbnails) thumbnails.style.height = '100%';
+                const fixed = height + 'px';
+                if (workspace) workspace.style.setProperty('--learn-fixed-panel-height', fixed);
+                playlist.style.height = fixed;
+                playlist.style.maxHeight = fixed;
+                playlist.style.minHeight = '0px';
+                if (thumbnails) {
+                    thumbnails.style.height = '100%';
+                    thumbnails.style.maxHeight = '100%';
+                }
             }
         }
 
@@ -5601,9 +5660,18 @@ setInterval(() => {
             const button = document.getElementById('learn-course-btn');
             if (!menu || !button) return;
 
+            /* Portal the menu to <body> so no Learn container, iframe, or
+             * overflow clipping can prevent the course options from opening. */
+            if (menu.parentElement !== document.body) {
+                document.body.appendChild(menu);
+            }
+
             menu.classList.add('open');
             button.setAttribute('aria-expanded', 'true');
-            requestAnimationFrame(positionLearnCourseMenu);
+            requestAnimationFrame(() => {
+                positionLearnCourseMenu();
+                requestAnimationFrame(positionLearnCourseMenu);
+            });
         }
 
         function closeLearnCourseMenu() {
@@ -5900,7 +5968,18 @@ setInterval(() => {
                     toggleLearnCourseMenu();
                 };
             }
+
             installLearnPlaylistHeightSync();
+            requestAnimationFrame(syncLearnPlaylistHeight);
+            window.addEventListener('load', syncLearnPlaylistHeight, { once: true });
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(() => syncLearnPlaylistHeight()).catch(() => {});
+            }
+
+            /* Keep the course popover aligned to the button after the browser
+             * has finished painting the viewport. */
+            setTimeout(syncLearnPlaylistHeight, 150);
+            setTimeout(syncLearnPlaylistHeight, 500);
         });
 
     </script>
