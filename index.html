@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Page Title -->
-    <title>Circle AI | BBA Assistant</title>
+    <title>Circle</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -18,13 +18,13 @@
 
     <!-- Open Graph / Social Sharing -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Circle AI | BBA Assistant">
+    <meta property="og:title" content="Circle">
     <meta property="og:description" content="Your student-led BBA assistant for quick answers, exam updates, study resources, and academic guidance. Ask Circle AI. Learn faster, understand better.">
     <meta property="og:image" content="https://raw.githubusercontent.com/satyapsamal/circle/main/circle-promo.png">
 
     <!-- Twitter / X Sharing -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Circle AI | BBA Assistant">
+    <meta name="twitter:title" content="Circle">
     <meta name="twitter:description" content="Your student-led BBA assistant for quick answers, exam updates, study resources, and academic guidance. Ask Circle AI. Learn faster, understand better.">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/satyapsamal/circle/main/circle-promo.png">
     
@@ -68,7 +68,17 @@
             user-select: auto;
         }
 
-        body, html {
+        img, svg, video, canvas, button, a, [role=button], [role=tab] {
+            -webkit-user-drag: none !important;
+            -webkit-user-select: none !important;
+            user-select: none !important;
+        }
+
+        .learn-thumbnails {
+            touch-action: pan-y;
+        }
+
+        html {
             width: 100%;
             height: 100%;
             background-color: var(--bg-color);
@@ -76,7 +86,26 @@
             font-family: var(--font-ui);
             overflow: hidden;
             -webkit-user-drag: none;
+            -webkit-touch-callout: none;
+            overscroll-behavior: none;
         }
+
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-ui);
+            overflow: hidden;
+            -webkit-user-drag: none;
+            -webkit-touch-callout: none;
+            overscroll-behavior: none;
+            touch-action: pan-y;
+        }
+
+        /* Browser-controlled zoom cannot be universally disabled by a webpage.
+         * These rules make the app viewport/layout stable and block the common
+         * in-page keyboard/wheel zoom gestures where the browser permits it. */
 
         /* Utility Classes */
         .hidden { display: none !important; opacity: 0 !important; pointer-events: none !important; }
@@ -1239,6 +1268,37 @@
             transform: translateX(-50%) translateY(0);
         }
 
+        @media (max-width: 1100px) and (min-width: 769px) {
+            #learn-layer {
+                padding: calc(var(--shell-header-height) + 18px) 20px 24px;
+            }
+
+            .learn-workspace {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto;
+                gap: 12px;
+            }
+
+            .learn-video-stage {
+                width: 100%;
+                aspect-ratio: 16 / 9;
+            }
+
+            .learn-playlist {
+                width: 100%;
+                height: min(38vh, 330px);
+            }
+
+            .learn-thumbnails {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                align-content: start;
+                gap: 9px;
+            }
+
+            .learn-thumb { margin: 0; }
+        }
+
         @media (max-width: 768px) {
             .floating-btn-group-left { top: 20px; left: 20px; gap: 8px; }
             .floating-btn-group-right { top: 20px; right: 20px; gap: 8px; }
@@ -1305,6 +1365,10 @@
         }
 
         .shell-brand {
+            border: 0;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
             display: inline-flex;
             align-items: center;
             min-width: 150px;
@@ -1467,8 +1531,8 @@
             background: transparent;
             color: #ddd;
             border-radius: 10px;
-            min-height: 42px;
-            padding: 10px 12px;
+            min-height: 41px;
+            padding: 9px 11px;
             text-align: left;
             cursor: pointer;
             font: 500 12px var(--font-conversational);
@@ -1476,7 +1540,7 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            gap: 11px;
+            gap: 10px;
         }
 
         .more-menu-item:hover {
@@ -1485,9 +1549,9 @@
         }
 
         .more-menu-icon {
-            width: 16px;
-            height: 16px;
-            flex: 0 0 16px;
+            width: 17px;
+            height: 17px;
+            flex: 0 0 17px;
             display: block;
             color: #cfcfcf;
             fill: currentColor;
@@ -1501,7 +1565,7 @@
 
         #more-menu {
             width: 210px;
-            border-radius: 14px;
+            border-radius: 15px;
         }
 
         /* More now owns Settings, Share and Install. Keep only the AI model control
@@ -1551,8 +1615,9 @@
             position: fixed;
             inset: 0;
             z-index: 10;
-            padding: calc(var(--shell-header-height) + 24px) 30px 28px;
+            padding: calc(var(--shell-header-height) + 29px) max(24px, calc((100vw - 1395px) / 2)) 28px;
             overflow-y: auto;
+            overflow-x: hidden;
             background: #000;
         }
 
@@ -1561,14 +1626,17 @@
         }
 
         .learn-shell {
-            width: min(1400px, 100%);
+            width: 1395px;
+            max-width: 100%;
             min-height: 100%;
             margin: 0 auto;
         }
 
         .learn-workspace {
+            width: 1395px;
+            max-width: 100%;
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 320px;
+            grid-template-columns: minmax(0, 1062px) 319px;
             gap: 14px;
             align-items: stretch;
         }
@@ -1722,7 +1790,7 @@
         #learn-course-menu {
             position: absolute;
             left: 0;
-            bottom: 28px;
+            bottom: calc(100% + 10px);
             width: min(330px, calc(100vw - 28px));
             background: #0a0a0a;
             border: 1px solid rgba(255,255,255,.12);
@@ -1733,7 +1801,9 @@
             pointer-events: none;
             transform: translateY(5px);
             transition: opacity .18s ease, transform .18s ease;
-            z-index: 20;
+            z-index: 60000;
+            max-height: min(320px, 45vh);
+            overflow-y: auto;
         }
 
         #learn-course-menu.open {
@@ -1879,6 +1949,7 @@
             }
 
             .learn-workspace {
+                width: 100%;
                 grid-template-columns: 1fr;
                 grid-template-rows: auto auto;
                 gap: 12px;
@@ -2044,10 +2115,10 @@
              Ask opens the existing Circle AI chat interface.
              ===================================================== -->
         <header id="app-shell-header" aria-label="Circle navigation">
-            <a class="shell-brand" href="javascript:void(0)" aria-label="The Circle">
+            <button class="shell-brand" id="circle-brand-home" type="button" aria-label="Circle home">
                 <img src="circle.png" alt="">
-                <span class="shell-brand-name">The Circle.</span>
-            </a>
+                <span class="shell-brand-name">Circle.</span>
+            </button>
 
             <div class="shell-mode-switch" role="tablist" aria-label="Circle mode">
                 <button id="shell-learn-btn" class="shell-mode-btn active" type="button" role="tab" aria-selected="true">Learn</button>
@@ -2287,34 +2358,91 @@
         }
 
         /*******************************************************
-         * 0. ANTI-COPY & DEVTOOLS DETERRENTS (UX Only)
+         * 0. CONTENT PROTECTION DETERRENTS (BEST EFFORT)
+         * A normal webpage cannot securely prevent a determined user
+         * from inspecting client-side HTML/JS in their own browser.
+         * These handlers only block common UI gestures/shortcuts.
          *******************************************************/
-        document.addEventListener('contextmenu', e => {
-            if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-                e.preventDefault();
-            }
-        });
+        (() => {
+            const editableSelector = 'input, textarea, [contenteditable="true"]';
+            const isEditableTarget = (target) => target instanceof Element && !!target.closest(editableSelector);
 
-        document.addEventListener('dragstart', e => {
-            if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-                e.preventDefault();
-            }
-        });
+            document.addEventListener('contextmenu', (e) => {
+                if (!isEditableTarget(e.target)) e.preventDefault();
+            }, { capture: true });
 
-        document.addEventListener('copy', e => {
-            if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
-                e.preventDefault();
-            }
-        });
+            document.addEventListener('selectstart', (e) => {
+                if (!isEditableTarget(e.target)) e.preventDefault();
+            }, { capture: true });
 
-        document.addEventListener('keydown', e => {
-            const isInput = document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA';
-            if (e.key === 'F12') e.preventDefault();
-            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u') e.preventDefault();
-            if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'c', 'j'].includes(e.key.toLowerCase())) e.preventDefault();
-            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') e.preventDefault();
-            if (!isInput && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') e.preventDefault();
-        });
+            document.addEventListener('dragstart', (e) => {
+                if (!isEditableTarget(e.target)) e.preventDefault();
+            }, { capture: true });
+
+            document.addEventListener('copy', (e) => {
+                if (!isEditableTarget(document.activeElement)) e.preventDefault();
+            }, { capture: true });
+
+            document.addEventListener('cut', (e) => {
+                if (!isEditableTarget(document.activeElement)) e.preventDefault();
+            }, { capture: true });
+
+            document.addEventListener('keydown', (e) => {
+                const key = String(e.key || '').toLowerCase();
+                const mod = e.ctrlKey || e.metaKey;
+                const isEditable = isEditableTarget(e.target) || isEditableTarget(document.activeElement);
+
+                // Developer tools / view-source / save-page / print shortcuts.
+                if (e.key === 'F12' || e.key === 'F11') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                }
+                if (mod && (
+                    key === 'u' ||
+                    key === 's' ||
+                    key === 'p' ||
+                    key === 'j' ||
+                    (e.shiftKey && ['i', 'j', 'c'].includes(key))
+                )) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                }
+
+                // Prevent normal-page copy unless a form field is active.
+                if (!isEditable && mod && key === 'c') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                }
+
+                // Block common browser zoom shortcuts. Browser UI menus remain
+                // outside webpage control.
+                if (mod && ['+', '=', '-', '_', '0'].includes(e.key)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }, { capture: true });
+
+            // Block Ctrl/Cmd + wheel zoom where supported.
+            document.addEventListener('wheel', (e) => {
+                if (e.ctrlKey || e.metaKey) e.preventDefault();
+            }, { capture: true, passive: false });
+
+            // Block gesture-based page zoom on browsers that expose it as a gesture event.
+            ['gesturestart', 'gesturechange', 'gestureend'].forEach(type => {
+                document.addEventListener(type, (e) => e.preventDefault(), { capture: true, passive: false });
+            });
+
+            // Reduce long-press image extraction on touch browsers.
+            document.addEventListener('touchstart', (e) => {
+                const target = e.target;
+                if (target instanceof HTMLImageElement || target instanceof SVGElement) {
+                    target.style.webkitTouchCallout = 'none';
+                }
+            }, { capture: true, passive: true });
+        })();
 
         /*******************************************************
          * 1. GOOGLE SHEETS CONFIGURATION
@@ -4447,6 +4575,7 @@ setInterval(() => {
                 document.getElementById('main-layer').classList.add('shell-hidden');
                 setShellModeButton('learn');
                 closeMoreMenu();
+                document.getElementById('model-btn').classList.add('hidden');
                 closeLearnCourseMenu();
                 initializeLearnIfNeeded();
             } else {
@@ -4455,6 +4584,11 @@ setInterval(() => {
                 setShellModeButton('ask');
                 closeMoreMenu();
                 document.getElementById('model-btn').classList.remove('hidden');
+                const rot = document.getElementById('greeting-rotator');
+                if (!isChatMode && rot) {
+                    rot.classList.remove('hidden');
+                    rot.textContent = formatText(greetingsList[0], userName);
+                }
                 if (isChatMode) {
                     document.getElementById('app-new-chat-btn').classList.add('visible');
                 }
@@ -4530,18 +4664,39 @@ setInterval(() => {
                     playsinline: 1,
                     rel: 0,
                     iv_load_policy: 3,
-                    enablejsapi: 1
+                    enablejsapi: 1,
+                    origin: window.location.origin
                 },
                 events: {
-                    onReady: function() {
+                    onReady: function(event) {
                         learnPlayerReady = true;
                         loading.style.display = 'none';
+                        try {
+                            const iframe = event.target.getIframe();
+                            if (iframe) {
+                                iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+                                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+                            }
+                        } catch (_) {}
                         loadLearnCourse(learnActiveCourseId, false);
                     },
                     onStateChange: handleLearnPlayerStateChange,
-                    onError: function() {
+                    onAutoplayBlocked: function() {
+                        showToast('Press play to start the lesson.');
+                    },
+                    onError: function(event) {
                         loading.style.display = 'none';
-                        showToast('This lesson could not be loaded.');
+                        const code = Number(event && event.data);
+                        console.warn('YouTube Learn player error:', code);
+                        if (code === 101 || code === 150) {
+                            showToast('This YouTube video does not allow embedded playback.');
+                        } else if (code === 100) {
+                            showToast('This YouTube video is unavailable or private.');
+                        } else if (code === 153) {
+                            showToast('YouTube blocked the embed request. Refresh the page and try again.');
+                        } else {
+                            showToast('This lesson could not be loaded.');
+                        }
                     }
                 }
             });
@@ -4627,7 +4782,7 @@ setInterval(() => {
                 learnPlaylistIds = [];
                 renderLearnThumbnails();
                 try {
-                    learnPlayer.loadPlaylist({
+                    learnPlayer.cuePlaylist({
                         list: course.playlistId,
                         listType: 'playlist',
                         index: learnActiveIndex,
@@ -4726,6 +4881,7 @@ setInterval(() => {
             try {
                 if (course.type === 'playlist') {
                     learnPlayer.playVideoAt(learnActiveIndex);
+                    setTimeout(() => enforceLearnIntroSkip(), 350);
                 } else {
                     learnPlayer.loadVideoById({
                         videoId: course.videoId,
@@ -4835,6 +4991,10 @@ setInterval(() => {
             const menu = document.getElementById('learn-course-menu');
             menu.classList.add('open');
             document.getElementById('learn-course-btn').setAttribute('aria-expanded', 'true');
+            requestAnimationFrame(() => {
+                const button = document.getElementById('learn-course-btn');
+                if (button) button.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+            });
         }
 
         function closeLearnCourseMenu() {
@@ -5066,6 +5226,57 @@ setInterval(() => {
             container.innerHTML = htmlString;
             if (finalNearBottom) smartScrollToBottom();
         }
+
+        /* =====================================================
+         * CLIENT-SIDE PROTECTION DETERRENTS
+         * These reduce casual copying/inspection. Browser-level
+         * developer tools and source access cannot be technically
+         * disabled by a web page.
+         * ===================================================== */
+        (function installClientProtectionDeterrents() {
+            document.addEventListener('contextmenu', function(event) {
+                event.preventDefault();
+            }, { capture: true });
+
+            document.addEventListener('dragstart', function(event) {
+                event.preventDefault();
+            }, { capture: true });
+
+            document.addEventListener('selectstart', function(event) {
+                const target = event.target;
+                if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+                event.preventDefault();
+            }, { capture: true });
+
+            document.addEventListener('keydown', function(event) {
+                const key = String(event.key || '').toLowerCase();
+                const modifier = event.ctrlKey || event.metaKey;
+
+                /* Common save / source / inspect shortcuts. */
+                if (modifier && ['s', 'u', 'p'].includes(key)) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    return;
+                }
+                if (key === 'f12' || (modifier && event.shiftKey && ['i', 'j', 'c'].includes(key))) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            }, { capture: true });
+
+            /* Prevent common Ctrl/Cmd + mouse-wheel browser zoom gestures. */
+            window.addEventListener('wheel', function(event) {
+                if (event.ctrlKey || event.metaKey) event.preventDefault();
+            }, { passive: false, capture: true });
+
+            /* Prevent Ctrl/Cmd +/-/= zoom shortcuts where the browser exposes the event. */
+            window.addEventListener('keydown', function(event) {
+                const key = String(event.key || '');
+                if ((event.ctrlKey || event.metaKey) && ['+', '-', '=', '0'].includes(key)) {
+                    event.preventDefault();
+                }
+            }, { capture: true });
+        })();
 
         window.addEventListener('pagehide', persistLearnProgress);
         window.addEventListener('beforeunload', persistLearnProgress);
