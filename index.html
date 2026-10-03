@@ -1274,6 +1274,10 @@
                 padding: calc(var(--shell-header-height) + 18px) 20px 24px;
             }
 
+            .learn-shell {
+                width: min(var(--learn-max-width), calc(100vw - 40px));
+            }
+
             .learn-workspace {
                 grid-template-columns: 1fr;
                 grid-template-rows: auto auto;
@@ -1282,12 +1286,14 @@
 
             .learn-video-stage {
                 width: 100%;
+                height: auto;
                 aspect-ratio: 16 / 9;
             }
 
             .learn-playlist {
                 width: 100%;
-                height: min(38vh, 330px);
+                height: 330px;
+                aspect-ratio: auto;
             }
 
             .learn-thumbnails {
@@ -1616,7 +1622,7 @@
             position: fixed;
             inset: 0;
             z-index: 10;
-            padding: calc(var(--shell-header-height) + 29px) max(24px, calc((100vw - 1395px) / 2)) 28px;
+            padding: calc(var(--shell-header-height) + 29px) 24px 28px;
             overflow-y: auto;
             overflow-x: hidden;
             background: #000;
@@ -1627,23 +1633,24 @@
         }
 
         .learn-shell {
-            width: 1395px;
-            max-width: 100%;
-            min-height: 100%;
+            width: min(var(--learn-max-width), calc(100vw - 48px));
+            min-height: 0;
             margin: 0 auto;
         }
 
         .learn-workspace {
-            width: 1395px;
-            max-width: 100%;
+            width: 100%;
             display: grid;
-            grid-template-columns: minmax(0, 1062px) 319px;
+            grid-template-columns: minmax(0, 1fr) var(--learn-playlist-width);
+            grid-template-rows: auto;
             gap: 14px;
-            align-items: stretch;
+            align-items: start;
         }
 
         .learn-video-stage {
+            width: 100%;
             min-width: 0;
+            height: auto;
             aspect-ratio: 16 / 9;
             background: #050505;
             border: 1px solid var(--learn-border);
@@ -1654,8 +1661,17 @@
         }
 
         #learn-player {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
+        }
+
+        #learn-player iframe {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
+            border: 0;
         }
 
         .learn-loading {
@@ -1667,11 +1683,15 @@
             color: #777;
             font: 12px var(--font-conversational);
             background: #050505;
+            z-index: 2;
+            pointer-events: none;
         }
 
         .learn-playlist {
+            width: 100%;
+            height: auto;
             min-height: 0;
-            height: 100%;
+            aspect-ratio: 16 / 9;
             border: 1px solid var(--learn-border);
             border-radius: 16px;
             background: #080808;
@@ -1739,6 +1759,8 @@
         .learn-thumb.completed img { opacity: .62; }
 
         .learn-controls {
+            position: relative;
+            z-index: 300;
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
@@ -1747,6 +1769,7 @@
         }
 
         .learn-lesson-meta {
+            position: relative;
             min-width: 0;
         }
 
@@ -1758,10 +1781,13 @@
 
         .learn-course-select-wrap {
             position: relative;
+            z-index: 50000;
             margin-top: 6px;
         }
 
         #learn-course-btn {
+            position: relative;
+            z-index: 50001;
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -1770,6 +1796,7 @@
             color: #888;
             padding: 0;
             cursor: pointer;
+            touch-action: manipulation;
             font: 400 12px var(--font-conversational);
             text-align: left;
             max-width: min(70vw, 480px);
@@ -1789,9 +1816,10 @@
         }
 
         #learn-course-menu {
-            position: fixed;
+            position: absolute;
             left: 0;
-            top: 0;
+            top: calc(100% + 8px);
+            bottom: auto !important;
             width: min(330px, calc(100vw - 28px));
             max-height: min(320px, 45vh);
             overflow-y: auto;
@@ -1804,7 +1832,7 @@
             pointer-events: none;
             transform: translateY(5px);
             transition: opacity .18s ease, transform .18s ease;
-            z-index: 100000;
+            z-index: 60000;
         }
 
         #learn-course-menu.open {
@@ -1949,6 +1977,10 @@
                 padding: calc(var(--shell-header-height) + 14px) 14px 20px;
             }
 
+            .learn-shell {
+                width: 100%;
+            }
+
             .learn-workspace {
                 width: 100%;
                 grid-template-columns: 1fr;
@@ -1958,12 +1990,14 @@
 
             .learn-video-stage {
                 width: 100%;
+                height: auto;
                 aspect-ratio: 16 / 9;
             }
 
             .learn-playlist {
                 width: 100%;
                 height: min(40vh, 320px);
+                aspect-ratio: auto;
             }
 
             .learn-thumbnails {
@@ -5032,7 +5066,13 @@ setInterval(() => {
                 const key = learnActiveCourseId + '::' + videoId;
                 if (videoId && learnLastSkipKey !== key) {
                     learnLastSkipKey = key;
-                    enforceLearnIntroSkip();
+                    try {
+                        const currentTime = learnPlayer.getCurrentTime();
+                        if (currentTime < LEARN_INTRO_SKIP_SECONDS - 0.25) {
+                            learnPlayer.seekTo(LEARN_INTRO_SKIP_SECONDS, true);
+                        }
+                    } catch (_) {}
+                    setTimeout(() => enforceLearnIntroSkip(), 150);
                 }
 
                 saveLearnIndexOnly();
@@ -5084,10 +5124,14 @@ setInterval(() => {
             `).join('');
 
             menu.querySelectorAll('.learn-course-option').forEach(button => {
-                button.addEventListener('click', () => {
-                    learnActiveCourseId = button.dataset.courseId;
+                button.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const targetCourseId = button.dataset.courseId;
                     closeLearnCourseMenu();
-                    loadLearnCourse(learnActiveCourseId, false);
+                    /* Do not update learnActiveCourseId here. loadLearnCourse()
+                     * must compare the requested course against the current one
+                     * so it can actually switch playlists. */
+                    loadLearnCourse(targetCourseId, false);
                 });
             });
         }
@@ -5098,23 +5142,9 @@ setInterval(() => {
             const button = document.getElementById('learn-course-btn');
             if (!menu || !button) return;
 
-            const rect = button.getBoundingClientRect();
-            const width = Math.min(330, window.innerWidth - 28);
-            const estimatedHeight = Math.min(320, Math.max(150, Object.keys(LEARN_COURSES).length * 46 + 16));
-            const gap = 9;
-            const spaceBelow = window.innerHeight - rect.bottom - 14;
-            const placeBelow = spaceBelow >= estimatedHeight || rect.top < estimatedHeight + 20;
-
-            menu.style.width = width + 'px';
-            menu.style.left = Math.max(14, Math.min(rect.left, window.innerWidth - width - 14)) + 'px';
-            if (placeBelow) {
-                menu.style.top = (rect.bottom + gap) + 'px';
-                menu.style.bottom = 'auto';
-            } else {
-                menu.style.top = 'auto';
-                menu.style.bottom = (window.innerHeight - rect.top + gap) + 'px';
-            }
-
+            menu.style.left = '';
+            menu.style.top = '';
+            menu.style.bottom = '';
             menu.classList.add('open');
             button.setAttribute('aria-expanded', 'true');
         }
