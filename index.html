@@ -2037,7 +2037,7 @@
             }
 
             .learn-thumbnails {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: 1fr;
             }
         }
 
@@ -2050,8 +2050,8 @@
          * on actual narrow/mobile viewports.
          * ===================================================== */
         :root {
-            --learn-max-width: 1360px;
-            --learn-playlist-width: 300px;
+            --learn-max-width: 1650px;
+            --learn-playlist-width: 310px;
         }
 
         #learn-layer {
@@ -2212,7 +2212,7 @@
 
             .learn-thumbnails {
                 display: grid !important;
-                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                grid-template-columns: 1fr !important;
                 align-content: start !important;
                 gap: 8px !important;
             }
@@ -2226,7 +2226,7 @@
          * FINAL LEARN UI FIXES
          * ===================================================== */
         @media (min-width: 769px) {
-            :root { --learn-playlist-width: clamp(248px, 21vw, 300px); }
+            :root { --learn-playlist-width: 310px; }
 
             #learn-layer {
                 overflow-y: auto !important;
@@ -2679,7 +2679,70 @@
                 width: min(300px, calc(100vw - 20px)) !important;
             }
         }
-    </style>
+    
+        /* =====================================================
+         * FINAL RESPONSIVE / VIEWPORT RULES
+         * ===================================================== */
+        html, body {
+            touch-action: pan-x pan-y !important;
+            overscroll-behavior-x: none;
+        }
+
+        @media (min-width: 769px) {
+            .learn-shell {
+                width: min(1650px, calc(100vw - 48px)) !important;
+                max-width: 1650px !important;
+            }
+
+            .learn-workspace {
+                grid-template-columns: minmax(0, 1fr) 310px !important;
+                gap: 16px !important;
+            }
+
+            .learn-video-stage {
+                width: 100% !important;
+                aspect-ratio: 16 / 9 !important;
+            }
+
+            .learn-playlist {
+                width: 310px !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .learn-workspace {
+                grid-template-columns: 1fr !important;
+                grid-template-rows: auto auto !important;
+            }
+
+            .learn-thumbnails {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                grid-auto-rows: max-content !important;
+                align-content: start !important;
+                width: 100% !important;
+                height: 100% !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                gap: 8px !important;
+                padding: 8px !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+
+            .learn-thumbnails::-webkit-scrollbar {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+            }
+
+            .learn-thumb {
+                width: 100% !important;
+                aspect-ratio: 16 / 9 !important;
+                margin: 0 !important;
+            }
+        }
+</style>
 </head>
 <body>
 
@@ -6201,6 +6264,13 @@ setInterval(() => {
             window.addEventListener('wheel', function(event) {
                 if (event.ctrlKey || event.metaKey) event.preventDefault();
             }, { passive: false, capture: true });
+
+            /* Suppress Safari/iOS gesture zoom where the browser exposes it. */
+            ['gesturestart', 'gesturechange', 'gestureend'].forEach(function(type) {
+                document.addEventListener(type, function(event) {
+                    event.preventDefault();
+                }, { passive: false, capture: true });
+            });
 
             /* Prevent Ctrl/Cmd +/-/= zoom shortcuts where the browser exposes the event. */
             window.addEventListener('keydown', function(event) {
