@@ -2222,6 +2222,133 @@
             }
         }
 
+        /* =====================================================
+         * FINAL LEARN UI FIXES
+         * ===================================================== */
+        @media (min-width: 769px) {
+            :root { --learn-playlist-width: clamp(248px, 21vw, 300px); }
+
+            #learn-layer {
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+            }
+
+            .learn-shell {
+                width: min(var(--learn-max-width), calc(100vw - 48px)) !important;
+                max-width: var(--learn-max-width) !important;
+            }
+
+            .learn-workspace {
+                display: grid !important;
+                grid-template-columns: minmax(0, 1fr) var(--learn-playlist-width) !important;
+                grid-template-rows: auto !important;
+                align-items: stretch !important;
+                gap: 16px !important;
+            }
+
+            .learn-video-stage {
+                width: 100% !important;
+                height: auto !important;
+                aspect-ratio: 16 / 9 !important;
+                min-height: 0 !important;
+            }
+
+            .learn-playlist {
+                width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                aspect-ratio: auto !important;
+                align-self: stretch !important;
+                overflow: hidden !important;
+            }
+
+            .learn-thumbnails {
+                width: 100% !important;
+                height: 100% !important;
+                box-sizing: border-box !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+
+            .learn-thumbnails::-webkit-scrollbar {
+                width: 0 !important;
+                height: 0 !important;
+                display: none !important;
+            }
+
+            .learn-thumb {
+                width: 100% !important;
+                aspect-ratio: 16 / 9 !important;
+                margin: 0 0 9px !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #learn-layer {
+                overflow-y: auto !important;
+                padding-bottom: 28px !important;
+            }
+
+            .learn-workspace {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                grid-template-rows: auto auto !important;
+                gap: 12px !important;
+                align-items: start !important;
+            }
+
+            .learn-video-stage {
+                width: 100% !important;
+                height: auto !important;
+                aspect-ratio: 16 / 9 !important;
+            }
+
+            .learn-playlist {
+                width: 100% !important;
+                height: min(42vh, 340px) !important;
+                min-height: 0 !important;
+                aspect-ratio: auto !important;
+                overflow: hidden !important;
+            }
+
+            .learn-thumbnails {
+                height: 100% !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+
+            .learn-thumbnails::-webkit-scrollbar {
+                width: 0 !important;
+                height: 0 !important;
+                display: none !important;
+            }
+        }
+
+        /* The course selector is a viewport-level popover so it cannot be
+           clipped by the Learn scroll container or hidden behind the player. */
+        #learn-course-menu {
+            position: fixed !important;
+            z-index: 2147483000 !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        #learn-course-menu.open {
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            display: block !important;
+        }
+
+        #learn-course-btn,
+        .learn-course-select-wrap {
+            pointer-events: auto !important;
+        }
     </style>
 </head>
 <body>
@@ -4040,10 +4167,14 @@
             document.getElementById('app-new-chat-btn').addEventListener('click', startNewChat);
 
             /* Learn navigation */
-            document.getElementById('learn-course-btn').addEventListener('click', (event) => {
-                event.stopPropagation();
-                toggleLearnCourseMenu();
-            });
+            const learnCourseButton = document.getElementById('learn-course-btn');
+            if (learnCourseButton) {
+                learnCourseButton.onclick = (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    toggleLearnCourseMenu();
+                };
+            }
             document.getElementById('learn-prev-btn').addEventListener('click', () => openLearnLesson(learnActiveIndex - 1));
             document.getElementById('learn-next-btn').addEventListener('click', () => openLearnLesson(learnActiveIndex + 1));
             window.addEventListener('resize', () => {
@@ -5300,6 +5431,15 @@ setInterval(() => {
             document.getElementById('learn-next-btn').disabled = learnPlaylistIds.length > 0 && learnActiveIndex >= maxIndex;
         }
 
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
         function renderLearnCourseMenu() {
             const menu = document.getElementById('learn-course-menu');
             menu.innerHTML = Object.entries(LEARN_COURSES).map(([id, course]) => `
@@ -5647,6 +5787,18 @@ setInterval(() => {
 
         window.addEventListener('pagehide', persistLearnProgress);
         window.addEventListener('beforeunload', persistLearnProgress);
+        /* Final Learn course-selector binding. This intentionally uses the DOM
+           property so it cannot accumulate duplicate click listeners. */
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById('learn-course-btn');
+            if (!btn) return;
+            btn.onclick = function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                toggleLearnCourseMenu();
+            };
+        });
+
     </script>
 </body>
 </html>
