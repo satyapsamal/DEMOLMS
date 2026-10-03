@@ -2050,7 +2050,7 @@
          * on actual narrow/mobile viewports.
          * ===================================================== */
         :root {
-            --learn-max-width: 1650px;
+            --learn-max-width: 1840px;
             --learn-playlist-width: 310px;
         }
 
@@ -2060,7 +2060,7 @@
         }
 
         .learn-shell {
-            width: min(var(--learn-max-width), calc(100vw - 48px)) !important;
+            width: min(var(--learn-max-width), calc(100vw - 32px)) !important;
             max-width: var(--learn-max-width) !important;
             margin: 0 auto !important;
         }
@@ -2234,7 +2234,7 @@
             }
 
             .learn-shell {
-                width: min(var(--learn-max-width), calc(100vw - 48px)) !important;
+                width: min(var(--learn-max-width), calc(100vw - 32px)) !important;
                 max-width: var(--learn-max-width) !important;
             }
 
@@ -2813,7 +2813,7 @@
 
         @media (min-width: 769px) {
             .learn-shell {
-                width: min(1650px, calc(100vw - 48px)) !important;
+                width: min(1840px, calc(100vw - 32px)) !important;
                 max-width: 1650px !important;
             }
 
@@ -2865,6 +2865,357 @@
                 margin: 0 !important;
             }
         }
+</style>
+
+<style id="circle-learn-sidebar-tools-css">
+/* =========================================================
+   CIRCLE LEARN: THREE-COLUMN DESKTOP + MOBILE ADAPTATION
+   ========================================================= */
+#learn-layer {
+    box-sizing: border-box !important;
+}
+
+.learn-shell {
+    width: min(1840px, calc(100vw - 32px)) !important;
+    max-width: 1650px !important;
+}
+
+.learn-shell {
+    display: block !important;
+}
+
+.learn-course-sidebar,
+.learn-mobile-progress {
+    box-sizing: border-box !important;
+}
+
+.learn-course-sidebar {
+    background: linear-gradient(180deg, rgba(16,16,16,.98), rgba(8,8,8,.98)) !important;
+    border: 1px solid rgba(255,255,255,.09) !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    box-shadow: 0 16px 40px rgba(0,0,0,.24) !important;
+}
+
+.learn-sidebar-heading {
+    height: 48px !important;
+    padding: 0 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    font: 600 12px var(--font-conversational) !important;
+    color: #f2f2f2 !important;
+    border-bottom: 1px solid rgba(255,255,255,.07) !important;
+}
+.learn-sidebar-heading-icon { width: 17px; height: 17px; display:flex; align-items:center; justify-content:center; color:#d9d9d9; }
+.learn-sidebar-heading-icon svg { width:17px; height:17px; fill:currentColor; }
+.learn-sidebar-chevron { margin-left:auto; color:#777; font-size:14px; }
+.learn-course-sidebar-list { height: calc(100% - 48px); overflow-y:auto; scrollbar-width:none; padding:8px; }
+.learn-course-sidebar-list::-webkit-scrollbar { display:none; width:0; height:0; }
+
+.learn-course-progress-item {
+    width:100%;
+    border:1px solid transparent;
+    background:transparent;
+    color:#fff;
+    border-radius:10px;
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:10px 8px;
+    margin:0 0 4px;
+    text-align:left;
+    cursor:pointer;
+    font-family:var(--font-conversational);
+    transition:background .18s ease,border-color .18s ease;
+}
+.learn-course-progress-item:hover { background:rgba(255,255,255,.045); }
+.learn-course-progress-item.active { background:rgba(255,255,255,.055); border-color:rgba(255,255,255,.08); }
+.learn-course-icon {
+    width:28px; height:28px; border-radius:8px; flex:0 0 28px;
+    display:flex; align-items:center; justify-content:center;
+    font:700 9px var(--font-conversational); color:#fff;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.08);
+}
+.learn-course-icon-businessCommunication { background:rgba(88,145,255,.18); }
+.learn-course-icon-businessMathematics { background:rgba(160,94,255,.18); }
+.learn-course-icon-computerApplications { background:rgba(255,166,67,.18); }
+.learn-course-icon-marketingSales { background:rgba(255,85,100,.18); }
+.learn-course-icon-entrepreneurship { background:rgba(80,190,125,.18); }
+.learn-course-progress-copy { flex:1; min-width:0; display:block; }
+.learn-course-progress-copy strong { display:block; font:600 11px/1.25 var(--font-conversational); color:#f0f0f0; white-space:normal; }
+.learn-course-progress-copy small { display:block; margin-top:2px; color:#7c7c7c; font:500 9px var(--font-conversational); }
+.learn-course-progress-line { display:block; width:100%; height:4px; margin:7px 0 4px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
+.learn-course-progress-line > span { display:block; height:100%; border-radius:inherit; background:rgba(100,214,145,.9); transition:width .35s ease; }
+.learn-course-progress-meta { display:flex; justify-content:space-between; gap:8px; color:#787878; font:500 8px var(--font-conversational); }
+
+.learn-main-column { min-width:0 !important; }
+.learn-workspace {
+    width:100% !important;
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) 320px !important;
+    gap:16px !important;
+    align-items:stretch !important;
+}
+
+.learn-playlist {
+    display:flex !important;
+    flex-direction:column !important;
+    min-height:0 !important;
+    aspect-ratio:auto !important;
+    background:#080808 !important;
+    overflow:hidden !important;
+}
+.learn-panel-switcher {
+    flex:0 0 auto;
+    display:grid;
+    grid-template-columns:1.35fr .9fr .9fr;
+    align-items:stretch;
+    min-height:50px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+    background:rgba(255,255,255,.012);
+}
+.learn-panel-tab {
+    position:relative;
+    border:0;
+    background:transparent;
+    color:#858585;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    padding:0 9px;
+    font:600 11px var(--font-conversational);
+    cursor:pointer;
+    transition:color .18s ease,background .18s ease;
+}
+.learn-panel-tab:hover { color:#d8d8d8; background:rgba(255,255,255,.03); }
+.learn-panel-tab.active { color:#fff; }
+.learn-panel-tab.active::after {
+    content:''; position:absolute; left:10px; right:10px; bottom:0; height:2px;
+    background:#54db94; border-radius:999px 999px 0 0;
+}
+.learn-panel-count { color:#757575; font-weight:500; font-size:9px; }
+.learn-tab-badge {
+    min-width:18px; height:18px; padding:0 5px; border-radius:999px;
+    display:inline-flex; align-items:center; justify-content:center;
+    background:rgba(255,255,255,.08); color:#bcbcbc; font:700 9px var(--font-conversational);
+}
+.learn-panel-content { flex:1; min-height:0; overflow:hidden; }
+.learn-panel-pane { display:none; height:100%; min-height:0; flex-direction:column; overflow:hidden; }
+.learn-panel-pane.active { display:flex; }
+.learn-panel-pane[hidden] { display:none !important; }
+
+.learn-panel-course-line {
+    flex:0 0 auto;
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    padding:11px 13px 7px;
+    font-family:var(--font-conversational);
+}
+.learn-panel-course-line strong { font:600 11px var(--font-conversational); color:#ededed; }
+.learn-panel-course-line span { color:#767676; font:500 9px var(--font-conversational); }
+.learn-panel-progress-track { flex:0 0 auto; margin:0 13px 8px; height:4px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
+.learn-panel-progress-track > span { display:block; height:100%; width:0; border-radius:inherit; background:#54db94; transition:width .35s ease; }
+.learn-thumbnails {
+    flex:1 !important;
+    min-height:0 !important;
+    height:auto !important;
+    max-height:none !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+    padding:8px !important;
+    scrollbar-width:none !important;
+    -ms-overflow-style:none !important;
+}
+.learn-thumbnails::-webkit-scrollbar { width:0 !important; height:0 !important; display:none !important; }
+.learn-thumb { margin-bottom:8px !important; border-radius:9px !important; }
+
+.learn-tool-heading {
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:14px 13px 10px; flex:0 0 auto;
+}
+.learn-tool-heading strong { display:block; font:600 11px var(--font-conversational); color:#eee; }
+.learn-tool-heading span { display:block; margin-top:3px; color:#777; font:500 8px var(--font-conversational); }
+.learn-tool-action {
+    border:1px solid rgba(84,219,148,.25); background:rgba(84,219,148,.07); color:#83e7b1;
+    border-radius:999px; padding:7px 10px; font:600 9px var(--font-conversational); cursor:pointer;
+}
+.learn-tool-action:hover { background:rgba(84,219,148,.12); color:#a6f0c6; }
+.learn-todo-list { flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; padding:0 8px 8px; }
+.learn-todo-list::-webkit-scrollbar { display:none; width:0; height:0; }
+.learn-todo-item { display:flex; align-items:center; gap:6px; padding:9px 7px; border-radius:9px; margin-bottom:4px; background:rgba(255,255,255,.025); border:1px solid transparent; }
+.learn-todo-item:hover { border-color:rgba(255,255,255,.07); }
+.learn-todo-check-row { flex:1; min-width:0; display:flex; align-items:center; gap:8px; cursor:pointer; }
+.learn-todo-checkbox { position:absolute; opacity:0; pointer-events:none; }
+.learn-todo-checkmark { width:15px; height:15px; border:1px solid rgba(255,255,255,.35); border-radius:4px; flex:0 0 15px; display:block; position:relative; }
+.learn-todo-item.done .learn-todo-checkmark { border-color:#54db94; background:#54db94; }
+.learn-todo-item.done .learn-todo-checkmark::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#07130d; font:700 10px var(--font-conversational); }
+.learn-todo-text { color:#d5d5d5; font:500 10px/1.35 var(--font-conversational); }
+.learn-todo-item.done .learn-todo-text { color:#777; text-decoration:line-through; }
+.learn-todo-delete { border:0; background:transparent; color:#666; font:500 17px/1 var(--font-conversational); cursor:pointer; padding:2px 4px; }
+.learn-todo-delete:hover { color:#c8c8c8; }
+.learn-todo-composer { display:flex; gap:6px; margin-bottom:7px; padding:2px; }
+.learn-todo-composer input { flex:1; min-width:0; border:1px solid rgba(255,255,255,.11); background:#101010; border-radius:8px; color:#eee; padding:9px 10px; outline:none; font:500 10px var(--font-conversational); }
+.learn-todo-composer input:focus { border-color:rgba(255,255,255,.25); }
+.learn-todo-composer button { border:0; border-radius:8px; padding:0 10px; background:#ededed; color:#0a0a0a; font:700 9px var(--font-conversational); cursor:pointer; }
+.learn-empty-state { padding:10px 14px; color:#686868; font:500 9px/1.4 var(--font-conversational); }
+.learn-tool-footnote { flex:0 0 auto; padding:9px 13px 12px; color:#5e5e5e; font:500 8px/1.35 var(--font-conversational); }
+
+.learn-notes-input {
+    flex:1; min-height:0; width:calc(100% - 26px); margin:0 13px 10px;
+    box-sizing:border-box; resize:none; border:1px solid rgba(255,255,255,.08); border-radius:10px;
+    background:#0c0c0c; color:#e8e8e8; padding:12px; outline:none; font:500 10px/1.5 var(--font-conversational);
+}
+.learn-notes-input:focus { border-color:rgba(255,255,255,.18); }
+.learn-notes-input::placeholder { color:#555; }
+.learn-save-status { color:#65d99b !important; font-size:8px !important; white-space:nowrap; }
+
+.learn-mobile-progress { display:none; }
+
+@media (min-width:1100px) {
+    .learn-shell { width:min(1650px, calc(100vw - 48px)) !important; }
+    .learn-shell > .learn-main-column { min-width:0; }
+    .learn-shell {
+        display:grid !important;
+        grid-template-columns:230px minmax(0,1fr) !important;
+        gap:16px !important;
+    }
+    .learn-main-column { grid-column:2; }
+    .learn-workspace { grid-template-columns:minmax(0,1fr) 320px !important; }
+    .learn-course-sidebar { display:block !important; height:var(--learn-fixed-panel-height, auto) !important; }
+}
+
+@media (min-width:769px) and (max-width:1099px) {
+    .learn-mobile-progress { display:block !important; margin-bottom:10px; }
+    .learn-workspace { grid-template-columns:minmax(0,1fr) 300px !important; }
+    .learn-course-sidebar { display:none !important; }
+}
+
+@media (max-width:768px) {
+    #learn-layer { padding-left:10px !important; padding-right:10px !important; padding-top:calc(var(--shell-header-height) + 10px) !important; }
+    .learn-shell { width:100% !important; max-width:none !important; }
+    .learn-course-sidebar { display:none !important; }
+    .learn-mobile-progress { display:block !important; margin-bottom:10px; }
+    #learn-mobile-progress-toggle {
+        width:100%; min-height:60px; border:1px solid rgba(255,255,255,.09); border-radius:13px; background:#090909; color:#fff;
+        display:grid; grid-template-columns:24px minmax(0,1fr) 68px 35px 16px; gap:8px; align-items:center; padding:10px 11px; cursor:pointer;
+        text-align:left;
+    }
+    .learn-mobile-progress-icon { width:20px; height:20px; color:#cfcfcf; }
+    .learn-mobile-progress-icon svg { width:20px; height:20px; fill:currentColor; }
+    .learn-mobile-progress-copy { min-width:0; }
+    .learn-mobile-progress-copy strong { display:block; color:#eee; font:600 10px/1.25 var(--font-conversational); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .learn-mobile-progress-copy span { display:block; margin-top:2px; color:#777; font:500 8px var(--font-conversational); }
+    .learn-mobile-progress-meter { display:block; height:4px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
+    .learn-mobile-progress-meter span { display:block; height:100%; width:0; background:#54db94; border-radius:inherit; transition:width .35s ease; }
+    .learn-mobile-progress-percent { color:#868686; text-align:right; font:600 9px var(--font-conversational); }
+    .learn-mobile-progress-chevron { color:#777; font-size:13px; text-align:right; }
+    .learn-mobile-course-list { margin-top:7px; padding:7px; border:1px solid rgba(255,255,255,.08); border-radius:13px; background:#090909; }
+    .learn-mobile-course-list .learn-course-progress-item { padding:10px 7px; }
+
+    .learn-workspace { grid-template-columns:1fr !important; grid-template-rows:auto minmax(0,340px) !important; gap:10px !important; }
+    .learn-video-stage { width:100% !important; height:auto !important; aspect-ratio:16/9 !important; border-radius:14px !important; }
+    .learn-playlist { width:100% !important; height:340px !important; max-height:340px !important; border-radius:14px !important; }
+    .learn-panel-switcher { min-height:46px; }
+    .learn-panel-tab { font-size:10px; }
+    .learn-panel-course-line { padding:9px 11px 6px; }
+    .learn-panel-course-line strong { font-size:10px; }
+    .learn-thumbnails { padding:7px !important; }
+    .learn-thumb { width:100% !important; aspect-ratio:16/9 !important; margin-bottom:7px !important; }
+    .learn-controls { padding-top:11px !important; }
+    .learn-lesson-meta { width:100% !important; }
+    #learn-course-btn { max-width:calc(100vw - 155px) !important; }
+    #learn-lecture-label { font-size:17px !important; }
+    .learn-nav { width:100% !important; justify-content:flex-end !important; }
+    .learn-notes-input { min-height:180px; }
+}
+\n<style id="circle-final-size-and-functionality">
+/* Final production sizing: use more of the desktop viewport at browser 100%. */
+@media (min-width: 1100px) {
+    :root {
+        --learn-max-width: 1840px;
+        --learn-playlist-width: 340px;
+    }
+
+    #learn-layer {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        padding-bottom: 28px !important;
+    }
+
+    .learn-shell {
+        width: min(1840px, calc(100vw - 32px)) !important;
+        max-width: 1840px !important;
+    }
+
+    .learn-shell {
+        grid-template-columns: 240px minmax(0, 1fr) !important;
+        gap: 16px !important;
+    }
+
+    .learn-workspace {
+        grid-template-columns: minmax(0, 1fr) 340px !important;
+        gap: 16px !important;
+    }
+
+    .learn-video-stage {
+        width: 100% !important;
+        aspect-ratio: 16 / 9 !important;
+        height: auto !important;
+    }
+
+    .learn-playlist {
+        height: var(--learn-fixed-panel-height) !important;
+        max-height: var(--learn-fixed-panel-height) !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #learn-thumbnails {
+        height: 100% !important;
+        max-height: 100% !important;
+        overflow-y: auto !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+    }
+
+    #learn-thumbnails::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    .learn-course-sidebar {
+        height: var(--learn-fixed-panel-height) !important;
+        max-height: var(--learn-fixed-panel-height) !important;
+        min-height: 0 !important;
+    }
+}
+
+/* Keep mobile course/playlist layout unchanged in structure, but ensure one
+   full-width thumbnail per row. */
+@media (max-width: 768px) {
+    .learn-thumbnails {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        grid-auto-rows: max-content !important;
+        gap: 8px !important;
+    }
+
+    .learn-thumb {
+        width: 100% !important;
+        aspect-ratio: 16 / 9 !important;
+        margin: 0 !important;
+    }
+}
+
+/* Browser/page zoom deterrents. Browser chrome zoom menus remain outside webpage control. */
+html, body {
+    touch-action: pan-y !important;
+    overscroll-behavior: none !important;
+}
+</style>
 </style>
 </head>
 <body>
@@ -3022,39 +3373,118 @@
 
         <!-- =====================================================
              LEARN MODE
+             Desktop: Your Learning | Video | Playlist / To-do / Notes
+             Mobile: compact progress card | Video | study panel
              ===================================================== -->
         <section id="learn-layer" aria-label="Circle Learn">
             <div class="learn-shell">
-                <div class="learn-workspace">
-                    <div class="learn-video-stage">
-                        <div id="learn-player"></div>
-                        <div id="learn-loading" class="learn-loading">Loading Learn…</div>
+                <aside id="learn-course-sidebar" class="learn-course-sidebar" aria-label="Your learning">
+                    <div class="learn-sidebar-heading">
+                        <span class="learn-sidebar-heading-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5A2.5 2.5 0 0 0 17.5 16H4V5.5Zm0 0V19a2 2 0 0 0 2 2h12.5A1.5 1.5 0 0 0 20 19.5V18H6.5A2.5 2.5 0 0 1 4 15.5V5.5Z"/></svg>
+                        </span>
+                        <span>Your Learning</span>
+                        <span class="learn-sidebar-chevron" aria-hidden="true">⌃</span>
+                    </div>
+                    <div id="learn-course-sidebar-list" class="learn-course-sidebar-list"></div>
+                </aside>
+
+                <div class="learn-main-column">
+                    <div class="learn-mobile-progress" id="learn-mobile-progress" aria-label="Your learning progress">
+                        <button id="learn-mobile-progress-toggle" type="button" aria-expanded="false">
+                            <span class="learn-mobile-progress-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5A2.5 2.5 0 0 0 17.5 16H4V5.5Zm0 0V19a2 2 0 0 0 2 2h12.5A1.5 1.5 0 0 0 20 19.5V18H6.5A2.5 2.5 0 0 1 4 15.5V5.5Z"/></svg>
+                            </span>
+                            <span class="learn-mobile-progress-copy">
+                                <strong id="learn-mobile-progress-course">Business Communication</strong>
+                                <span id="learn-mobile-progress-detail">Lecture 01</span>
+                            </span>
+                            <span class="learn-mobile-progress-meter"><span id="learn-mobile-progress-bar"></span></span>
+                            <span id="learn-mobile-progress-percent">0%</span>
+                            <span class="learn-mobile-progress-chevron" aria-hidden="true">⌄</span>
+                        </button>
+                        <div id="learn-mobile-course-list" class="learn-mobile-course-list" hidden></div>
                     </div>
 
-                    <aside class="learn-playlist" aria-label="Course playlist">
-                        <div id="learn-thumbnails" class="learn-thumbnails"></div>
-                    </aside>
-                </div>
-
-                <div class="learn-controls">
-                    <div class="learn-lesson-meta">
-                        <div id="learn-lecture-label">Lecture 01</div>
-                        <div class="learn-course-select-wrap">
-                            <button id="learn-course-btn" type="button" aria-expanded="false" aria-controls="learn-course-menu">
-                                <span id="learn-course-name">Business Communication</span>
-                                <span id="learn-course-chevron">⌄</span>
-                            </button>
-                            <div id="learn-course-menu"></div>
+                    <div class="learn-workspace">
+                        <div class="learn-video-stage">
+                            <div id="learn-player"></div>
+                            <div id="learn-loading" class="learn-loading">Loading Learn…</div>
                         </div>
+
+                        <aside class="learn-playlist" id="learn-right-panel" aria-label="Learn tools">
+                            <div class="learn-panel-switcher" role="tablist" aria-label="Learn tools">
+                                <button type="button" class="learn-panel-tab active" data-panel="playlist" role="tab" aria-selected="true">
+                                    <span>Playlist</span>
+                                    <span class="learn-panel-count" id="learn-panel-progress-count">0 / 0</span>
+                                </button>
+                                <button type="button" class="learn-panel-tab" data-panel="todo" role="tab" aria-selected="false">
+                                    <span>To-do</span>
+                                    <span class="learn-tab-badge" id="learn-todo-count">0</span>
+                                </button>
+                                <button type="button" class="learn-panel-tab" data-panel="notes" role="tab" aria-selected="false">
+                                    <span>Notes</span>
+                                </button>
+                            </div>
+
+                            <div class="learn-panel-content">
+                                <section id="learn-panel-playlist" class="learn-panel-pane active" data-pane="playlist" role="tabpanel">
+                                    <div class="learn-panel-course-line">
+                                        <strong id="learn-panel-course-name">Business Communication</strong>
+                                        <span id="learn-panel-course-progress">0 / 0</span>
+                                    </div>
+                                    <div class="learn-panel-progress-track"><span id="learn-panel-progress-bar"></span></div>
+                                    <div id="learn-thumbnails" class="learn-thumbnails"></div>
+                                </section>
+
+                                <section id="learn-panel-todo" class="learn-panel-pane" data-pane="todo" role="tabpanel" hidden>
+                                    <div class="learn-tool-heading">
+                                        <div>
+                                            <strong>This Lecture To-do</strong>
+                                            <span id="learn-todo-course-label">Business Communication • Lecture 01</span>
+                                        </div>
+                                        <button id="learn-add-todo-btn" class="learn-tool-action" type="button">+ Add task</button>
+                                    </div>
+                                    <div id="learn-todo-list" class="learn-todo-list"></div>
+                                    <div id="learn-todo-empty" class="learn-empty-state">Add tasks you want to finish for this lecture.</div>
+                                    <div class="learn-tool-footnote">Tasks are saved in this browser.</div>
+                                </section>
+
+                                <section id="learn-panel-notes" class="learn-panel-pane" data-pane="notes" role="tabpanel" hidden>
+                                    <div class="learn-tool-heading">
+                                        <div>
+                                            <strong>Self notes</strong>
+                                            <span id="learn-notes-course-label">Business Communication • Lecture 01</span>
+                                        </div>
+                                        <span id="learn-notes-save-status" class="learn-save-status">Saved locally</span>
+                                    </div>
+                                    <textarea id="learn-notes-input" class="learn-notes-input" placeholder="Write your notes for this lecture…" spellcheck="true"></textarea>
+                                    <div class="learn-tool-footnote">Notes are saved in this browser and synced to your Circle Google Sheet.</div>
+                                </section>
+                            </div>
+                        </aside>
                     </div>
 
-                    <div class="learn-nav" aria-label="Lesson navigation">
-                        <button id="learn-prev-btn" class="learn-nav-btn" type="button">
-                            <span class="learn-nav-arrow">←</span><span class="nav-label">Previous</span>
-                        </button>
-                        <button id="learn-next-btn" class="learn-nav-btn" type="button">
-                            <span class="nav-label">Next</span><span class="learn-nav-arrow">→</span>
-                        </button>
+                    <div class="learn-controls">
+                        <div class="learn-lesson-meta">
+                            <div id="learn-lecture-label">Lecture 01</div>
+                            <div class="learn-course-select-wrap">
+                                <button id="learn-course-btn" type="button" aria-expanded="false" aria-controls="learn-course-menu">
+                                    <span id="learn-course-name">Business Communication</span>
+                                    <span id="learn-course-chevron">⌄</span>
+                                </button>
+                                <div id="learn-course-menu"></div>
+                            </div>
+                        </div>
+
+                        <div class="learn-nav" aria-label="Lesson navigation">
+                            <button id="learn-prev-btn" class="learn-nav-btn" type="button">
+                                <span class="learn-nav-arrow">←</span><span class="nav-label">Previous</span>
+                            </button>
+                            <button id="learn-next-btn" class="learn-nav-btn" type="button">
+                                <span class="nav-label">Next</span><span class="learn-nav-arrow">→</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -4175,6 +4605,29 @@
         let learnProgress = {};
         let learnProgressSheetLastKey = '';
         let learnProgressSheetLastAt = 0;
+        let learnCourseStats = {};
+        let learnNotes = {};
+        let learnTodos = {};
+        let learnNotesSaveTimer = null;
+        let learnPendingNotePayload = null;
+        let learnStudyContextKey = '';
+        let learnActiveRightPanel = 'playlist';
+
+        try {
+            learnCourseStats = JSON.parse(localStorage.getItem('circle_learn_course_stats_v1') || '{}') || {};
+        } catch (_) {
+            learnCourseStats = {};
+        }
+        try {
+            learnNotes = JSON.parse(localStorage.getItem('circle_learn_notes_v1') || '{}') || {};
+        } catch (_) {
+            learnNotes = {};
+        }
+        try {
+            learnTodos = JSON.parse(localStorage.getItem('circle_learn_todos_v1') || '{}') || {};
+        } catch (_) {
+            learnTodos = {};
+        }
         try {
             learnProgress = JSON.parse(localStorage.getItem('circle_learn_progress_v2') || '{}') || {};
         } catch (_) {
@@ -4186,27 +4639,32 @@
             businessCommunication: {
                 name: 'Business Communication',
                 type: 'playlist',
-                playlistId: 'PL59tH4pjx8SAWnw-k80wuzLi-l9HIqYzf'
+                playlistId: 'PL59tH4pjx8SAWnw-k80wuzLi-l9HIqYzf',
+                code: 'BBA111'
             },
             businessMathematics: {
                 name: 'Business Mathematics',
                 type: 'playlist',
-                playlistId: 'PL59tH4pjx8SALcAYjbujfMUwAI4S9Cx9c'
+                playlistId: 'PL59tH4pjx8SALcAYjbujfMUwAI4S9Cx9c',
+                code: 'BBA113'
             },
             computerApplications: {
                 name: 'Computer Application for Business',
                 type: 'playlist',
-                playlistId: 'PL59tH4pjx8SCk7LmDwxbmiYXrwn4DaZZm'
+                playlistId: 'PL59tH4pjx8SCk7LmDwxbmiYXrwn4DaZZm',
+                code: 'BBA112'
             },
             marketingSales: {
                 name: 'Marketing and Sales Management',
                 type: 'playlist',
-                playlistId: 'PL59tH4pjx8SCqngJcM7uWg81BnOXiuaNM'
+                playlistId: 'PL59tH4pjx8SCqngJcM7uWg81BnOXiuaNM',
+                code: 'BBA114'
             },
             entrepreneurship: {
                 name: 'Entrepreneurship Basics',
                 type: 'playlist',
-                playlistId: 'PL59tH4pjx8SB2v1pdapHJcxcGq-Mj4r4-'
+                playlistId: 'PL59tH4pjx8SB2v1pdapHJcxcGq-Mj4r4-',
+                code: 'BBA115'
             }
         };
         
@@ -4234,14 +4692,18 @@
         }
 
         async function logToGoogleSheets(data) {
+            const body = JSON.stringify(data);
             try {
                 await fetch(GOOGLE_SHEETS_ENDPOINT, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(data)
+                    body,
+                    keepalive: true,
+                    cache: 'no-store'
                 });
             } catch (err) {
+                /* Best-effort analytics only. LocalStorage remains the source of truth. */
                 console.warn("Analytics logging failed silently.", err);
             }
         }
@@ -4776,6 +5238,7 @@
             }
             document.getElementById('learn-prev-btn').addEventListener('click', () => openLearnLesson(learnActiveIndex - 1));
             document.getElementById('learn-next-btn').addEventListener('click', () => openLearnLesson(learnActiveIndex + 1));
+            setupLearnStudyTools();
             window.addEventListener('resize', () => {
                 const menu = document.getElementById('learn-course-menu');
                 if (menu && menu.classList.contains('open')) positionLearnCourseMenu();
@@ -5523,7 +5986,7 @@ setInterval(() => {
 
             if (!askMode) {
                 persistLearnProgress();
-                logLearnProgressToGoogleSheets('mode_switch_to_ask');
+                logLearnProgressToGoogleSheets('mode_switch_to_learn');
                 greetingLoopActive = false;
                 if ('speechSynthesis' in window) window.speechSynthesis.cancel();
 
@@ -5768,6 +6231,320 @@ setInterval(() => {
             });
         }
 
+        function getLearnLessonKey(courseId = learnActiveCourseId, index = learnActiveIndex) {
+            return `${courseId}::${Math.max(0, Number(index) || 0)}`;
+        }
+
+        function saveLearnAuxState() {
+            try {
+                localStorage.setItem('circle_learn_course_stats_v1', JSON.stringify(learnCourseStats));
+                localStorage.setItem('circle_learn_notes_v1', JSON.stringify(learnNotes));
+                localStorage.setItem('circle_learn_todos_v1', JSON.stringify(learnTodos));
+            } catch (_) {}
+        }
+
+        function getLearnCourseTotal(courseId) {
+            if (courseId === learnActiveCourseId && learnPlaylistIds.length) return learnPlaylistIds.length;
+            const known = learnCourseStats[courseId] && Number(learnCourseStats[courseId].total);
+            return Number.isFinite(known) && known > 0 ? known : 0;
+        }
+
+        function getLearnCourseProgressPercent(courseId) {
+            const total = getLearnCourseTotal(courseId);
+            const index = Math.max(0, getLearnSavedIndex(courseId));
+            if (!total) return index > 0 ? 8 : 0;
+            return Math.max(0, Math.min(100, Math.round(((Math.min(index + 1, total)) / total) * 100)));
+        }
+
+        function getLearnTodoItemsForCurrentLesson() {
+            return Array.isArray(learnTodos[getLearnLessonKey()]) ? learnTodos[getLearnLessonKey()] : [];
+        }
+
+        function saveLearnTodosForCurrentLesson(items) {
+            learnTodos[getLearnLessonKey()] = Array.isArray(items) ? items : [];
+            saveLearnAuxState();
+        }
+
+        function renderLearnCourseSidebar() {
+            const desktop = document.getElementById('learn-course-sidebar-list');
+            const mobile = document.getElementById('learn-mobile-course-list');
+            const targets = [desktop, mobile].filter(Boolean);
+            if (!targets.length) return;
+
+            const makeItem = ([id, course]) => {
+                const index = Math.max(0, getLearnSavedIndex(id));
+                const total = getLearnCourseTotal(id);
+                const pct = getLearnCourseProgressPercent(id);
+                const lectureLabel = `Lecture ${String(index + 1).padStart(2, '0')}`;
+                const countLabel = total ? `${Math.min(index + 1, total)} / ${total}` : lectureLabel;
+                const active = id === learnActiveCourseId;
+                const initials = course.name.split(/\s+/).filter(Boolean).slice(0, 2).map(s => s[0]).join('').toUpperCase();
+                return `
+                    <button type="button" class="learn-course-progress-item ${active ? 'active' : ''}" data-course-id="${id}">
+                        <span class="learn-course-icon learn-course-icon-${id}">${initials}</span>
+                        <span class="learn-course-progress-copy">
+                            <strong>${escapeHtml(course.name)}</strong>
+                            <small>${escapeHtml(course.code || '')}</small>
+                            <span class="learn-course-progress-line"><span style="width:${pct}%"></span></span>
+                            <span class="learn-course-progress-meta"><span>${lectureLabel}</span><span>${escapeHtml(countLabel)}</span></span>
+                        </span>
+                    </button>
+                `;
+            };
+
+            const markup = Object.entries(LEARN_COURSES).map(makeItem).join('');
+            targets.forEach(target => {
+                target.innerHTML = markup;
+                target.querySelectorAll('.learn-course-progress-item').forEach(button => {
+                    button.addEventListener('click', () => {
+                        loadLearnCourse(button.dataset.courseId, false);
+                        if (target === mobile) {
+                            const toggle = document.getElementById('learn-mobile-progress-toggle');
+                            toggle?.setAttribute('aria-expanded', 'false');
+                            mobile.hidden = true;
+                        }
+                    });
+                });
+            });
+
+            const current = getLearnCourse(learnActiveCourseId);
+            const currentPct = getLearnCourseProgressPercent(learnActiveCourseId);
+            const total = getLearnCourseTotal(learnActiveCourseId);
+            const count = total ? `${Math.min(learnActiveIndex + 1, total)} / ${total}` : `Lecture ${String(learnActiveIndex + 1).padStart(2, '0')}`;
+            document.getElementById('learn-mobile-progress-course')?.replaceChildren(document.createTextNode(current.name));
+            document.getElementById('learn-mobile-progress-detail')?.replaceChildren(document.createTextNode(count));
+            const bar = document.getElementById('learn-mobile-progress-bar');
+            if (bar) bar.style.width = currentPct + '%';
+            const pctEl = document.getElementById('learn-mobile-progress-percent');
+            if (pctEl) pctEl.textContent = currentPct + '%';
+        }
+
+        function updateLearnRightPanelHeader() {
+            const course = getLearnCourse(learnActiveCourseId);
+            const total = getLearnCourseTotal(learnActiveCourseId);
+            const current = Math.min(learnActiveIndex + 1, total || learnActiveIndex + 1);
+            const count = total ? `${current} / ${total}` : `${current}`;
+            const courseName = document.getElementById('learn-panel-course-name');
+            const courseProgress = document.getElementById('learn-panel-course-progress');
+            const progressCount = document.getElementById('learn-panel-progress-count');
+            const progressBar = document.getElementById('learn-panel-progress-bar');
+            if (courseName) courseName.textContent = course.name;
+            if (courseProgress) courseProgress.textContent = count;
+            if (progressCount) progressCount.textContent = count;
+            if (progressBar) progressBar.style.width = getLearnCourseProgressPercent(learnActiveCourseId) + '%';
+        }
+
+        function switchLearnRightPanel(panel) {
+            const allowed = ['playlist', 'todo', 'notes'];
+            const next = allowed.includes(panel) ? panel : 'playlist';
+            learnActiveRightPanel = next;
+            document.querySelectorAll('.learn-panel-tab').forEach(tab => {
+                const active = tab.dataset.panel === next;
+                tab.classList.toggle('active', active);
+                tab.setAttribute('aria-selected', String(active));
+            });
+            document.querySelectorAll('.learn-panel-pane').forEach(pane => {
+                const active = pane.dataset.pane === next;
+                pane.classList.toggle('active', active);
+                pane.hidden = !active;
+            });
+            if (next === 'todo') renderLearnTodoList();
+            if (next === 'notes') loadLearnNotesForCurrentLesson();
+        }
+
+        function updateLearnTodoCount() {
+            const count = getLearnTodoItemsForCurrentLesson().length;
+            const el = document.getElementById('learn-todo-count');
+            if (el) el.textContent = String(count);
+        }
+
+        function renderLearnTodoList() {
+            const list = document.getElementById('learn-todo-list');
+            const empty = document.getElementById('learn-todo-empty');
+            if (!list || !empty) return;
+            const items = getLearnTodoItemsForCurrentLesson();
+            list.innerHTML = items.map(item => `
+                <div class="learn-todo-item ${item.done ? 'done' : ''}" data-todo-id="${escapeHtml(item.id)}">
+                    <label class="learn-todo-check-row">
+                        <input type="checkbox" class="learn-todo-checkbox" ${item.done ? 'checked' : ''} aria-label="Mark task complete">
+                        <span class="learn-todo-checkmark" aria-hidden="true"></span>
+                        <span class="learn-todo-text">${escapeHtml(item.text)}</span>
+                    </label>
+                    <button type="button" class="learn-todo-delete" aria-label="Delete task">×</button>
+                </div>
+            `).join('');
+            empty.style.display = items.length ? 'none' : 'block';
+            updateLearnTodoCount();
+        }
+
+        function openLearnTodoComposer() {
+            const list = document.getElementById('learn-todo-list');
+            if (!list) return;
+            const existing = document.getElementById('learn-todo-composer');
+            if (existing) {
+                existing.querySelector('input')?.focus();
+                return;
+            }
+            const row = document.createElement('div');
+            row.id = 'learn-todo-composer';
+            row.className = 'learn-todo-composer';
+            row.innerHTML = `
+                <input type="text" maxlength="180" placeholder="Add a task…" aria-label="New task">
+                <button type="button" class="learn-todo-composer-save">Add</button>
+            `;
+            list.prepend(row);
+            const input = row.querySelector('input');
+            const save = () => {
+                const text = input.value.trim();
+                if (!text) return;
+                const item = { id: 'todo_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8), text, done: false, createdAt: Date.now(), updatedAt: Date.now() };
+                const items = getLearnTodoItemsForCurrentLesson();
+                items.unshift(item);
+                saveLearnTodosForCurrentLesson(items);
+                renderLearnTodoList();
+                logLearnTodoToGoogleSheets('add', item);
+            };
+            save.addEventListener('click', save);
+            input.addEventListener('keydown', event => { if (event.key === 'Enter') save(); });
+            input.focus();
+        }
+
+        function handleLearnTodoListClick(event) {
+            const itemEl = event.target.closest('.learn-todo-item');
+            if (!itemEl) return;
+            const id = itemEl.dataset.todoId;
+            const items = getLearnTodoItemsForCurrentLesson();
+            const item = items.find(x => x.id === id);
+            if (!item) return;
+
+            if (event.target.closest('.learn-todo-delete')) {
+                const next = items.filter(x => x.id !== id);
+                saveLearnTodosForCurrentLesson(next);
+                renderLearnTodoList();
+                logLearnTodoToGoogleSheets('delete', item);
+                return;
+            }
+
+            if (event.target.closest('.learn-todo-checkbox')) {
+                item.done = !item.done;
+                item.updatedAt = Date.now();
+                saveLearnTodosForCurrentLesson(items);
+                renderLearnTodoList();
+                logLearnTodoToGoogleSheets('update', item);
+            }
+        }
+
+        function loadLearnNotesForCurrentLesson() {
+            const key = getLearnLessonKey();
+            const input = document.getElementById('learn-notes-input');
+            if (!input) return;
+            input.value = String(learnNotes[key] || '');
+            const label = document.getElementById('learn-notes-course-label');
+            if (label) label.textContent = `${getLearnCourse(learnActiveCourseId).name} • Lecture ${String(learnActiveIndex + 1).padStart(2, '0')}`;
+            const status = document.getElementById('learn-notes-save-status');
+            if (status) status.textContent = 'Saved locally';
+        }
+
+        function queueLearnNotesSave(value) {
+            const key = getLearnLessonKey();
+            learnNotes[key] = value;
+            saveLearnAuxState();
+            learnPendingNotePayload = { key, value, courseId: learnActiveCourseId, index: learnActiveIndex };
+            const status = document.getElementById('learn-notes-save-status');
+            if (status) status.textContent = 'Saving…';
+            clearTimeout(learnNotesSaveTimer);
+            learnNotesSaveTimer = setTimeout(flushLearnNotesSave, 1200);
+        }
+
+        function flushLearnNotesSave() {
+            clearTimeout(learnNotesSaveTimer);
+            learnNotesSaveTimer = null;
+            const payload = learnPendingNotePayload;
+            learnPendingNotePayload = null;
+            if (!payload) return;
+            const current = learnNotes[payload.key] || '';
+            if (current !== payload.value) return;
+            const status = document.getElementById('learn-notes-save-status');
+            if (status) status.textContent = 'Saved locally';
+            logLearnNoteToGoogleSheets(payload.value, payload.courseId, payload.index);
+        }
+
+        function syncLearnStudyToolsContext() {
+            const key = getLearnLessonKey();
+            if (key === learnStudyContextKey) {
+                updateLearnTodoCount();
+                return;
+            }
+            learnStudyContextKey = key;
+            const course = getLearnCourse(learnActiveCourseId);
+            const label = `${course.name} • Lecture ${String(learnActiveIndex + 1).padStart(2, '0')}`;
+            const todoLabel = document.getElementById('learn-todo-course-label');
+            const notesLabel = document.getElementById('learn-notes-course-label');
+            if (todoLabel) todoLabel.textContent = label;
+            if (notesLabel) notesLabel.textContent = label;
+            renderLearnTodoList();
+            loadLearnNotesForCurrentLesson();
+        }
+
+        function setupLearnStudyTools() {
+            document.querySelectorAll('.learn-panel-tab').forEach(tab => {
+                tab.addEventListener('click', () => switchLearnRightPanel(tab.dataset.panel));
+            });
+            const addTodo = document.getElementById('learn-add-todo-btn');
+            const todoList = document.getElementById('learn-todo-list');
+            const notes = document.getElementById('learn-notes-input');
+            if (addTodo) addTodo.addEventListener('click', openLearnTodoComposer);
+            if (todoList) todoList.addEventListener('click', handleLearnTodoListClick);
+            if (notes) {
+                notes.addEventListener('input', () => queueLearnNotesSave(notes.value));
+                notes.addEventListener('blur', flushLearnNotesSave);
+            }
+            const mobileToggle = document.getElementById('learn-mobile-progress-toggle');
+            const mobileList = document.getElementById('learn-mobile-course-list');
+            if (mobileToggle && mobileList) {
+                mobileToggle.addEventListener('click', () => {
+                    const open = mobileToggle.getAttribute('aria-expanded') === 'true';
+                    mobileToggle.setAttribute('aria-expanded', String(!open));
+                    mobileList.hidden = open;
+                });
+            }
+            renderLearnCourseSidebar();
+            syncLearnStudyToolsContext();
+        }
+
+        function logLearnNoteToGoogleSheets(noteText, courseId, index) {
+            if (!circleUserId || !courseId) return;
+            const course = getLearnCourse(courseId);
+            void logToGoogleSheets({
+                type: 'learn_note',
+                userId: circleUserId,
+                name: userName,
+                courseId,
+                courseName: course.name,
+                lectureNumber: Number(index) + 1,
+                noteText: String(noteText || ''),
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        function logLearnTodoToGoogleSheets(action, item) {
+            if (!circleUserId || !learnActiveCourseId || !item) return;
+            const course = getLearnCourse(learnActiveCourseId);
+            void logToGoogleSheets({
+                type: 'learn_todo',
+                userId: circleUserId,
+                name: userName,
+                courseId: learnActiveCourseId,
+                courseName: course.name,
+                lectureNumber: learnActiveIndex + 1,
+                taskId: item.id,
+                task: item.text,
+                completed: Boolean(item.done),
+                action,
+                timestamp: new Date().toISOString()
+            });
+        }
+
         function getLearnCourse(courseId) {
             return LEARN_COURSES[courseId] || LEARN_COURSES.businessCommunication;
         }
@@ -5831,6 +6608,7 @@ setInterval(() => {
         }
 
         function loadLearnCourse(courseId, autoPlay) {
+            flushLearnNotesSave();
             const nextCourseId = LEARN_COURSES[courseId] ? courseId : 'businessCommunication';
             if (!learnPlayerReady) {
                 learnPendingAutoPlay = Boolean(autoPlay);
@@ -5913,6 +6691,8 @@ setInterval(() => {
             if (ids.length) {
                 learnPlaylistIds = ids;
                 learnActiveIndex = Math.max(0, Math.min(safeLearnPlaylistIndex(), ids.length - 1));
+                learnCourseStats[learnActiveCourseId] = { total: ids.length, updatedAt: Date.now() };
+                saveLearnAuxState();
                 renderLearnThumbnails();
                 updateLearnCourseUI();
                 syncLearnPlaylistHeight();
@@ -5927,16 +6707,16 @@ setInterval(() => {
         function syncLearnPlaylistHeight() {
             const stage = document.querySelector('.learn-video-stage');
             const playlist = document.querySelector('.learn-playlist');
-            const thumbnails = document.getElementById('learn-thumbnails');
+            const sidebar = document.querySelector('.learn-course-sidebar');
             const workspace = document.querySelector('.learn-workspace');
             if (!stage || !playlist) return;
 
             if (window.innerWidth <= 768) {
                 playlist.style.removeProperty('height');
                 playlist.style.removeProperty('max-height');
-                if (thumbnails) {
-                    thumbnails.style.height = '100%';
-                    thumbnails.style.maxHeight = '100%';
+                if (sidebar) {
+                    sidebar.style.removeProperty('height');
+                    sidebar.style.removeProperty('max-height');
                 }
                 if (workspace) workspace.style.removeProperty('--learn-fixed-panel-height');
                 return;
@@ -5949,9 +6729,15 @@ setInterval(() => {
                 playlist.style.height = fixed;
                 playlist.style.maxHeight = fixed;
                 playlist.style.minHeight = '0px';
-                if (thumbnails) {
-                    thumbnails.style.height = '100%';
-                    thumbnails.style.maxHeight = '100%';
+                if (sidebar && window.innerWidth >= 1100) {
+                    sidebar.style.height = fixed;
+                    sidebar.style.maxHeight = fixed;
+                    sidebar.style.minHeight = '0px';
+                    sidebar.style.overflow = 'hidden';
+                } else if (sidebar) {
+                    sidebar.style.removeProperty('height');
+                    sidebar.style.removeProperty('max-height');
+                    sidebar.style.removeProperty('min-height');
                 }
             }
         }
@@ -5997,6 +6783,7 @@ setInterval(() => {
 
         function openLearnLesson(index) {
             if (!learnPlayerReady) return;
+            flushLearnNotesSave();
             const max = learnPlaylistIds.length ? learnPlaylistIds.length - 1 : 0;
             learnActiveIndex = Math.max(0, Math.min(index, max));
             learnLastSkipKey = null;
@@ -6101,6 +6888,9 @@ setInterval(() => {
             document.getElementById('learn-prev-btn').disabled = learnActiveIndex <= 0;
             const maxIndex = Math.max(0, learnPlaylistIds.length - 1);
             document.getElementById('learn-next-btn').disabled = learnPlaylistIds.length > 0 && learnActiveIndex >= maxIndex;
+            updateLearnRightPanelHeader();
+            renderLearnCourseSidebar();
+            syncLearnStudyToolsContext();
         }
 
         function escapeHtml(value) {
@@ -6473,8 +7263,8 @@ setInterval(() => {
             }, { capture: true });
         })();
 
-        window.addEventListener('pagehide', function () { persistLearnProgress(); logLearnProgressToGoogleSheets('page_hidden'); });
-        window.addEventListener('beforeunload', function () { persistLearnProgress(); logLearnProgressToGoogleSheets('page_unload'); });
+        window.addEventListener('pagehide', function () { flushLearnNotesSave(); persistLearnProgress(); logLearnProgressToGoogleSheets('page_hidden'); });
+        window.addEventListener('beforeunload', function () { flushLearnNotesSave(); persistLearnProgress(); logLearnProgressToGoogleSheets('page_unload'); });
         /* Final Learn course-selector binding. This intentionally uses the DOM
            property so it cannot accumulate duplicate click listeners. */
         document.addEventListener('DOMContentLoaded', function () {
