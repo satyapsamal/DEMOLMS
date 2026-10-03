@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="referrer" content="origin">
     <!-- Page Title -->
     <title>Circle</title>
 
@@ -1788,22 +1789,22 @@
         }
 
         #learn-course-menu {
-            position: absolute;
+            position: fixed;
             left: 0;
-            bottom: calc(100% + 10px);
+            top: 0;
             width: min(330px, calc(100vw - 28px));
+            max-height: min(320px, 45vh);
+            overflow-y: auto;
             background: #0a0a0a;
-            border: 1px solid rgba(255,255,255,.12);
+            border: 1px solid rgba(255,255,255,.14);
             border-radius: 14px;
             padding: 7px;
-            box-shadow: 0 18px 45px rgba(0,0,0,.55);
+            box-shadow: 0 18px 45px rgba(0,0,0,.65);
             opacity: 0;
             pointer-events: none;
             transform: translateY(5px);
             transition: opacity .18s ease, transform .18s ease;
-            z-index: 60000;
-            max-height: min(320px, 45vh);
-            overflow-y: auto;
+            z-index: 100000;
         }
 
         #learn-course-menu.open {
@@ -3830,6 +3831,10 @@
             });
             document.getElementById('learn-prev-btn').addEventListener('click', () => openLearnLesson(learnActiveIndex - 1));
             document.getElementById('learn-next-btn').addEventListener('click', () => openLearnLesson(learnActiveIndex + 1));
+            window.addEventListener('resize', () => {
+                const menu = document.getElementById('learn-course-menu');
+                if (menu && menu.classList.contains('open')) openLearnCourseMenu();
+            });
 
             /* First-time profile upload */
             document.getElementById('onboarding-photo-input').addEventListener('change', handleOnboardingPhotoUpload);
@@ -4650,35 +4655,88 @@ setInterval(() => {
             }
         }
 
+        function buildLearnPlaylistEmbedUrl(courseId, startSeconds = 10) {
+            const course = getLearnCourse(courseId);
+            const params = new URLSearchParams({
+                listType: 'playlist',
+                list: course.playlistId,
+                enablejsapi: '1',
+                origin: window.location.origin,
+                playsinline: '1',
+                rel: '0',
+                controls: '1',
+                iv_load_policy: '3',
+                start: String(Math.max(0, Math.floor(startSeconds)))
+            });
+            return 'https://www.youtube-nocookie.com/embed?' + params.toString();
+        }
+
+        function createLearnIframe(courseId, startSeconds = 10) {
+            const host = document.getElementById('learn-player');
+            if (!host) return null;
+
+            host.innerHTML = '';
+            const iframe = document.createElement('iframe');
+            iframe.id = 'learn-youtube-iframe';
+            iframe.title = 'Circle Learn video player';
+            iframe.src = buildLearnPlaylistEmbedUrl(courseId, startSeconds);
+            iframe.width = '100%';
+            iframe.height = '100%';
+            iframe.frameBorder = '0';
+            iframe.allowFullscreen = true;
+            iframe.referrerPolicy = 'origin';
+            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+            iframe.setAttribute('loading', 'eager');
+            iframe.style.display = 'block';
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = '0';
+            host.appendChild(iframe);
+            return iframe;
+        }
+
         function initializeLearnPlayer() {
-            if (learnPlayer) return;
+            if (learnPlayer || !(window.YT && window.YT.Player)) return;
 
             const loading = document.getElementById('learn-loading');
             loading.style.display = 'flex';
 
-            learnPlayer = new YT.Player('learn-player', {
-                width: '100%',
-                height: '100%',
-                playerVars: {
-                    controls: 1,
-                    playsinline: 1,
-                    rel: 0,
-                    iv_load_policy: 3,
-                    enablejsapi: 1,
-                    origin: window.location.origin
-                },
+            const initialCourse = getLearnCourse(learnActiveCourseId);
+            const savedIndex = Math.max(0, getLearnSavedIndex(learnActiveCourseId));
+            const iframe = createLearnIframe(learnActiveCourseId, LEARN_INTRO_SKIP_SECONDS);
+            if (!iframe) return;
+
+            /*
+             * Important: create the iframe with referrerPolicy BEFORE YouTube
+             * receives the first request. Setting referrerpolicy in onReady is
+             * too late and can produce YouTube error 153.
+             */
+            learnPlayer = new YT.Player(iframe, {
                 events: {
                     onReady: function(event) {
                         learnPlayerReady = true;
                         loading.style.display = 'none';
                         try {
-                            const iframe = event.target.getIframe();
-                            if (iframe) {
-                                iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-                                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+                            const playerFrame = event.target.getIframe();
+                            if (playerFrame) {
+                                playerFrame.referrerPolicy = 'origin';
+                                playerFrame.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
                             }
                         } catch (_) {}
-                        loadLearnCourse(learnActiveCourseId, false);
+
+                        /* The playlist is already loaded by the iframe URL.
+                         * Wait for YouTube to expose its playlist before rendering
+                         * the custom thumbnail rail. */
+                        refreshLearnPlaylist(0);
+                        renderLearnCourseMenu();
+                        updateLearnCourseUI();
+
+                        if (initialCourse.type === 'playlist' && savedIndex > 0) {
+                            setTimeout(() => {
+                                try { learnPlayer.playVideoAt(savedIndex); } catch (_) {}
+                            }, 500);
+                        }
+                        setTimeout(() => enforceLearnIntroSkip(), 450);
                     },
                     onStateChange: handleLearnPlayerStateChange,
                     onAutoplayBlocked: function() {
@@ -4693,10 +4751,46 @@ setInterval(() => {
                         } else if (code === 100) {
                             showToast('This YouTube video is unavailable or private.');
                         } else if (code === 153) {
-                            showToast('YouTube blocked the embed request. Refresh the page and try again.');
+                            showToast('YouTube blocked the embed request. The player is retrying with the required referrer.');
+                            /* Rebuild once with an explicit iframe so the HTTP
+                             * Referer is present on the initial player request. */
+                            setTimeout(() => retryLearnPlayerWithDirectIframe(), 250);
                         } else {
                             showToast('This lesson could not be loaded.');
                         }
+                    }
+                }
+            });
+        }
+
+        function retryLearnPlayerWithDirectIframe() {
+            if (learnPlayerReady || !window.YT || !window.YT.Player) return;
+            const host = document.getElementById('learn-player');
+            if (!host) return;
+            try {
+                if (learnPlayer && typeof learnPlayer.destroy === 'function') learnPlayer.destroy();
+            } catch (_) {}
+            learnPlayer = null;
+            learnPlayerReady = false;
+            const iframe = createLearnIframe(learnActiveCourseId, LEARN_INTRO_SKIP_SECONDS);
+            if (!iframe) return;
+            learnPlayer = new YT.Player(iframe, {
+                events: {
+                    onReady: function(event) {
+                        learnPlayerReady = true;
+                        document.getElementById('learn-loading').style.display = 'none';
+                        refreshLearnPlaylist(0);
+                        renderLearnCourseMenu();
+                        updateLearnCourseUI();
+                        setTimeout(() => enforceLearnIntroSkip(), 450);
+                    },
+                    onStateChange: handleLearnPlayerStateChange,
+                    onError: function(event) {
+                        const code = Number(event && event.data);
+                        console.warn('YouTube Learn retry error:', code);
+                        if (code === 101 || code === 150) showToast('This YouTube video does not allow embedded playback.');
+                        else if (code === 100) showToast('This YouTube video is unavailable or private.');
+                        else showToast('YouTube could not load this lesson.');
                     }
                 }
             });
@@ -4767,37 +4861,48 @@ setInterval(() => {
         function loadLearnCourse(courseId, autoPlay) {
             if (!learnPlayerReady) return;
 
-            persistLearnProgress();
-            learnActiveCourseId = LEARN_COURSES[courseId] ? courseId : 'businessCommunication';
-            const course = getLearnCourse(learnActiveCourseId);
-            const savedIndex = getLearnSavedIndex(learnActiveCourseId);
-            learnActiveIndex = Math.max(0, savedIndex);
-            learnLastSkipKey = null;
+            const nextCourseId = LEARN_COURSES[courseId] ? courseId : 'businessCommunication';
+            const courseChanged = nextCourseId !== learnActiveCourseId;
+            if (!courseChanged) {
+                refreshLearnPlaylist(0);
+                renderLearnCourseMenu();
+                updateLearnCourseUI();
+                if (autoPlay) {
+                    setTimeout(() => { try { learnPlayer.playVideo(); } catch (_) {} }, 200);
+                }
+                return;
+            }
 
-            localStorage.setItem('circle_learn_active_course', learnActiveCourseId);
-            updateLearnCourseUI();
+            persistLearnProgress();
+            learnActiveCourseId = nextCourseId;
+            const course = getLearnCourse(learnActiveCourseId);
+            const savedIndex = Math.max(0, getLearnSavedIndex(learnActiveCourseId));
+            learnActiveIndex = savedIndex;
+            learnLastSkipKey = null;
+            learnPlaylistIds = [];
+
+            try {
+                localStorage.setItem('circle_learn_active_course', learnActiveCourseId);
+            } catch (_) {}
+
+            renderLearnThumbnails();
             renderLearnCourseMenu();
+            updateLearnCourseUI();
 
             if (course.type === 'playlist') {
-                learnPlaylistIds = [];
-                renderLearnThumbnails();
                 try {
-                    learnPlayer.cuePlaylist({
+                    learnPlayer.loadPlaylist({
                         list: course.playlistId,
                         listType: 'playlist',
-                        index: learnActiveIndex,
+                        index: savedIndex,
                         startSeconds: LEARN_INTRO_SKIP_SECONDS
                     });
                 } catch (error) {
                     console.warn('Unable to load playlist:', error);
                     showToast('Unable to load this course.');
                 }
-
                 refreshLearnPlaylist(0);
-            } else {
-                learnPlaylistIds = [course.videoId];
-                learnActiveIndex = 0;
-                renderLearnThumbnails();
+            } else if (course.videoId) {
                 try {
                     learnPlayer.loadVideoById({
                         videoId: course.videoId,
@@ -4806,13 +4911,14 @@ setInterval(() => {
                 } catch (error) {
                     console.warn('Unable to load lesson:', error);
                 }
+                learnPlaylistIds = [course.videoId];
+                learnActiveIndex = 0;
+                renderLearnThumbnails();
                 saveLearnIndexOnly();
             }
 
             if (autoPlay) {
-                setTimeout(() => {
-                    try { learnPlayer.playVideo(); } catch (_) {}
-                }, 200);
+                setTimeout(() => { try { learnPlayer.playVideo(); } catch (_) {} }, 250);
             }
         }
 
@@ -4989,12 +5095,28 @@ setInterval(() => {
         function openLearnCourseMenu() {
             renderLearnCourseMenu();
             const menu = document.getElementById('learn-course-menu');
+            const button = document.getElementById('learn-course-btn');
+            if (!menu || !button) return;
+
+            const rect = button.getBoundingClientRect();
+            const width = Math.min(330, window.innerWidth - 28);
+            const estimatedHeight = Math.min(320, Math.max(150, Object.keys(LEARN_COURSES).length * 46 + 16));
+            const gap = 9;
+            const spaceBelow = window.innerHeight - rect.bottom - 14;
+            const placeBelow = spaceBelow >= estimatedHeight || rect.top < estimatedHeight + 20;
+
+            menu.style.width = width + 'px';
+            menu.style.left = Math.max(14, Math.min(rect.left, window.innerWidth - width - 14)) + 'px';
+            if (placeBelow) {
+                menu.style.top = (rect.bottom + gap) + 'px';
+                menu.style.bottom = 'auto';
+            } else {
+                menu.style.top = 'auto';
+                menu.style.bottom = (window.innerHeight - rect.top + gap) + 'px';
+            }
+
             menu.classList.add('open');
-            document.getElementById('learn-course-btn').setAttribute('aria-expanded', 'true');
-            requestAnimationFrame(() => {
-                const button = document.getElementById('learn-course-btn');
-                if (button) button.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-            });
+            button.setAttribute('aria-expanded', 'true');
         }
 
         function closeLearnCourseMenu() {
