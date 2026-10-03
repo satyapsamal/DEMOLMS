@@ -2555,6 +2555,129 @@
             transition: opacity .7s ease !important;
         }
 
+
+        /* =====================================================
+         * FINAL USER-REQUESTED UI POLISH
+         * ===================================================== */
+        .shell-mode-btn {
+            font-weight: 700 !important;
+        }
+
+        /* Learn metadata: course pill followed immediately by lecture number. */
+        .learn-lesson-meta {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            min-width: 0 !important;
+            flex-wrap: nowrap !important;
+        }
+
+        #learn-lecture-label {
+            order: 2 !important;
+            flex: 0 0 auto !important;
+            font-size: 18px !important;
+            line-height: 1 !important;
+            font-weight: 700 !important;
+            letter-spacing: .01em !important;
+            white-space: nowrap !important;
+        }
+
+        .learn-course-select-wrap {
+            order: 1 !important;
+            margin-top: 0 !important;
+            flex: 0 1 auto !important;
+            min-width: 0 !important;
+        }
+
+        #learn-course-btn {
+            background: rgba(255,255,255,.055) !important;
+            border: 1px solid rgba(255,255,255,.12) !important;
+            color: #d9d9d9 !important;
+            border-radius: 999px !important;
+            padding: 8px 12px !important;
+            min-height: 34px !important;
+            max-width: min(52vw, 420px) !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.04) !important;
+        }
+
+        #learn-course-btn:hover {
+            background: rgba(255,255,255,.08) !important;
+            border-color: rgba(255,255,255,.20) !important;
+            color: #fff !important;
+        }
+
+        @media (max-width: 768px) {
+            /* Keep the model selector out of the left brand area.
+             * In Ask it sits centered directly below Learn/Ask. */
+            body.circle-ask-mode #shell-model-slot {
+                position: fixed !important;
+                top: calc(var(--shell-header-height) + 7px) !important;
+                left: 50% !important;
+                right: auto !important;
+                width: auto !important;
+                transform: translateX(-50%) !important;
+                margin: 0 !important;
+                z-index: 32050 !important;
+                overflow: visible !important;
+            }
+
+            body.circle-ask-mode #shell-model-slot .shell-model-control,
+            body.circle-ask-mode #shell-model-slot #model-btn {
+                position: relative !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+            }
+
+            body.circle-ask-mode #shell-model-slot #model-btn {
+                height: 34px !important;
+                min-height: 34px !important;
+                padding: 0 12px !important;
+                font-size: 11px !important;
+                background: rgba(12,12,12,.94) !important;
+                border-color: rgba(255,255,255,.14) !important;
+            }
+
+            body.circle-ask-mode #shell-model-slot #model-menu {
+                top: calc(100% + 8px) !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                width: min(278px, calc(100vw - 28px)) !important;
+                max-width: calc(100vw - 28px) !important;
+                z-index: 32060 !important;
+            }
+
+            .learn-controls {
+                align-items: center !important;
+                flex-wrap: wrap !important;
+                row-gap: 10px !important;
+                column-gap: 12px !important;
+            }
+
+            .learn-lesson-meta {
+                width: 100% !important;
+                justify-content: flex-start !important;
+                gap: 10px !important;
+            }
+
+            #learn-course-btn {
+                max-width: calc(100vw - 150px) !important;
+                font-size: 11px !important;
+                padding: 8px 11px !important;
+                min-height: 34px !important;
+            }
+
+            #learn-lecture-label {
+                font-size: 17px !important;
+            }
+
+            .learn-nav {
+                width: 100% !important;
+                justify-content: flex-end !important;
+            }
+        }
+
         @media (max-width: 768px) {
             #app-shell-header {
                 padding: 0 16px !important;
@@ -4050,6 +4173,8 @@
         let learnLastSkipKey = null;
         let learnPendingAutoPlay = false;
         let learnProgress = {};
+        let learnProgressSheetLastKey = '';
+        let learnProgressSheetLastAt = 0;
         try {
             learnProgress = JSON.parse(localStorage.getItem('circle_learn_progress_v2') || '{}') || {};
         } catch (_) {
@@ -4119,6 +4244,66 @@
             } catch (err) {
                 console.warn("Analytics logging failed silently.", err);
             }
+        }
+
+
+        /* New Google Sheets workflow: record an Ask prompt in its own tab. */
+        function logAskPromptToGoogleSheets(prompt) {
+            if (!prompt || !prompt.trim()) return;
+            void logToGoogleSheets({
+                type: 'ask_prompt',
+                userId: circleUserId,
+                name: userName,
+                prompt: prompt.trim(),
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        /* New Google Sheets workflow: record Learn progress independently for
+         * each course. The sheet row includes the course, lecture, video and
+         * current playback time so progress can be reconstructed per student. */
+        function logLearnProgressToGoogleSheets(eventName) {
+            if (!circleUserId || !learnActiveCourseId) return;
+            const course = getLearnCourse(learnActiveCourseId);
+            let index = Number.isInteger(learnActiveIndex) ? learnActiveIndex : 0;
+            let videoId = learnPlaylistIds[index] || null;
+            let currentTime = null;
+            let duration = null;
+
+            if (learnPlayer && learnPlayerReady) {
+                try {
+                    const pIndex = safeLearnPlaylistIndex();
+                    if (Number.isInteger(pIndex) && pIndex >= 0) index = pIndex;
+                    videoId = safeLearnVideoId() || videoId;
+                    currentTime = Number(learnPlayer.getCurrentTime());
+                    duration = Number(learnPlayer.getDuration());
+                } catch (_) {}
+            }
+
+            const safeTime = Number.isFinite(currentTime) ? Math.round(currentTime) : '';
+            const safeDuration = Number.isFinite(duration) ? Math.round(duration) : '';
+            const key = [circleUserId, learnActiveCourseId, index, videoId || '', eventName || 'update'].join('|');
+            const now = Date.now();
+
+            /* Avoid writing duplicate rows repeatedly for the same lesson/state
+             * during rapid YouTube BUFFERING/PAUSED events. */
+            if (key === learnProgressSheetLastKey && now - learnProgressSheetLastAt < 15000) return;
+            learnProgressSheetLastKey = key;
+            learnProgressSheetLastAt = now;
+
+            void logToGoogleSheets({
+                type: 'video_progress',
+                userId: circleUserId,
+                name: userName,
+                courseId: learnActiveCourseId,
+                courseName: course.name,
+                lectureNumber: index + 1,
+                videoId: videoId,
+                currentTimeSeconds: safeTime,
+                durationSeconds: safeDuration,
+                event: eventName || 'update',
+                timestamp: new Date().toISOString()
+            });
         }
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -4256,6 +4441,7 @@
              */
             void logToGoogleSheets({
                 type: 'user_profile',
+                timestamp: new Date().toISOString(),
                 userId: circleUserId,
                 name: userName,
                 profilePhoto: {
@@ -4925,7 +5111,7 @@
                 document.getElementById('app-new-chat-btn').classList.add('visible');
             }
             
-            logToGoogleSheets({ type: "query", userId: circleUserId, name: userName, prompt: query });
+            logAskPromptToGoogleSheets(query);
             
             isProcessing = true;
 
@@ -5337,6 +5523,7 @@ setInterval(() => {
 
             if (!askMode) {
                 persistLearnProgress();
+                logLearnProgressToGoogleSheets('mode_switch_to_ask');
                 greetingLoopActive = false;
                 if ('speechSynthesis' in window) window.speechSynthesis.cancel();
 
@@ -5704,6 +5891,7 @@ setInterval(() => {
             } else {
                 ensureLearnPlayerAPI();
             }
+            logLearnProgressToGoogleSheets('course_switched');
         }
 
         function saveLearnIndexOnly() {
@@ -5829,6 +6017,7 @@ setInterval(() => {
             }
 
             saveLearnIndexOnly();
+            logLearnProgressToGoogleSheets('lesson_opened');
             updateLearnCourseUI();
             renderLearnThumbnails();
         }
@@ -5872,11 +6061,13 @@ setInterval(() => {
                 }
 
                 saveLearnIndexOnly();
+                logLearnProgressToGoogleSheets('playing');
             }
 
             if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.BUFFERING) {
                 learnActiveIndex = safeLearnPlaylistIndex();
                 saveLearnIndexOnly();
+                logLearnProgressToGoogleSheets(event.data === YT.PlayerState.PAUSED ? 'paused' : 'buffering');
             }
 
             if (event.data === YT.PlayerState.ENDED) {
@@ -5889,6 +6080,7 @@ setInterval(() => {
                 try {
                     localStorage.setItem('circle_learn_progress_v2', JSON.stringify(learnProgress));
                 } catch (_) {}
+                logLearnProgressToGoogleSheets('ended');
 
                 if (learnActiveIndex < learnPlaylistIds.length - 1) {
                     const nextIndex = learnActiveIndex + 1;
@@ -6281,8 +6473,8 @@ setInterval(() => {
             }, { capture: true });
         })();
 
-        window.addEventListener('pagehide', persistLearnProgress);
-        window.addEventListener('beforeunload', persistLearnProgress);
+        window.addEventListener('pagehide', function () { persistLearnProgress(); logLearnProgressToGoogleSheets('page_hidden'); });
+        window.addEventListener('beforeunload', function () { persistLearnProgress(); logLearnProgressToGoogleSheets('page_unload'); });
         /* Final Learn course-selector binding. This intentionally uses the DOM
            property so it cannot accumulate duplicate click listeners. */
         document.addEventListener('DOMContentLoaded', function () {
