@@ -2444,6 +2444,241 @@
             font-size: 20px !important;
             opacity: .6 !important;
         }
+
+
+        /* =====================================================
+         * FINAL MOBILE LEARN / ASK SHELL POLISH
+         * ===================================================== */
+        .shell-brand {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            min-width: 150px;
+            gap: 9px;
+        }
+
+        .shell-brand-main {
+            border: 0;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: #fff;
+            font: 18px var(--font-ui);
+            text-decoration: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .shell-brand-main img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+            opacity: .92;
+            flex: 0 0 auto;
+        }
+
+        .shell-brand-name {
+            opacity: 1;
+            transform: translateX(0);
+            max-width: 120px;
+            overflow: hidden;
+            transition: opacity .65s ease, transform .65s ease, max-width .65s ease, margin .65s ease;
+        }
+
+        .shell-model-slot {
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+            width: 0;
+            opacity: 0;
+            overflow: visible;
+            pointer-events: none;
+            transition: opacity .65s ease, width .65s ease;
+        }
+
+        .shell-model-slot .shell-model-control {
+            position: relative !important;
+            display: inline-flex !important;
+            align-items: center;
+        }
+
+        #model-btn.shell-model-button,
+        .shell-model-control #model-btn {
+            width: auto !important;
+            min-width: 0 !important;
+            height: 36px !important;
+            padding: 0 13px !important;
+            border-radius: 999px !important;
+            font-size: 12px !important;
+            line-height: 1 !important;
+            white-space: nowrap !important;
+        }
+
+        body.circle-ask-mode .shell-brand-name {
+            opacity: 0;
+            transform: translateX(-8px);
+            max-width: 0;
+            margin-right: 0;
+        }
+
+        body.circle-ask-mode .shell-model-slot {
+            width: auto;
+            opacity: 1;
+            pointer-events: auto;
+            overflow: visible;
+        }
+
+        body.circle-ask-mode .shell-model-control,
+        body.circle-ask-mode .shell-model-control #model-btn {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+
+        body:not(.circle-ask-mode) .shell-model-control,
+        body:not(.circle-ask-mode) .shell-model-control #model-btn {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        #shell-model-slot #model-menu {
+            top: calc(100% + 8px) !important;
+            left: 0 !important;
+            z-index: 32000 !important;
+        }
+
+        #greeting-rotator {
+            transition: opacity .7s ease !important;
+        }
+
+        @media (max-width: 768px) {
+            #app-shell-header {
+                padding: 0 16px !important;
+            }
+
+            .shell-brand {
+                min-width: 0 !important;
+                gap: 8px !important;
+            }
+
+            .shell-brand-main {
+                gap: 8px !important;
+            }
+
+            .shell-brand-main img {
+                width: 28px !important;
+                height: 28px !important;
+            }
+
+            .shell-model-slot #model-btn {
+                height: 34px !important;
+                padding: 0 11px !important;
+                font-size: 11px !important;
+            }
+
+            #shell-model-slot #model-menu {
+                top: 42px !important;
+                left: 0 !important;
+                width: min(278px, calc(100vw - 32px)) !important;
+                max-width: calc(100vw - 32px) !important;
+            }
+
+            #learn-layer {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+                padding-top: calc(var(--shell-header-height) + 10px) !important;
+            }
+
+            .learn-shell {
+                width: 100% !important;
+                max-width: none !important;
+            }
+
+            .learn-workspace {
+                display: grid !important;
+                grid-template-columns: minmax(0, 1fr) !important;
+                grid-template-rows: auto minmax(0, 290px) !important;
+                gap: 10px !important;
+                align-items: start !important;
+            }
+
+            .learn-video-stage {
+                width: 100% !important;
+                height: auto !important;
+                aspect-ratio: 16 / 9 !important;
+                border-radius: 14px !important;
+            }
+
+            .learn-playlist {
+                width: 100% !important;
+                height: 290px !important;
+                min-height: 290px !important;
+                max-height: 290px !important;
+                aspect-ratio: auto !important;
+                overflow: hidden !important;
+                border-radius: 14px !important;
+                box-sizing: border-box !important;
+            }
+
+            .learn-thumbnails {
+                display: grid !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                grid-auto-rows: max-content !important;
+                align-content: start !important;
+                width: 100% !important;
+                height: 100% !important;
+                padding: 7px !important;
+                gap: 7px !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+                box-sizing: border-box !important;
+            }
+
+            .learn-thumbnails::-webkit-scrollbar {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+            }
+
+            .learn-thumb {
+                position: relative !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                aspect-ratio: 16 / 9 !important;
+                margin: 0 !important;
+                border-radius: 8px !important;
+                overflow: hidden !important;
+            }
+
+            .learn-thumb img {
+                position: absolute !important;
+                inset: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;
+                display: block !important;
+            }
+
+            .learn-controls {
+                padding-top: 12px !important;
+            }
+
+            .learn-course-select-wrap {
+                margin-top: 5px !important;
+            }
+
+            #learn-course-menu {
+                max-height: min(300px, 48vh) !important;
+                width: min(300px, calc(100vw - 20px)) !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2553,10 +2788,13 @@
              Ask opens the existing Circle AI chat interface.
              ===================================================== -->
         <header id="app-shell-header" aria-label="Circle navigation">
-            <button class="shell-brand" id="circle-brand-home" type="button" aria-label="Circle home">
-                <img src="circle.png" alt="">
-                <span class="shell-brand-name">Circle</span>
-            </button>
+            <div class="shell-brand">
+                <button class="shell-brand-main" id="circle-brand-home" type="button" aria-label="Circle home">
+                    <img src="circle.png" alt="">
+                    <span class="shell-brand-name">Circle</span>
+                </button>
+                <div id="shell-model-slot" class="shell-model-slot" aria-hidden="true"></div>
+            </div>
 
             <div class="shell-mode-switch" role="tablist" aria-label="Circle mode">
                 <button id="shell-learn-btn" class="shell-mode-btn active" type="button" role="tab" aria-selected="true">Learn</button>
@@ -4089,25 +4327,27 @@
         }
 
         async function rotateGreetingsLoop(rot, currentIdx) {
+            if (!rot) return;
+            rot.style.opacity = '1';
+            rot.style.transition = 'opacity 0.7s ease';
+
             while (greetingLoopActive) {
-                await sleep(5000); 
+                await sleep(8000);
                 if (!greetingLoopActive) break;
-                
-                rot.classList.add('anim-exit');
-                await sleep(1200); 
-                if (!greetingLoopActive) break;
-                
+
+                rot.style.opacity = '0';
+                await sleep(700);
+                if (!greetingLoopActive) {
+                    rot.style.opacity = '1';
+                    break;
+                }
+
                 currentIdx = (currentIdx + 1) % greetingsList.length;
                 rot.textContent = formatText(greetingsList[currentIdx], userName);
-                
-                rot.style.transition = 'none';
-                rot.classList.remove('anim-exit');
-                rot.classList.add('anim-enter');
-                
+
                 void rot.offsetWidth;
-                
-                rot.style.transition = ''; 
-                rot.classList.remove('anim-enter');
+                rot.style.opacity = '1';
+                await sleep(700);
             }
         }
 
@@ -4240,7 +4480,21 @@
         /*******************************************************
          * 7. EVENT LISTENERS & SCROLLING MANAGEMENT
          *******************************************************/
+        function mountShellModelControl() {
+            const slot = document.getElementById('shell-model-slot');
+            const modelButton = document.getElementById('model-btn');
+            if (!slot || !modelButton || modelButton.closest('#shell-model-slot')) return;
+
+            const wrapper = modelButton.parentElement;
+            if (!wrapper) return;
+
+            wrapper.classList.add('shell-model-control');
+            slot.appendChild(wrapper);
+            slot.setAttribute('aria-hidden', 'false');
+        }
+
         function setupEventListeners() {
+            mountShellModelControl();
             /* Unified shell navigation */
             document.getElementById('shell-learn-btn').addEventListener('click', () => switchCircleMode('learn'));
             document.getElementById('shell-ask-btn').addEventListener('click', () => switchCircleMode('ask'));
@@ -5041,6 +5295,8 @@ setInterval(() => {
                 if (!isChatMode && header && rot) {
                     header.style.display = 'flex';
                     rot.classList.remove('hidden');
+                    rot.style.transition = 'opacity 0.7s ease';
+                    rot.style.opacity = '1';
                     rot.textContent = formatText(greetingsList[0], userName);
                     greetingLoopActive = false;
                     setTimeout(() => {
