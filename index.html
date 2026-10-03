@@ -40,7 +40,6 @@
             
             --bg-color: #000000;
             --text-primary: #ffffff;
-            --circle-header-height: 70px;
             --text-secondary: #808080;
             --user-bubble: #005cff;
             --ai-text: #f0f0f0;
@@ -1253,10 +1252,10 @@
                 max-width: calc(100vw - 40px); 
                 left: 0; 
             }
-            
-            #model-btn.mobile-model-hidden {
-                opacity: 0;
-                pointer-events: none;
+
+            body.circle-ask-mode #main-layer > .floating-btn-group-left {
+                top: calc(var(--shell-header-height) + 12px);
+                left: 18px;
             }
         }
 
@@ -1269,309 +1268,476 @@
             .promo-ring-progress { animation: none !important; stroke-dashoffset: 113.1 !important; }
             .dl-box { transition: none !important; }
         }
-    
 
-        /* ==========================================================
-         * CIRCLE LMS / Circle.AI UNIFIED UX REDESIGN
-         * The underlying AI logic remains intact. This layer changes
-         * information architecture, presentation, and navigation.
-         * ========================================================== */
 
-        .circle-app-header {
-            position: relative;
-            top: auto;
-            z-index: 80;
-            height: var(--circle-header-height);
-            min-height: var(--circle-header-height);
-            flex: 0 0 var(--circle-header-height);
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            gap: 20px;
-            padding: 0 24px;
-            background: rgba(0,0,0,0.82);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+        /* =====================================================
+         * CIRCLE UNIFIED APP SHELL + LEARN UX
+         * ===================================================== */
+        :root {
+            --shell-header-height: 68px;
+            --learn-muted: #8b8b8b;
+            --learn-border: rgba(255,255,255,0.10);
+            --learn-border-strong: rgba(255,255,255,0.22);
+            --learn-surface: #090909;
         }
 
-        .circle-brand-button {
-            justify-self: start;
-            display: inline-flex;
-            align-items: center;
-            gap: 11px;
-            border: 0;
-            background: transparent;
-            color: #fff;
-            cursor: pointer;
-            padding: 0;
-            min-width: 0;
-        }
-
-        .circle-brand-button img {
-            width: 34px;
-            height: 34px;
-            object-fit: contain;
-            flex: 0 0 auto;
-            opacity: 0.95;
-        }
-
-        .circle-brand-name {
-            font-family: var(--font-ui);
-            font-size: 20px;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .circle-mode-nav {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px;
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 999px;
-            background: rgba(255,255,255,0.025);
-        }
-
-        .circle-mode-tab {
-            border: 0;
-            border-radius: 999px;
-            background: transparent;
-            color: #858585;
-            padding: 8px 15px;
-            font: 500 12px var(--font-conversational);
-            cursor: pointer;
-            transition: background 0.2s ease, color 0.2s ease;
-        }
-
-        .circle-mode-tab:hover {
-            color: #fff;
-        }
-
-        .circle-mode-tab.active {
-            background: rgba(255,255,255,0.09);
-            color: #fff;
-        }
-
-        .circle-header-actions {
-            justify-self: end;
+        #app-shell-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--shell-header-height);
+            z-index: 30000;
             display: flex;
             align-items: center;
-            gap: 8px;
-            min-width: 0;
-        }
-
-        .circle-more-wrap {
-            position: relative;
-        }
-
-        .circle-action-btn {
-            height: 38px;
-            min-width: 38px;
-            padding: 0 12px;
-            border-radius: 999px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.025);
-            color: #d7d7d7;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            font: 500 12px var(--font-conversational);
-            cursor: pointer;
-            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-            white-space: nowrap;
-        }
-
-        .circle-action-btn:hover,
-        .circle-action-btn.active {
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(255,255,255,0.19);
-            color: #fff;
-        }
-
-        .circle-action-btn svg {
-            width: 15px;
-            height: 15px;
-            fill: currentColor;
-        }
-
-        #model-btn {
-            position: relative;
-            font-size: 12px;
-            height: 38px;
-            padding: 0 12px;
-            border-radius: 999px;
-            width: auto;
-            display: inline-flex;
-        }
-
-        body.circle-learning-mode #model-btn {
-            visibility: hidden;
+            justify-content: space-between;
+            padding: 0 28px;
             pointer-events: none;
+            opacity: 0;
+            transform: translateY(-4px);
+            transition: opacity .35s ease, transform .35s ease;
         }
 
-        body.circle-satya-mode #model-btn {
-            visibility: visible;
+        #app-shell-header.ready {
+            opacity: 1;
+            transform: translateY(0);
             pointer-events: auto;
         }
 
-        #model-menu {
-            top: 46px;
-            left: auto;
-            right: 0;
-            width: 270px;
+        .shell-brand {
+            display: inline-flex;
+            align-items: center;
+            min-width: 150px;
+            gap: 9px;
+            color: #fff;
+            font-family: var(--font-ui);
+            font-size: 18px;
+            text-decoration: none;
+            user-select: none;
         }
 
-        .circle-more-menu {
+        .shell-brand img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+            opacity: .92;
+        }
+
+        .shell-brand-name {
+            white-space: nowrap;
+        }
+
+        .shell-mode-switch {
             position: absolute;
-            top: 46px;
-            right: 0;
-            width: 210px;
-            padding: 6px;
-            border-radius: 14px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: #0a0a0a;
-            box-shadow: 0 16px 45px rgba(0,0,0,0.65);
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transform: translateY(-4px);
-            transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: inline-flex;
+            align-items: center;
+            padding: 4px;
+            gap: 2px;
+            border: 1px solid rgba(255,255,255,.10);
+            background: rgba(12,12,12,.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 999px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.28);
         }
 
-        .circle-more-menu.open {
+        .shell-mode-btn {
+            border: 0;
+            background: transparent;
+            color: #8e8e8e;
+            font-family: var(--font-conversational);
+            font-size: 12px;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background .2s ease, color .2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .shell-mode-btn.active {
+            background: rgba(255,255,255,.10);
+            color: #fff;
+        }
+
+        .shell-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            min-width: 150px;
+        }
+
+        #app-new-chat-btn,
+        #app-more-btn {
+            height: 40px;
+            border: 1px solid rgba(255,255,255,.11);
+            background: rgba(255,255,255,.035);
+            color: #ddd;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 999px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s ease, border-color .2s ease, color .2s ease;
+            -webkit-tap-highlight-color: transparent;
+            white-space: nowrap;
+        }
+
+        #app-new-chat-btn {
+            padding: 0 14px 0 11px;
+            gap: 7px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-3px);
+            transition: opacity .25s ease, transform .25s ease, background .2s ease, border-color .2s ease, color .2s ease;
+        }
+
+        #app-new-chat-btn.visible {
             opacity: 1;
-            visibility: visible;
             pointer-events: auto;
             transform: translateY(0);
         }
 
-        .circle-more-menu button {
-            width: 100%;
-            border: 0;
-            background: transparent;
-            color: #d2d2d2;
-            text-align: left;
-            padding: 11px 12px;
-            border-radius: 9px;
-            font: 500 12px var(--font-conversational);
-            cursor: pointer;
+        #app-new-chat-btn .new-chat-plus {
+            font-size: 19px;
+            line-height: 1;
+            font-weight: 300;
         }
 
-        .circle-more-menu button:hover {
-            background: rgba(255,255,255,0.06);
+        #app-new-chat-btn .new-chat-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        #app-more-btn {
+            padding: 0 15px 0 12px;
+            gap: 7px;
+            font-size: 12px;
+            font-family: var(--font-conversational);
+            font-weight: 500;
+        }
+
+        #app-new-chat-btn:hover,
+        #app-more-btn:hover {
+            background: rgba(255,255,255,.08);
+            border-color: rgba(255,255,255,.22);
             color: #fff;
         }
 
-        /* Main application modes */
-        #main-layer {
-            height: 100dvh;
-            min-height: 100dvh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+        .more-dots {
+            font-size: 18px;
+            line-height: 1;
+            letter-spacing: 1px;
+            transform: translateY(-1px);
+        }
+
+        #more-menu {
+            position: fixed;
+            top: calc(var(--shell-header-height) - 3px);
+            right: 28px;
+            width: 270px;
+            background: #0a0a0a;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 15px;
+            padding: 7px;
+            box-shadow: 0 18px 45px rgba(0,0,0,.55);
+            z-index: 31000;
+            opacity: 0;
+            transform: translateY(-6px) scale(.985);
+            pointer-events: none;
+            transition: opacity .18s ease, transform .18s ease;
+        }
+
+        #more-menu.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .more-menu-item {
             width: 100%;
-            position: relative;
+            border: 0;
+            background: transparent;
+            color: #ddd;
+            border-radius: 10px;
+            min-height: 42px;
+            padding: 10px 12px;
+            text-align: left;
+            cursor: pointer;
+            font: 500 12px var(--font-conversational);
+            transition: background .18s ease, color .18s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 11px;
+        }
+
+        .more-menu-item:hover {
+            background: rgba(255,255,255,.06);
+            color: #fff;
+        }
+
+        .more-menu-icon {
+            width: 16px;
+            height: 16px;
+            flex: 0 0 16px;
+            display: block;
+            color: #cfcfcf;
+            fill: currentColor;
+            stroke: currentColor;
+            overflow: visible;
+        }
+
+        .more-menu-label {
+            line-height: 1.2;
+        }
+
+        #more-menu {
+            width: 210px;
+            border-radius: 14px;
+        }
+
+        /* More now owns Settings, Share and Install. Keep only the AI model control
+         * from the legacy floating controls, and only while Ask mode is active. */
+        #main-layer > .floating-btn-group-left,
+        #main-layer > .floating-btn-group-right {
+            display: none !important;
+        }
+
+        body.circle-ask-mode #main-layer > .floating-btn-group-left {
+            display: flex !important;
+            top: calc(var(--shell-header-height) + 14px);
+            left: 28px;
+            z-index: 30001;
+        }
+
+        body.circle-ask-mode #main-layer > .floating-btn-group-left #settings-btn,
+        body.circle-ask-mode #main-layer > .floating-btn-group-left #install-btn {
+            display: none !important;
+        }
+
+        body.circle-ask-mode #main-layer > .floating-btn-group-left #model-btn {
+            display: inline-flex !important;
+        }
+
+        #main-layer > #header-container {
+            display: none !important;
+        }
+
+        #main-layer {
+            padding-top: var(--shell-header-height);
+        }
+
+        #main-layer.shell-hidden {
+            display: none !important;
+        }
+
+        #chat-container {
+            padding-top: 88px;
+        }
+
+        /* =====================================================
+         * LEARN
+         * ===================================================== */
+        #learn-layer {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+            padding: calc(var(--shell-header-height) + 24px) 30px 28px;
+            overflow-y: auto;
             background: #000;
         }
 
-        .circle-view {
-            display: none;
-            min-height: 0;
-            flex: 1 1 auto;
-            width: 100%;
-        }
-
-        .circle-view.active {
-            display: flex;
-        }
-
-        /* ==========================================================
-         * LEARN VIEW
-         * ========================================================== */
-        #learn-view {
-            flex-direction: column;
-            overflow: hidden;
+        #learn-layer.visible {
+            display: block;
         }
 
         .learn-shell {
-            width: min(1480px, 100%);
-            flex: 1 1 auto;
-            min-height: 0;
+            width: min(1400px, 100%);
+            min-height: 100%;
             margin: 0 auto;
-            padding: 28px 28px 22px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
         }
 
-        .learn-course-header {
+        .learn-workspace {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            gap: 14px;
+            align-items: stretch;
+        }
+
+        .learn-video-stage {
+            min-width: 0;
+            aspect-ratio: 16 / 9;
+            background: #050505;
+            border: 1px solid var(--learn-border);
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 18px 45px rgba(0,0,0,.28);
+        }
+
+        #learn-player {
+            width: 100%;
+            height: 100%;
+        }
+
+        .learn-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font: 12px var(--font-conversational);
+            background: #050505;
+        }
+
+        .learn-playlist {
+            min-height: 0;
+            height: 100%;
+            border: 1px solid var(--learn-border);
+            border-radius: 16px;
+            background: #080808;
+            overflow: hidden;
+            box-shadow: 0 18px 45px rgba(0,0,0,.20);
+        }
+
+        .learn-thumbnails {
+            width: 100%;
+            height: 100%;
+            padding: 9px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,.18) transparent;
+        }
+
+        .learn-thumbnails::-webkit-scrollbar { width: 4px; }
+        .learn-thumbnails::-webkit-scrollbar-track { background: transparent; }
+        .learn-thumbnails::-webkit-scrollbar-thumb { background: rgba(255,255,255,.18); border-radius: 999px; }
+
+        .learn-thumb {
+            position: relative;
+            display: block;
+            width: 100%;
+            margin: 0 0 8px;
+            padding: 0;
+            border: 1px solid transparent;
+            border-radius: 11px;
+            background: transparent;
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 16 / 9;
+            transition: border-color .18s ease, opacity .18s ease, transform .18s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .learn-thumb:last-child { margin-bottom: 0; }
+
+        .learn-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            background: #111;
+        }
+
+        .learn-thumb:hover {
+            border-color: rgba(255,255,255,.18);
+            transform: translateY(-1px);
+        }
+
+        .learn-thumb.active {
+            border-color: rgba(255,255,255,.72);
+        }
+
+        .learn-thumb.active::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,.20);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .learn-thumb.completed img { opacity: .62; }
+
+        .learn-controls {
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
-            gap: 18px;
-            margin-bottom: 18px;
-            flex: 0 0 auto;
+            gap: 24px;
+            padding: 15px 2px 0;
         }
 
-        .learn-course-selector-wrap {
-            position: relative;
+        .learn-lesson-meta {
             min-width: 0;
         }
 
-        #learn-course-btn {
-            border: 0;
-            background: transparent;
+        #learn-lecture-label {
             color: #fff;
-            padding: 0;
-            cursor: pointer;
+            font: 500 14px var(--font-conversational);
+            letter-spacing: .01em;
+        }
+
+        .learn-course-select-wrap {
+            position: relative;
+            margin-top: 6px;
+        }
+
+        #learn-course-btn {
             display: inline-flex;
             align-items: center;
-            gap: 9px;
-            max-width: 100%;
-            font: 500 clamp(25px, 2.7vw, 36px) var(--font-ui);
-            text-align: left;
-        }
-
-        #learn-course-btn span {
-            color: #6e6e6e;
-            font: 500 16px var(--font-conversational);
-            transition: transform 0.18s ease;
-        }
-
-        #learn-course-btn.open span {
-            transform: rotate(180deg);
-        }
-
-        .learn-course-subline {
-            color: #757575;
-            margin-top: 5px;
+            gap: 6px;
+            border: 0;
+            background: transparent;
+            color: #888;
+            padding: 0;
+            cursor: pointer;
             font: 400 12px var(--font-conversational);
+            text-align: left;
+            max-width: min(70vw, 480px);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-tap-highlight-color: transparent;
+            transition: color .18s ease;
         }
 
-        .learn-course-menu {
+        #learn-course-btn:hover { color: #fff; }
+
+        #learn-course-chevron {
+            font-size: 10px;
+            color: #666;
+            flex: 0 0 auto;
+        }
+
+        #learn-course-menu {
             position: absolute;
-            top: calc(100% + 12px);
             left: 0;
-            width: min(390px, calc(100vw - 40px));
-            padding: 7px;
+            bottom: 28px;
+            width: min(330px, calc(100vw - 28px));
+            background: #0a0a0a;
+            border: 1px solid rgba(255,255,255,.12);
             border-radius: 14px;
-            background: #0b0b0b;
-            border: 1px solid rgba(255,255,255,0.11);
-            box-shadow: 0 18px 48px rgba(0,0,0,0.65);
+            padding: 7px;
+            box-shadow: 0 18px 45px rgba(0,0,0,.55);
             opacity: 0;
-            visibility: hidden;
             pointer-events: none;
-            transform: translateY(-5px);
-            transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
-            z-index: 100;
+            transform: translateY(5px);
+            transition: opacity .18s ease, transform .18s ease;
+            z-index: 20;
         }
 
-        .learn-course-menu.open {
+        #learn-course-menu.open {
             opacity: 1;
-            visibility: visible;
             pointer-events: auto;
             transform: translateY(0);
         }
@@ -1580,458 +1746,196 @@
             width: 100%;
             border: 0;
             background: transparent;
-            color: #d8d8d8;
-            border-radius: 10px;
-            padding: 11px 12px;
+            color: #ddd;
+            border-radius: 9px;
+            padding: 10px 11px;
             text-align: left;
             cursor: pointer;
+            font: 500 12px var(--font-conversational);
+            transition: background .18s ease, color .18s ease;
         }
 
         .learn-course-option:hover,
-        .learn-course-option.selected {
-            background: rgba(255,255,255,0.055);
+        .learn-course-option.active {
+            background: rgba(255,255,255,.06);
             color: #fff;
         }
 
-        .learn-course-option-title {
-            font: 500 13px/1.35 var(--font-conversational);
-        }
-
-        .learn-course-option-meta {
-            color: #707070;
-            font: 400 10px var(--font-conversational);
-            margin-top: 4px;
-        }
-
-        .learn-progress-copy {
-            color: #747474;
-            font: 400 11px var(--font-conversational);
-            white-space: nowrap;
-        }
-
-        .learn-progress-bar {
-            width: 150px;
-            height: 3px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 999px;
-            overflow: hidden;
-            margin-top: 7px;
-        }
-
-        .learn-progress-fill {
-            height: 100%;
-            width: 0%;
-            background: rgba(255,255,255,0.8);
-            border-radius: inherit;
-            transition: width 0.25s ease;
-        }
-
-        .learn-workspace {
-            min-height: 0;
-            flex: 1 1 auto;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) 335px;
-            gap: 16px;
-            overflow: hidden;
-        }
-
-        .learn-player-column {
-            min-width: 0;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .learn-video-frame {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            border-radius: 15px;
-            overflow: hidden;
-            background: #050505;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 18px 45px rgba(0,0,0,0.42);
-            flex: 0 0 auto;
-        }
-
-        #learn-player {
-            width: 100%;
-            height: 100%;
-        }
-
-        .learn-lesson-info {
-            padding: 15px 2px 9px;
-            min-width: 0;
-        }
-
-        .learn-lesson-title {
-            color: #fff;
-            font: 500 23px/1.2 var(--font-ui);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .learn-lesson-meta {
-            color: #707070;
-            font: 400 11px var(--font-conversational);
-            margin-top: 5px;
-        }
-
-        .learn-lesson-actions {
+        .learn-nav {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-top: auto;
-            padding-top: 12px;
+            gap: 8px;
+            flex: 0 0 auto;
         }
 
         .learn-nav-btn {
-            border: 1px solid rgba(255,255,255,0.11);
-            background: rgba(255,255,255,0.025);
-            color: #bdbdbd;
-            padding: 10px 14px;
-            border-radius: 999px;
+            border: 0;
+            background: transparent;
+            color: #888;
             cursor: pointer;
+            padding: 8px 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             font: 500 11px var(--font-conversational);
-            transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+            transition: color .18s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .learn-nav-btn:hover:not(:disabled) {
-            background: rgba(255,255,255,0.08);
-            color: #fff;
-            border-color: rgba(255,255,255,0.2);
-        }
+        .learn-nav-btn:hover:not(:disabled) { color: #fff; }
+        .learn-nav-btn:disabled { opacity: .18; cursor: default; }
 
-        .learn-nav-btn:disabled {
-            opacity: .35;
-            cursor: default;
-        }
+        .learn-nav-arrow { font-size: 16px; line-height: 1; }
 
-        .learn-continue-note {
-            color: #555;
-            font: 400 10px var(--font-conversational);
-            text-align: center;
-            flex: 1;
-        }
-
-        .learn-playlist {
-            min-width: 0;
-            min-height: 0;
+        /* First-time profile onboarding */
+        .profile-onboarding-block {
             display: flex;
             flex-direction: column;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
+            align-items: center;
+            width: min(330px, 92vw);
+        }
+
+        #onboarding-photo-picker {
+            position: relative;
+            width: 104px;
+            height: 104px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,.22);
+            background: rgba(255,255,255,.04);
+            cursor: pointer;
             overflow: hidden;
-            background: #080808;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .learn-playlist-head {
-            flex: 0 0 auto;
-            padding: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.075);
+        #onboarding-photo-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
         }
 
-        .learn-playlist-heading {
-            color: #fff;
-            font: 500 17px var(--font-ui);
+        #onboarding-photo-placeholder {
+            color: rgba(255,255,255,.48);
+            font: 400 11px var(--font-conversational);
+            text-align: center;
+            padding: 12px;
+            line-height: 1.4;
         }
 
-        .learn-playlist-sub {
-            color: #6a6a6a;
-            margin-top: 4px;
+        #onboarding-photo-picker.has-photo #onboarding-photo-preview { display: block; }
+        #onboarding-photo-picker.has-photo #onboarding-photo-placeholder { display: none; }
+
+        #onboarding-photo-input { display: none; }
+
+        .profile-photo-note {
+            margin-top: -10px;
+            margin-bottom: 18px;
+            color: rgba(255,255,255,.38);
             font: 400 10px var(--font-conversational);
         }
 
-        #learn-thumbnail-list {
-            flex: 1 1 auto;
-            min-height: 0;
-            overflow-y: auto;
-            padding: 8px;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255,255,255,0.15) transparent;
-        }
-
-        .learn-thumb {
-            width: 100%;
-            display: grid;
-            grid-template-columns: 108px minmax(0,1fr);
-            gap: 10px;
-            border: 1px solid transparent;
-            background: transparent;
-            border-radius: 11px;
-            padding: 7px;
-            cursor: pointer;
-            text-align: left;
-            transition: background 0.18s ease, border-color 0.18s ease;
-            margin-bottom: 4px;
-        }
-
-        .learn-thumb:hover {
-            background: rgba(255,255,255,0.04);
-        }
-
-        .learn-thumb.active {
-            background: rgba(255,255,255,0.07);
-            border-color: rgba(255,255,255,0.13);
-        }
-
-        .learn-thumb img {
-            display: block;
-            width: 108px;
-            aspect-ratio: 16 / 9;
-            object-fit: cover;
-            border-radius: 8px;
-            background: #151515;
-        }
-
-        .learn-thumb-index {
-            color: #666;
-            font: 500 9px var(--font-conversational);
-            letter-spacing: .04em;
-            margin-bottom: 4px;
-        }
-
-        .learn-thumb.active .learn-thumb-index {
-            color: #bdbdbd;
-        }
-
-        .learn-thumb-title {
-            color: #cfcfcf;
-            font: 500 11px/1.35 var(--font-conversational);
-        }
-
-        .learn-thumb.active .learn-thumb-title {
-            color: #fff;
-        }
-
-        .learn-empty {
-            padding: 22px 12px;
-            color: #676767;
-            font: 400 11px/1.5 var(--font-conversational);
-            text-align: center;
-        }
-
-        /* ==========================================================
-         * Circle.AI VIEW
-         * ========================================================== */
-        #satya-view {
-            flex-direction: column;
-            min-height: 0;
-            overflow: hidden;
-        }
-
-        #satya-view #header-container {
-            position: absolute;
-            top: 46%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            pointer-events: none;
-        }
-
-        #satya-view .brand-title::after {
-            content: 'Circle.AI';
-        }
-
-        #satya-view .brand-title {
-            font-size: 28px;
-            color: #fff;
-            font-weight: 500;
-            font-family: var(--font-ui);
-        }
-
-        #satya-view .brand-title {
-            font-size: 0;
-        }
-
-        #satya-view .brand-title::after {
-            font-size: 28px;
-        }
-
-        #satya-view #chat-container {
-            flex: 1 1 auto;
-            width: 100%;
-            max-width: 820px;
-            margin: 0 auto;
-            padding: 86px 24px 20px;
-            min-height: 0;
-            overflow-y: auto;
-        }
-
-        #satya-view #input-container {
-            flex: 0 0 auto;
-            width: 100%;
-            max-width: 820px;
-            padding: 10px 24px;
-            margin: 0 auto;
-        }
-
-        #satya-view #footer-disclaimer {
-            flex: 0 0 auto;
-        }
-
-        /* Circle.AI is intentionally context-free: do not show the current Learn video/course here. */
-        .satya-context-pill {
-            display: none !important;
-        }
-
-        /* Hide legacy floating controls. They remain in the DOM because
-           the existing Circle AI event logic references their IDs. */
-        .legacy-circle-controls {
-            display: none !important;
-        }
-
-        /* More menu visibility for the existing functionality */
-        .circle-more-menu #settings-btn:not(.hidden),
-        .circle-more-menu #install-btn:not(.hidden),
-        .circle-more-menu #share-btn:not(.hidden),
-        .circle-more-menu #new-chat-btn:not(.hidden) {
-            width: 100%;
-            height: auto;
-            min-height: 0;
-            border-radius: 9px;
-            background: transparent;
-            border: 0;
-            color: #d2d2d2;
-            box-shadow: none;
-            justify-content: flex-start;
-            padding: 11px 12px;
-            font-size: 12px;
-        }
-
-        .circle-more-menu #settings-btn:not(.hidden):hover,
-        .circle-more-menu #install-btn:not(.hidden):hover,
-        .circle-more-menu #share-btn:not(.hidden):hover,
-        .circle-more-menu #new-chat-btn:not(.hidden):hover {
-            background: rgba(255,255,255,0.06);
-            color: #fff;
-        }
-
-        .circle-more-menu #settings-btn:not(.hidden) svg,
-        .circle-more-menu #install-btn:not(.hidden) svg,
-        .circle-more-menu #share-btn:not(.hidden) svg {
-            width: 15px;
-            height: 15px;
-            margin-right: 8px;
-        }
-
-        .circle-more-menu #new-chat-btn:not(.hidden) {
-            font-size: 12px;
-        }
-
-        /* Mobile */
         @media (max-width: 900px) {
-            :root { --circle-header-height: 62px; }
+            :root { --shell-header-height: 62px; }
 
-            .circle-app-header {
-                grid-template-columns: 1fr auto;
-                height: var(--circle-header-height);
-                min-height: var(--circle-header-height);
-                flex-basis: var(--circle-header-height);
-                padding: 0 16px;
+            #app-shell-header { padding: 0 18px; }
+            .shell-brand { min-width: auto; }
+            .shell-brand-name { display: none; }
+            .shell-brand img { width: 30px; height: 30px; }
+            .shell-actions { min-width: auto; }
+
+            #app-new-chat-btn {
+                width: 40px;
+                padding: 0;
+                gap: 0;
+            }
+            #app-new-chat-btn .new-chat-label { display: none; }
+            #app-new-chat-btn .new-chat-plus { font-size: 22px; }
+
+            #app-more-btn {
+                width: 40px;
+                padding: 0;
+                gap: 0;
+            }
+            #app-more-btn .more-text { display: none; }
+            #app-more-btn .more-dots { font-size: 19px; }
+
+            #more-menu {
+                right: 18px;
+                top: calc(var(--shell-header-height) - 1px);
+                width: min(210px, calc(100vw - 36px));
             }
 
-            .circle-mode-nav {
-                order: 3;
-                grid-column: 1 / -1;
-                justify-self: center;
-                position: fixed;
-                bottom: 14px;
-                z-index: 120;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.55);
-                background: rgba(10,10,10,0.92);
+            .shell-mode-btn {
+                padding: 7px 14px;
+                font-size: 11px;
             }
 
-            .circle-brand-name {
-                font-size: 18px;
-            }
-
-            .circle-header-actions {
-                justify-self: end;
-            }
-
-            #model-btn {
-                display: none !important;
-            }
-
-            .learn-shell {
-                padding: 20px 16px 86px;
-            }
-
-            .learn-course-header {
-                align-items: flex-start;
+            #learn-layer {
+                padding: calc(var(--shell-header-height) + 14px) 14px 20px;
             }
 
             .learn-workspace {
-                grid-template-columns: minmax(0, 1fr);
-                grid-template-rows: minmax(0, auto) minmax(240px, 38vh);
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto;
                 gap: 12px;
-                overflow-y: auto;
+            }
+
+            .learn-video-stage {
+                width: 100%;
+                aspect-ratio: 16 / 9;
             }
 
             .learn-playlist {
-                min-height: 240px;
+                width: 100%;
+                height: min(40vh, 320px);
             }
 
-            .learn-course-selector-wrap {
-                max-width: 78%;
-            }
-
-            .learn-progress-copy {
-                display: none;
-            }
-
-            .learn-progress-bar {
-                width: 90px;
-            }
-
-            #satya-view #chat-container {
-                padding-bottom: 25px;
-            }
-        }
-
-        @media (max-width: 620px) {
-            .circle-brand-name {
-                display: none;
-            }
-
-            .circle-header-actions {
-                gap: 6px;
-            }
-
-            .circle-action-btn {
-                height: 36px;
-                min-width: 36px;
-                padding: 0 10px;
-            }
-
-            .circle-action-btn span {
-                display: none;
-            }
-
-            #learn-course-btn {
-                font-size: 26px;
-            }
-
-            .learn-lesson-title {
-                font-size: 20px;
+            .learn-thumbnails {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0,1fr));
+                align-content: start;
+                gap: 8px;
             }
 
             .learn-thumb {
-                grid-template-columns: 94px minmax(0,1fr);
+                margin: 0;
             }
 
-            .learn-thumb img {
-                width: 94px;
+            .learn-controls {
+                align-items: center;
+                gap: 12px;
+                padding-top: 12px;
             }
 
-            #satya-view #input-container {
-                padding: 8px 14px 12px;
+            #learn-course-btn { max-width: 48vw; }
+
+            .learn-nav { gap: 2px; }
+            .learn-nav-btn { padding: 8px 5px; }
+            .learn-nav-btn .nav-label { display: none; }
+            .learn-nav-arrow { font-size: 22px; }
+
+            #chat-container { padding-top: 76px; }
+        }
+
+        @media (max-width: 520px) {
+            .shell-mode-switch {
+                left: 50%;
+            }
+
+            .learn-playlist {
+                height: 250px;
+            }
+
+            .learn-thumbnails {
+                grid-template-columns: 1fr 1fr;
             }
         }
-</style>
+
+    </style>
 </head>
 <body>
 
@@ -2041,13 +1945,22 @@
             <img id="intro-logo" src="circle.png" alt="Circle AI Logo" class="anim-element anim-enter hidden">
             <h1 id="intro-brand" class="font-ui anim-element anim-enter hidden">Circle AI.</h1>
             <div id="intro-name-step" class="anim-element anim-enter hidden">
-                <h2 class="font-ui">What's your name?</h2>
-                <div class="name-input-wrapper" id="name-wrapper">
-                    <input type="text" id="name-input" class="font-conversational" placeholder="Your name" autocomplete="off">
-                    <button id="name-submit" class="font-ui" aria-label="Submit Name">→</button>
-                </div>
-                <div class="name-privacy-footnote font-conversational">
-                    Use your real name for a more personalised experience. Your name is not shared with any third party. It is used only for answer personalisation, and your data remains private.
+                <div class="profile-onboarding-block">
+                    <label id="onboarding-photo-picker" for="onboarding-photo-input" aria-label="Choose profile picture">
+                        <img id="onboarding-photo-preview" src="" alt="Profile picture preview">
+                        <span id="onboarding-photo-placeholder">Add your profile picture</span>
+                        <input id="onboarding-photo-input" type="file" accept="image/jpeg,image/png,image/webp">
+                    </label>
+                    <div class="profile-photo-note font-conversational">Used only to personalise Circle.</div>
+                    <h2 class="font-ui">What's your name?</h2>
+                    <div class="name-input-wrapper" id="name-wrapper">
+                        <input type="text" id="name-input" class="font-conversational" placeholder="Your name" autocomplete="name">
+                        <button id="name-submit" class="font-ui" aria-label="Continue">→</button>
+                    </div>
+                    <div class="name-privacy-footnote font-conversational">
+                        Your name and profile picture are used for personalisation. With your permission, Circle sends them to its connected Google account for profile storage. They are not used for advertising.
+                    </div>
+                    <div id="profile-upload-error" class="font-conversational" style="display:none;color:#ff6666;font-size:11px;margin-top:10px;text-align:center;">Please add a profile picture to continue.</div>
                 </div>
             </div>
             <h1 id="intro-welcome" class="font-ui anim-element anim-enter hidden"></h1>
@@ -2125,152 +2038,179 @@
         <!-- Toast Notification -->
         <div id="toast" class="toast">Share text copied</div>
 
-        <!-- Unified Circle application shell -->
-        <div id="main-layer" class="main-layer-fade hidden">
+        <!-- =====================================================
+             UNIFIED CIRCLE APP SHELL
+             Learn is the default mode on every page load.
+             Ask opens the existing Circle AI chat interface.
+             ===================================================== -->
+        <header id="app-shell-header" aria-label="Circle navigation">
+            <a class="shell-brand" href="javascript:void(0)" aria-label="The Circle">
+                <img src="circle.png" alt="">
+                <span class="shell-brand-name">The Circle.</span>
+            </a>
 
-            <header class="circle-app-header">
-                <button id="circle-brand-home" class="circle-brand-button" aria-label="Circle home">
-                    <img src="circle.png" alt="">
-                    <span class="circle-brand-name">The Circle.</span>
+            <div class="shell-mode-switch" role="tablist" aria-label="Circle mode">
+                <button id="shell-learn-btn" class="shell-mode-btn active" type="button" role="tab" aria-selected="true">Learn</button>
+                <button id="shell-ask-btn" class="shell-mode-btn" type="button" role="tab" aria-selected="false">Ask</button>
+            </div>
+
+            <div class="shell-actions">
+                <button id="app-new-chat-btn" type="button" aria-label="New Chat">
+                    <span class="new-chat-plus">+</span>
+                    <span class="new-chat-label">New Chat</span>
                 </button>
+                <button id="app-more-btn" type="button" aria-expanded="false" aria-controls="more-menu">
+                    <span class="more-dots">•••</span>
+                    <span class="more-text">More</span>
+                </button>
+            </div>
+        </header>
 
-                <nav class="circle-mode-nav" aria-label="Main navigation">
-                    <button id="learn-nav-btn" class="circle-mode-tab active" type="button">Learn</button>
-                    <button id="satya-nav-btn" class="circle-mode-tab" type="button">Circle.AI</button>
-                </nav>
-
-                <div class="circle-header-actions">
-                    <!-- Existing model selector is retained and repositioned into the unified header. -->
-                    <div id="header-model-wrap" style="position:relative;">
-                        <button id="model-btn" class="floating-btn hidden" aria-label="Select AI model">
-                            <span id="model-btn-label">Circle Core</span>
-                            <span id="model-btn-chevron">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 9.5L12 14.5L17 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            </span>
-                        </button>
-                        <div id="model-menu">
-                            <button class="model-option" data-model="core">
-                                <div class="model-option-content">
-                                    <span class="model-option-title">Circle Core</span>
-                                    <span class="model-option-desc">Balanced responses</span>
-                                </div>
-                                <div class="model-check">
-                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                                </div>
-                            </button>
-                            <div class="model-divider"></div>
-                            <button class="model-option" data-model="swift">
-                                <div class="model-option-content">
-                                    <span class="model-option-title">Circle Swift <span class="recommended-tag font-conversational">Recommended</span></span>
-                                    <span class="model-option-desc">Faster responses</span>
-                                </div>
-                                <div class="model-check">
-                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 7l-1.41 1.41z"/></svg>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="circle-more-wrap" class="circle-more-wrap">
-                        <button id="circle-more-btn" class="circle-action-btn" type="button" aria-expanded="false" aria-label="More options">
-                            <span>More</span>
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a2 2 0 1 0 0 .001V7zm0 5a2 2 0 1 0 0 .001V12zm0 5a2 2 0 1 0 0 .001V17z"/></svg>
-                        </button>
-                        <div id="circle-more-menu" class="circle-more-menu" role="menu">
-                            <button id="settings-btn" class="floating-btn hidden" type="button" aria-label="Settings">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 0 0-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 0 0-2.282.819l-.922 1.597a1.875 1.875 0 0 0 .432 2.385l.84.692c.097.078.16.208.18.327.05.297.086.6.108.908.02.296-.06.49-.18.587l-.84.692a1.875 1.875 0 0 0-.432 2.385l.922 1.597a1.875 1.875 0 0 0 2.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 0 0 2.28-.819l.923-1.597a1.875 1.875 0 0 0-.432-2.385l-.84-.692c-.098-.078-.16-.208-.18-.327-.023-.308-.059-.611-.108-.908-.02-.296.06-.49.18-.587l.84-.692a1.875 1.875 0 0 0 .432-2.385l-.922-1.597a1.875 1.875 0 0 0-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 0 0-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 0 0-1.85-1.567h-1.843ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z"/></svg>
-                                Settings
-                            </button>
-                            <button id="install-btn" class="floating-btn hidden" type="button" aria-label="Install Circle AI">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                                Install Circle
-                            </button>
-                            <button id="share-btn" class="floating-btn hidden" type="button" aria-label="Share Circle AI">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
-                                Share Circle
-                            </button>
-                            <button id="new-chat-btn" class="floating-btn hidden" type="button" aria-label="New Chat">New Chat</button>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <section id="learn-view" class="circle-view active" aria-label="Learn">
-                <div class="learn-shell">
-                    <div class="learn-course-header">
-                        <div class="learn-course-selector-wrap">
-                            <button id="learn-course-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
-                                <span id="learn-course-name">Business Communication</span>
-                                <span>⌄</span>
-                            </button>
-                            <div id="learn-course-subline" class="learn-course-subline">Continue where you left off</div>
-                            <div id="learn-course-menu" class="learn-course-menu" role="listbox"></div>
-                        </div>
-                        <div>
-                            <div id="learn-progress-copy" class="learn-progress-copy">Lesson 1</div>
-                            <div class="learn-progress-bar"><div id="learn-progress-fill" class="learn-progress-fill"></div></div>
-                        </div>
-                    </div>
-
-                    <div class="learn-workspace">
-                        <main class="learn-player-column">
-                            <div class="learn-video-frame">
-                                <div id="learn-player"></div>
-                            </div>
-                            <div class="learn-lesson-info">
-                                <div id="learn-lesson-title" class="learn-lesson-title">Loading lesson…</div>
-                                <div id="learn-lesson-meta" class="learn-lesson-meta">Video starts after the 10-second intro.</div>
-                            </div>
-                            <div class="learn-lesson-actions">
-                                <button id="learn-prev-btn" class="learn-nav-btn" type="button">← Previous</button>
-                                <div id="learn-continue-note" class="learn-continue-note">Your last lesson is remembered on this device.</div>
-                                <button id="learn-next-btn" class="learn-nav-btn" type="button">Next →</button>
-                            </div>
-                        </main>
-
-                        <aside class="learn-playlist" aria-label="Course playlist">
-                            <div class="learn-playlist-head">
-                                <div class="learn-playlist-heading">Playlist</div>
-                                <div id="learn-playlist-sub" class="learn-playlist-sub">Loading lessons…</div>
-                            </div>
-                            <div id="learn-thumbnail-list">
-                                <div class="learn-empty">Loading course content…</div>
-                            </div>
-                        </aside>
-                    </div>
-                </div>
-            </section>
-
-            <section id="satya-view" class="circle-view" aria-label="Circle.AI">
-                <div id="header-container">
-                    <h1 class="brand-title font-ui">Circle AI.</h1>
-                    <div id="greeting-rotator" class="font-ui anim-element anim-enter hidden"></div>
-                </div>
-
-                <div id="chat-container">
-                    <!-- Existing Circle.AI chat messages are injected here. -->
-                </div>
-
-                <div id="input-container">
-                    <div id="suggestion-pills">
-                        <!-- Pills injected via existing Circle AI JS. -->
-                    </div>
-                    <div class="input-wrapper-relative">
-                        <div class="glow-clip">
-                            <div class="glow-spinner" id="glow-spinner-elem"></div>
-                        </div>
-                        <div class="input-box">
-                            <input type="text" id="chat-input" class="font-conversational" placeholder="Ask anything..." autocomplete="off">
-                            <button id="chat-submit" class="font-ui" aria-label="Send Message">→</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="footer-disclaimer" class="font-ui">
-                    Circle.AI can make mistakes. Check important information in the relevant course materials.
-                </div>
-            </section>
+        <div id="more-menu" aria-hidden="true">
+            <button id="more-settings" class="more-menu-item" type="button">
+                <svg class="more-menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 0 0-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 0 0-2.282.819l-.922 1.597a1.875 1.875 0 0 0 .432 2.385l.84.692c.097.078.16.208.18.327.05.297.086.6.108.908.02.296-.06.49-.18.587l-.84.692a1.875 1.875 0 0 0-.432 2.385l.922 1.597a1.875 1.875 0 0 0 2.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 0 0 2.28-.819l.923-1.597a1.875 1.875 0 0 0-.432-2.385l-.84-.692c-.098-.078-.16-.208-.18-.327-.023-.308-.059-.611-.108-.908-.02-.296.06-.49.18-.587l.84-.692a1.875 1.875 0 0 0 .432-2.385l-.922-1.597a1.875 1.875 0 0 0-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 0 0-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 0 0-1.85-1.567h-1.843ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z"/>
+                </svg>
+                <span class="more-menu-label">Settings</span>
+            </button>
+            <button id="more-share" class="more-menu-item" type="button">
+                <svg class="more-menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+                </svg>
+                <span class="more-menu-label">Share Circle AI</span>
+            </button>
+            <button id="more-install" class="more-menu-item" type="button">
+                <svg class="more-menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                </svg>
+                <span class="more-menu-label">Install Circle AI</span>
+            </button>
         </div>
+
+        <!-- =====================================================
+             LEARN MODE
+             ===================================================== -->
+        <section id="learn-layer" aria-label="Circle Learn">
+            <div class="learn-shell">
+                <div class="learn-workspace">
+                    <div class="learn-video-stage">
+                        <div id="learn-player"></div>
+                        <div id="learn-loading" class="learn-loading">Loading Learn…</div>
+                    </div>
+
+                    <aside class="learn-playlist" aria-label="Course playlist">
+                        <div id="learn-thumbnails" class="learn-thumbnails"></div>
+                    </aside>
+                </div>
+
+                <div class="learn-controls">
+                    <div class="learn-lesson-meta">
+                        <div id="learn-lecture-label">Lecture 01</div>
+                        <div class="learn-course-select-wrap">
+                            <button id="learn-course-btn" type="button" aria-expanded="false" aria-controls="learn-course-menu">
+                                <span id="learn-course-name">Business Communication</span>
+                                <span id="learn-course-chevron">⌄</span>
+                            </button>
+                            <div id="learn-course-menu"></div>
+                        </div>
+                    </div>
+
+                    <div class="learn-nav" aria-label="Lesson navigation">
+                        <button id="learn-prev-btn" class="learn-nav-btn" type="button">
+                            <span class="learn-nav-arrow">←</span><span class="nav-label">Previous</span>
+                        </button>
+                        <button id="learn-next-btn" class="learn-nav-btn" type="button">
+                            <span class="nav-label">Next</span><span class="learn-nav-arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Conversational Interface -->
+        <div id="main-layer" class="main-layer-fade hidden">
+            
+            <div class="floating-btn-group-left">
+                <button id="settings-btn" class="floating-btn hidden" aria-label="Settings">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 0 0-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 0 0-2.282.819l-.922 1.597a1.875 1.875 0 0 0 .432 2.385l.84.692c.097.078.16.208.18.327.05.297.086.6.108.908.02.296-.06.49-.18.587l-.84.692a1.875 1.875 0 0 0-.432 2.385l.922 1.597a1.875 1.875 0 0 0 2.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 0 0 2.28-.819l.923-1.597a1.875 1.875 0 0 0-.432-2.385l-.84-.692c-.098-.078-.16-.208-.18-.327-.023-.308-.059-.611-.108-.908-.02-.296.06-.49.18-.587l.84-.692a1.875 1.875 0 0 0 .432-2.385l-.922-1.597a1.875 1.875 0 0 0-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 0 0-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 0 0-1.85-1.567h-1.843ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z"/>
+                    </svg>
+                </button>
+                <button id="install-btn" class="floating-btn hidden" aria-label="Install Circle AI">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                    </svg>
+                </button>
+                <div style="position: relative;">
+                    <button id="model-btn" class="floating-btn hidden" aria-label="Select AI model">
+                        <span id="model-btn-label">Circle Core</span>
+                        <span id="model-btn-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 9.5L12 14.5L17 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                    </button>
+                    <div id="model-menu">
+                        <button class="model-option" data-model="core">
+                            <div class="model-option-content">
+                                <span class="model-option-title">Circle Core</span>
+                                <span class="model-option-desc">Balanced responses</span>
+                            </div>
+                            <div class="model-check">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            </div>
+                        </button>
+                        <div class="model-divider"></div>
+                        <button class="model-option" data-model="swift">
+                            <div class="model-option-content">
+                                <span class="model-option-title">Circle Swift <span class="recommended-tag font-conversational">Recommended</span></span>
+                                <span class="model-option-desc">Faster responses</span>
+                            </div>
+                            <div class="model-check">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="floating-btn-group-right">
+                <button id="share-btn" class="floating-btn hidden" aria-label="Share Circle AI">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+                    </svg>
+                </button>
+                <button id="new-chat-btn" class="floating-btn hidden" aria-label="New Chat">+</button>
+            </div>
+            
+            <div id="header-container">
+                <h1 class="brand-title font-ui">Circle AI.</h1>
+                <div id="greeting-rotator" class="font-ui anim-element anim-enter hidden"></div>
+            </div>
+
+            <div id="chat-container">
+                <!-- Chat messages injected here -->
+            </div>
+
+            <div id="input-container">
+                <div id="suggestion-pills">
+                    <!-- Pills injected via JS -->
+                </div>
+                <div class="input-wrapper-relative">
+                    <div class="glow-clip">
+                        <div class="glow-spinner" id="glow-spinner-elem"></div>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" id="chat-input" class="font-conversational" placeholder="Ask anything..." autocomplete="off">
+                        <button id="chat-submit" class="font-ui" aria-label="Send Message">→</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="footer-disclaimer" class="font-ui">
+                Circle AI can make mistakes. Check important info <a href="https://chat.whatsapp.com/HPvD6l3vpgkF9ABUZXS3My" target="_blank" rel="noopener noreferrer">here</a>.
+            </div>
+
+        </div>
+    </div>
 
     <script>
         /*******************************************************
@@ -3230,6 +3170,52 @@
         let isProcessing = false;
         let promoTimer = null;
         let promoBannerConsent = true; // Added live consent tracking
+
+        /* Unified shell + Learn state */
+        let profilePhotoDataUrl = localStorage.getItem('circle_profile_photo_data_url') || '';
+        let circleUserId = localStorage.getItem('circle_user_id') || '';
+        let learnPlayer = null;
+        let learnPlayerReady = false;
+        let learnPlayerApiLoading = false;
+        let learnActiveCourseId = localStorage.getItem('circle_learn_active_course') || 'businessCommunication';
+        let learnPlaylistIds = [];
+        let learnActiveIndex = 0;
+        let learnLastSkipKey = null;
+        let learnProgress = {};
+        try {
+            learnProgress = JSON.parse(localStorage.getItem('circle_learn_progress_v2') || '{}') || {};
+        } catch (_) {
+            learnProgress = {};
+        }
+
+        const LEARN_INTRO_SKIP_SECONDS = 10;
+        const LEARN_COURSES = {
+            businessCommunication: {
+                name: 'Business Communication',
+                type: 'playlist',
+                playlistId: 'PL59tH4pjx8SAWnw-k80wuzLi-l9HIqYzf'
+            },
+            businessMathematics: {
+                name: 'Business Mathematics',
+                type: 'playlist',
+                playlistId: 'PL59tH4pjx8SALcAYjbujfMUwAI4S9Cx9c'
+            },
+            computerApplications: {
+                name: 'Computer Application for Business',
+                type: 'playlist',
+                playlistId: 'PL59tH4pjx8SCk7LmDwxbmiYXrwn4DaZZm'
+            },
+            marketingSales: {
+                name: 'Marketing and Sales Management',
+                type: 'playlist',
+                playlistId: 'PL59tH4pjx8SCqngJcM7uWg81BnOXiuaNM'
+            },
+            entrepreneurship: {
+                name: 'Entrepreneurship Basics',
+                type: 'playlist',
+                playlistId: 'PL59tH4pjx8SB2v1pdapHJcxcGq-Mj4r4-'
+            }
+        };
         
         // Track promo shown in session storage instead of window scope
         // This ensures the logic holds across manual refreshes but resets per new tab/session.
@@ -3294,13 +3280,22 @@
                 setPreference('circleSelectedModel', currentModel);
             }
             selectModelUI(currentModel);
+            if (!circleUserId) {
+                circleUserId = (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : ('circle_' + Date.now() + '_' + Math.random().toString(36).slice(2));
+                localStorage.setItem('circle_user_id', circleUserId);
+            }
 
-            if (isRegistered && userName) {
-                startMainInterface();
+            if (!LEARN_COURSES[learnActiveCourseId]) {
+                learnActiveCourseId = 'businessCommunication';
+            }
+
+            setupEventListeners();
+
+            if (isRegistered && userName && profilePhotoDataUrl) {
+                startMainInterface().then(() => switchCircleMode('learn'));
             } else {
                 startOnboardingSequence();
             }
-            setupEventListeners();
         });
 
         // Helper to update the visual model state
@@ -3352,29 +3347,59 @@
             nameStep.classList.remove('hidden');
             await sleep(50);
             nameStep.classList.remove('anim-enter');
-            nameInput.focus();
+            document.getElementById('name-input').focus();
         }
 
         async function submitName() {
             const nameInput = document.getElementById('name-input');
             const wrapper = document.getElementById('name-wrapper');
+            const photoPicker = document.getElementById('onboarding-photo-picker');
+            const photoError = document.getElementById('profile-upload-error');
             const nameVal = nameInput.value.trim();
 
-            if (!nameVal) {
-                wrapper.style.borderColor = "#ff4444";
-                setTimeout(() => wrapper.style.borderColor = "rgba(255,255,255,0.3)", 1500);
-                return;
+            let valid = true;
+
+            if (!profilePhotoDataUrl) {
+                photoPicker.style.borderColor = '#ff4444';
+                photoError.style.display = 'block';
+                setTimeout(() => { photoPicker.style.borderColor = 'rgba(255,255,255,0.22)'; }, 1500);
+                valid = false;
+            } else {
+                photoError.style.display = 'none';
             }
+
+            if (!nameVal) {
+                wrapper.style.borderColor = '#ff4444';
+                setTimeout(() => wrapper.style.borderColor = 'rgba(255,255,255,0.3)', 1500);
+                valid = false;
+            }
+
+            if (!valid) return;
 
             localStorage.setItem('circle_user_registered', 'true');
             localStorage.setItem('circle_username', nameVal);
+            localStorage.setItem('circle_user_id', circleUserId);
+            localStorage.setItem('circle_profile_photo_data_url', profilePhotoDataUrl);
             userName = nameVal;
 
-            logToGoogleSheets({ type: "user", name: userName });
+            /*
+             * This is intentionally non-blocking: a slow/failed analytics or
+             * profile-upload request must never prevent the student entering Circle.
+             */
+            void logToGoogleSheets({
+                type: 'user_profile',
+                userId: circleUserId,
+                name: userName,
+                profilePhoto: {
+                    fileName: 'profile.jpg',
+                    mimeType: 'image/jpeg',
+                    dataUrl: profilePhotoDataUrl
+                }
+            });
 
             const nameStep = document.getElementById('intro-name-step');
             const welcome = document.getElementById('intro-welcome');
-            
+
             nameStep.classList.add('anim-exit');
             await sleep(1200);
             nameStep.classList.add('hidden');
@@ -3383,14 +3408,64 @@
             welcome.classList.remove('hidden');
             await sleep(50);
             welcome.classList.remove('anim-enter');
-            
-            await sleep(2500);
+
+            await sleep(1800);
 
             welcome.classList.add('anim-exit');
             await sleep(1200);
-            
+
             document.getElementById('onboarding-layer').classList.add('hidden');
-            startMainInterface();
+            await startMainInterface();
+            switchCircleMode('learn');
+        }
+
+        async function handleOnboardingPhotoUpload(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            if (!/^image\/(jpeg|png|webp)$/i.test(file.type)) {
+                showToast('Please choose JPG, PNG or WEBP.');
+                return;
+            }
+
+            try {
+                profilePhotoDataUrl = await compressProfileImage(file, 512, 0.78);
+                const preview = document.getElementById('onboarding-photo-preview');
+                const picker = document.getElementById('onboarding-photo-picker');
+                preview.src = profilePhotoDataUrl;
+                picker.classList.add('has-photo');
+                picker.style.borderColor = 'rgba(255,255,255,.22)';
+                document.getElementById('profile-upload-error').style.display = 'none';
+            } catch (error) {
+                console.error('Profile image processing failed:', error);
+                showToast('Could not process that picture. Try another image.');
+            }
+        }
+
+        function compressProfileImage(file, maxSize, quality) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const scale = Math.min(1, maxSize / Math.max(img.naturalWidth, img.naturalHeight));
+                        const width = Math.max(1, Math.round(img.naturalWidth * scale));
+                        const height = Math.max(1, Math.round(img.naturalHeight * scale));
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d', { alpha: false });
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, width, height);
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.onerror = reject;
+                    img.src = reader.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
         }
 
         /*******************************************************
@@ -3416,7 +3491,9 @@
         async function startMainInterface() {
             const mainLayer = document.getElementById('main-layer');
             mainLayer.classList.remove('hidden');
-
+            document.getElementById('app-shell-header').classList.add('ready');
+            ensureLearnPlayerAPI();
+            
             await sleep(50);
             mainLayer.classList.add('main-layer-visible');
 
@@ -3424,31 +3501,25 @@
 
             const rot = document.getElementById('greeting-rotator');
             let currentIdx = Math.floor(Math.random() * greetingsList.length);
-
+            
             rot.textContent = formatText(greetingsList[currentIdx], userName);
             rot.classList.remove('hidden');
-
+            
             await sleep(50);
             rot.classList.remove('anim-enter');
-
+            
             greetingLoopActive = true;
             rotateGreetingsLoop(rot, currentIdx);
-
+            
             document.getElementById('settings-btn').classList.remove('hidden');
-            document.getElementById('model-btn').classList.remove('hidden');
-
+            
             const pwaInstalled = localStorage.getItem('circle_pwa_installed') === 'true';
             if (!pwaInstalled && !isRunningAsInstalledPWA() && deferredPrompt) {
                 document.getElementById('install-btn').classList.remove('hidden');
             }
-
+            
             document.getElementById('share-btn').classList.remove('hidden');
-
-            /* Learn is the default home. Circle.AI is one click away. */
-            showCircleView('learn');
-            initializeLearnView();
         }
-
 
         async function rotateGreetingsLoop(rot, currentIdx) {
             while (greetingLoopActive) {
@@ -3603,6 +3674,37 @@
          * 7. EVENT LISTENERS & SCROLLING MANAGEMENT
          *******************************************************/
         function setupEventListeners() {
+            /* Unified shell navigation */
+            document.getElementById('shell-learn-btn').addEventListener('click', () => switchCircleMode('learn'));
+            document.getElementById('shell-ask-btn').addEventListener('click', () => switchCircleMode('ask'));
+            document.getElementById('app-more-btn').addEventListener('click', (event) => {
+                event.stopPropagation();
+                toggleMoreMenu();
+            });
+            document.getElementById('more-settings').addEventListener('click', () => {
+                closeMoreMenu();
+                toggleSettings();
+            });
+            document.getElementById('more-share').addEventListener('click', () => {
+                closeMoreMenu();
+                handleShare();
+            });
+            document.getElementById('more-install').addEventListener('click', () => {
+                closeMoreMenu();
+                showInstallModal();
+            });
+            document.getElementById('app-new-chat-btn').addEventListener('click', startNewChat);
+
+            /* Learn navigation */
+            document.getElementById('learn-course-btn').addEventListener('click', (event) => {
+                event.stopPropagation();
+                toggleLearnCourseMenu();
+            });
+            document.getElementById('learn-prev-btn').addEventListener('click', () => openLearnLesson(learnActiveIndex - 1));
+            document.getElementById('learn-next-btn').addEventListener('click', () => openLearnLesson(learnActiveIndex + 1));
+
+            /* First-time profile upload */
+            document.getElementById('onboarding-photo-input').addEventListener('change', handleOnboardingPhotoUpload);
             document.getElementById('name-submit').addEventListener('click', submitName);
             document.getElementById('name-input').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') submitName();
@@ -3695,11 +3797,28 @@
                 }
             });
             
-            // Allow escape key to close settings, install modal, model menu
+            /* Close new shell menus when clicking outside. */
+            document.addEventListener('click', (e) => {
+                const moreMenu = document.getElementById('more-menu');
+                const moreButton = document.getElementById('app-more-btn');
+                const courseMenu = document.getElementById('learn-course-menu');
+                const courseButton = document.getElementById('learn-course-btn');
+
+                if (moreMenu && moreMenu.classList.contains('open') && !moreMenu.contains(e.target) && !moreButton.contains(e.target)) {
+                    closeMoreMenu();
+                }
+                if (courseMenu && courseMenu.classList.contains('open') && !courseMenu.contains(e.target) && !courseButton.contains(e.target)) {
+                    closeLearnCourseMenu();
+                }
+            });
+
+            /* Allow escape key to close settings, install modal, model and shell menus. */
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     closeSettings();
                     closeInstallModal();
+                    closeMoreMenu();
+                    closeLearnCourseMenu();
                     modelMenu.classList.remove('show');
                     if (modelBtnChevron) modelBtnChevron.innerHTML = chevronDown;
                 }
@@ -3807,8 +3926,6 @@
          *******************************************************/
         async function startNewChat() {
             if (isProcessing || !isChatMode) return;
-
-            if (typeof showCircleView === 'function') showCircleView('satya');
             
             const chatContainer = document.getElementById('chat-container');
             chatContainer.style.opacity = '0';
@@ -3820,7 +3937,7 @@
             
             document.body.classList.remove('chat-active');
             document.getElementById('new-chat-btn').classList.add('hidden');
-            document.getElementById('model-btn').classList.remove('mobile-model-hidden');
+            document.getElementById('app-new-chat-btn').classList.remove('visible');
             
             // Stop any ongoing speech when starting a new chat
             if ('speechSynthesis' in window) {
@@ -3909,11 +4026,10 @@
                 }, 600);
                 
                 isChatMode = true;
+                document.getElementById('app-new-chat-btn').classList.add('visible');
             }
             
-            document.getElementById('model-btn').classList.add('mobile-model-hidden');
-
-            logToGoogleSheets({ type: "query", name: userName, prompt: query });
+            logToGoogleSheets({ type: "query", userId: circleUserId, name: userName, prompt: query });
             
             isProcessing = true;
 
@@ -4305,6 +4421,435 @@ setInterval(() => {
             smartScrollToBottom();
         }
 
+
+        /* =====================================================
+         * UNIFIED SHELL NAVIGATION
+         * ===================================================== */
+        function setShellModeButton(mode) {
+            const learnBtn = document.getElementById('shell-learn-btn');
+            const askBtn = document.getElementById('shell-ask-btn');
+            const learnActive = mode === 'learn';
+            learnBtn.classList.toggle('active', learnActive);
+            askBtn.classList.toggle('active', !learnActive);
+            learnBtn.setAttribute('aria-selected', String(learnActive));
+            askBtn.setAttribute('aria-selected', String(!learnActive));
+        }
+
+        function switchCircleMode(mode) {
+            const askMode = mode !== 'learn';
+            document.body.classList.toggle('circle-ask-mode', askMode);
+
+            if (!askMode) {
+                persistLearnProgress();
+                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+                document.getElementById('learn-layer').classList.add('visible');
+                document.getElementById('main-layer').classList.add('shell-hidden');
+                setShellModeButton('learn');
+                closeMoreMenu();
+                closeLearnCourseMenu();
+                initializeLearnIfNeeded();
+            } else {
+                document.getElementById('learn-layer').classList.remove('visible');
+                document.getElementById('main-layer').classList.remove('shell-hidden');
+                setShellModeButton('ask');
+                closeMoreMenu();
+                document.getElementById('model-btn').classList.remove('hidden');
+                if (isChatMode) {
+                    document.getElementById('app-new-chat-btn').classList.add('visible');
+                }
+            }
+        }
+
+        function openMoreMenu() {
+            const menu = document.getElementById('more-menu');
+            menu.classList.add('open');
+            menu.setAttribute('aria-hidden', 'false');
+            document.getElementById('app-more-btn').setAttribute('aria-expanded', 'true');
+        }
+
+        function closeMoreMenu() {
+            const menu = document.getElementById('more-menu');
+            if (!menu) return;
+            menu.classList.remove('open');
+            menu.setAttribute('aria-hidden', 'true');
+            document.getElementById('app-more-btn').setAttribute('aria-expanded', 'false');
+        }
+
+        function toggleMoreMenu() {
+            const menu = document.getElementById('more-menu');
+            if (menu.classList.contains('open')) closeMoreMenu();
+            else openMoreMenu();
+        }
+
+        /* =====================================================
+         * LEARN ENGINE
+         * ===================================================== */
+        function ensureLearnPlayerAPI() {
+            if (window.YT && window.YT.Player) {
+                initializeLearnIfNeeded();
+                return;
+            }
+            if (learnPlayerApiLoading) return;
+            learnPlayerApiLoading = true;
+
+            const existing = document.querySelector('script[data-circle-youtube-api="true"]');
+            if (existing) return;
+
+            window.onYouTubeIframeAPIReady = function() {
+                learnPlayerApiLoading = false;
+                initializeLearnPlayer();
+            };
+
+            const script = document.createElement('script');
+            script.src = 'https://www.youtube.com/iframe_api';
+            script.async = true;
+            script.dataset.circleYoutubeApi = 'true';
+            document.head.appendChild(script);
+        }
+
+        function initializeLearnIfNeeded() {
+            if (learnPlayerReady) {
+                loadLearnCourse(learnActiveCourseId, false);
+            } else {
+                ensureLearnPlayerAPI();
+            }
+        }
+
+        function initializeLearnPlayer() {
+            if (learnPlayer) return;
+
+            const loading = document.getElementById('learn-loading');
+            loading.style.display = 'flex';
+
+            learnPlayer = new YT.Player('learn-player', {
+                width: '100%',
+                height: '100%',
+                playerVars: {
+                    controls: 1,
+                    playsinline: 1,
+                    rel: 0,
+                    iv_load_policy: 3,
+                    enablejsapi: 1
+                },
+                events: {
+                    onReady: function() {
+                        learnPlayerReady = true;
+                        loading.style.display = 'none';
+                        loadLearnCourse(learnActiveCourseId, false);
+                    },
+                    onStateChange: handleLearnPlayerStateChange,
+                    onError: function() {
+                        loading.style.display = 'none';
+                        showToast('This lesson could not be loaded.');
+                    }
+                }
+            });
+        }
+
+        function getLearnCourse(courseId) {
+            return LEARN_COURSES[courseId] || LEARN_COURSES.businessCommunication;
+        }
+
+        function getLearnSavedIndex(courseId) {
+            const saved = learnProgress[courseId];
+            return saved && Number.isInteger(saved.index) ? saved.index : 0;
+        }
+
+        function safeLearnPlaylistIndex() {
+            try {
+                const index = learnPlayer.getPlaylistIndex();
+                return Number.isInteger(index) && index >= 0 ? index : learnActiveIndex;
+            } catch (_) {
+                return learnActiveIndex;
+            }
+        }
+
+        function safeLearnVideoId() {
+            try {
+                return learnPlayer.getVideoData().video_id || null;
+            } catch (_) {
+                return null;
+            }
+        }
+
+        function safeLearnPlaylist() {
+            try {
+                const list = learnPlayer.getPlaylist();
+                return Array.isArray(list) ? list : [];
+            } catch (_) {
+                return [];
+            }
+        }
+
+        function persistLearnProgress() {
+            if (!learnPlayer || !learnPlayerReady) {
+                try {
+                    localStorage.setItem('circle_learn_active_course', learnActiveCourseId);
+                    localStorage.setItem('circle_learn_progress_v2', JSON.stringify(learnProgress));
+                } catch (_) {}
+                return;
+            }
+
+            const index = safeLearnPlaylistIndex();
+            const videoId = safeLearnVideoId();
+            learnActiveIndex = index;
+
+            learnProgress[learnActiveCourseId] = {
+                index,
+                videoId,
+                updatedAt: Date.now()
+            };
+
+            try {
+                localStorage.setItem('circle_learn_active_course', learnActiveCourseId);
+                localStorage.setItem('circle_learn_progress_v2', JSON.stringify(learnProgress));
+            } catch (error) {
+                console.warn('Learn progress could not be saved:', error);
+            }
+        }
+
+        function loadLearnCourse(courseId, autoPlay) {
+            if (!learnPlayerReady) return;
+
+            persistLearnProgress();
+            learnActiveCourseId = LEARN_COURSES[courseId] ? courseId : 'businessCommunication';
+            const course = getLearnCourse(learnActiveCourseId);
+            const savedIndex = getLearnSavedIndex(learnActiveCourseId);
+            learnActiveIndex = Math.max(0, savedIndex);
+            learnLastSkipKey = null;
+
+            localStorage.setItem('circle_learn_active_course', learnActiveCourseId);
+            updateLearnCourseUI();
+            renderLearnCourseMenu();
+
+            if (course.type === 'playlist') {
+                learnPlaylistIds = [];
+                renderLearnThumbnails();
+                try {
+                    learnPlayer.loadPlaylist({
+                        list: course.playlistId,
+                        listType: 'playlist',
+                        index: learnActiveIndex,
+                        startSeconds: LEARN_INTRO_SKIP_SECONDS
+                    });
+                } catch (error) {
+                    console.warn('Unable to load playlist:', error);
+                    showToast('Unable to load this course.');
+                }
+
+                refreshLearnPlaylist(0);
+            } else {
+                learnPlaylistIds = [course.videoId];
+                learnActiveIndex = 0;
+                renderLearnThumbnails();
+                try {
+                    learnPlayer.loadVideoById({
+                        videoId: course.videoId,
+                        startSeconds: LEARN_INTRO_SKIP_SECONDS
+                    });
+                } catch (error) {
+                    console.warn('Unable to load lesson:', error);
+                }
+                saveLearnIndexOnly();
+            }
+
+            if (autoPlay) {
+                setTimeout(() => {
+                    try { learnPlayer.playVideo(); } catch (_) {}
+                }, 200);
+            }
+        }
+
+        function saveLearnIndexOnly() {
+            learnProgress[learnActiveCourseId] = {
+                index: learnActiveIndex,
+                videoId: learnPlaylistIds[learnActiveIndex] || null,
+                updatedAt: Date.now()
+            };
+            try {
+                localStorage.setItem('circle_learn_active_course', learnActiveCourseId);
+                localStorage.setItem('circle_learn_progress_v2', JSON.stringify(learnProgress));
+            } catch (_) {}
+        }
+
+        function refreshLearnPlaylist(attempt) {
+            if (!learnPlayer || !learnPlayerReady) return;
+
+            const ids = safeLearnPlaylist();
+            if (ids.length) {
+                learnPlaylistIds = ids;
+                learnActiveIndex = Math.max(0, Math.min(safeLearnPlaylistIndex(), ids.length - 1));
+                renderLearnThumbnails();
+                updateLearnCourseUI();
+                return;
+            }
+
+            if (attempt < 8) {
+                setTimeout(() => refreshLearnPlaylist(attempt + 1), 350);
+            }
+        }
+
+        function renderLearnThumbnails() {
+            const container = document.getElementById('learn-thumbnails');
+            if (!learnPlaylistIds.length) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const savedIndex = getLearnSavedIndex(learnActiveCourseId);
+            container.innerHTML = learnPlaylistIds.map((videoId, index) => {
+                const active = index === learnActiveIndex;
+                const completed = index < savedIndex;
+                return `
+                    <button class="learn-thumb ${active ? 'active' : ''} ${completed ? 'completed' : ''}"
+                            type="button"
+                            data-learn-index="${index}"
+                            aria-label="Lecture ${String(index + 1).padStart(2, '0')}">
+                        <img loading="lazy" src="https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg" alt="">
+                    </button>
+                `;
+            }).join('');
+
+            container.querySelectorAll('.learn-thumb').forEach(button => {
+                button.addEventListener('click', () => openLearnLesson(Number(button.dataset.learnIndex)));
+            });
+        }
+
+        function openLearnLesson(index) {
+            if (!learnPlayerReady) return;
+            const max = learnPlaylistIds.length ? learnPlaylistIds.length - 1 : 0;
+            learnActiveIndex = Math.max(0, Math.min(index, max));
+            learnLastSkipKey = null;
+
+            const course = getLearnCourse(learnActiveCourseId);
+            try {
+                if (course.type === 'playlist') {
+                    learnPlayer.playVideoAt(learnActiveIndex);
+                } else {
+                    learnPlayer.loadVideoById({
+                        videoId: course.videoId,
+                        startSeconds: LEARN_INTRO_SKIP_SECONDS
+                    });
+                }
+            } catch (error) {
+                console.warn('Unable to open lesson:', error);
+            }
+
+            saveLearnIndexOnly();
+            updateLearnCourseUI();
+            renderLearnThumbnails();
+        }
+
+        function enforceLearnIntroSkip(attempt = 0) {
+            if (!learnPlayer || !learnPlayerReady || attempt > 6) return;
+            try {
+                const duration = learnPlayer.getDuration();
+                const now = learnPlayer.getCurrentTime();
+                if (duration > LEARN_INTRO_SKIP_SECONDS + 0.75 && now < LEARN_INTRO_SKIP_SECONDS - 0.25) {
+                    learnPlayer.seekTo(LEARN_INTRO_SKIP_SECONDS, true);
+                    return;
+                }
+                if (duration <= 0 || now < LEARN_INTRO_SKIP_SECONDS - 0.25) {
+                    setTimeout(() => enforceLearnIntroSkip(attempt + 1), 250);
+                }
+            } catch (_) {
+                setTimeout(() => enforceLearnIntroSkip(attempt + 1), 250);
+            }
+        }
+
+        function handleLearnPlayerStateChange(event) {
+            if (!learnPlayerReady) return;
+
+            if (event.data === YT.PlayerState.PLAYING) {
+                learnActiveIndex = safeLearnPlaylistIndex();
+                updateLearnCourseUI();
+                renderLearnThumbnails();
+
+                const videoId = safeLearnVideoId();
+                const key = learnActiveCourseId + '::' + videoId;
+                if (videoId && learnLastSkipKey !== key) {
+                    learnLastSkipKey = key;
+                    enforceLearnIntroSkip();
+                }
+
+                saveLearnIndexOnly();
+            }
+
+            if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.BUFFERING) {
+                learnActiveIndex = safeLearnPlaylistIndex();
+                saveLearnIndexOnly();
+            }
+
+            if (event.data === YT.PlayerState.ENDED) {
+                learnActiveIndex = safeLearnPlaylistIndex();
+                learnProgress[learnActiveCourseId] = {
+                    index: learnActiveIndex,
+                    videoId: safeLearnVideoId(),
+                    updatedAt: Date.now()
+                };
+                try {
+                    localStorage.setItem('circle_learn_progress_v2', JSON.stringify(learnProgress));
+                } catch (_) {}
+
+                if (learnActiveIndex < learnPlaylistIds.length - 1) {
+                    const nextIndex = learnActiveIndex + 1;
+                    learnActiveIndex = nextIndex;
+                    saveLearnIndexOnly();
+                    setTimeout(() => {
+                        try { learnPlayer.nextVideo(); } catch (_) { openLearnLesson(nextIndex); }
+                    }, 150);
+                }
+            }
+        }
+
+        function updateLearnCourseUI() {
+            const course = getLearnCourse(learnActiveCourseId);
+            document.getElementById('learn-course-name').textContent = course.name;
+            document.getElementById('learn-lecture-label').textContent = 'Lecture ' + String(learnActiveIndex + 1).padStart(2, '0');
+
+            document.getElementById('learn-prev-btn').disabled = learnActiveIndex <= 0;
+            const maxIndex = Math.max(0, learnPlaylistIds.length - 1);
+            document.getElementById('learn-next-btn').disabled = learnPlaylistIds.length > 0 && learnActiveIndex >= maxIndex;
+        }
+
+        function renderLearnCourseMenu() {
+            const menu = document.getElementById('learn-course-menu');
+            menu.innerHTML = Object.entries(LEARN_COURSES).map(([id, course]) => `
+                <button type="button" class="learn-course-option ${id === learnActiveCourseId ? 'active' : ''}" data-course-id="${id}">
+                    ${escapeHtml(course.name)}
+                </button>
+            `).join('');
+
+            menu.querySelectorAll('.learn-course-option').forEach(button => {
+                button.addEventListener('click', () => {
+                    learnActiveCourseId = button.dataset.courseId;
+                    closeLearnCourseMenu();
+                    loadLearnCourse(learnActiveCourseId, false);
+                });
+            });
+        }
+
+        function openLearnCourseMenu() {
+            renderLearnCourseMenu();
+            const menu = document.getElementById('learn-course-menu');
+            menu.classList.add('open');
+            document.getElementById('learn-course-btn').setAttribute('aria-expanded', 'true');
+        }
+
+        function closeLearnCourseMenu() {
+            const menu = document.getElementById('learn-course-menu');
+            if (!menu) return;
+            menu.classList.remove('open');
+            document.getElementById('learn-course-btn').setAttribute('aria-expanded', 'false');
+        }
+
+        function toggleLearnCourseMenu() {
+            const menu = document.getElementById('learn-course-menu');
+            if (menu.classList.contains('open')) closeLearnCourseMenu();
+            else openLearnCourseMenu();
+        }
+
         /*******************************************************
          * 11. INTENT MATCHING ENGINE (No Backend/API)
          *******************************************************/
@@ -4522,545 +5067,8 @@ setInterval(() => {
             if (finalNearBottom) smartScrollToBottom();
         }
 
-
-
-        /* ==========================================================
-         * CIRCLE LMS ENGINE
-         * ========================================================== */
-        const CIRCLE_LEARN_STORAGE_KEY = 'circleLearnProgress.v2';
-        const CIRCLE_LEARN_INTRO_SKIP = 10;
-
-        const LEARN_COURSES = {
-            businessCommunication: {
-                name: 'Business Communication',
-                type: 'playlist',
-                playlistId: 'PL59tH4pjx8SAWnw-k80wuzLi-l9HIqYzf'
-            },
-            businessMathematics: {
-                name: 'Business Mathematics',
-                type: 'playlist',
-                playlistId: 'PL59tH4pjx8SALcAYjbujfMUwAI4S9Cx9c'
-            },
-            computerApplications: {
-                name: 'Computer Application for Business',
-                type: 'playlist',
-                playlistId: 'PL59tH4pjx8SCk7LmDwxbmiYXrwn4DaZZm'
-            },
-            marketingSales: {
-                name: 'Marketing and Sales Management',
-                type: 'video',
-                videoId: '5uBJBWLK__k'
-            },
-            entrepreneurship: {
-                name: 'Entrepreneurship Basics',
-                type: 'playlist',
-                playlistId: 'PL59tH4pjx8SB2v1pdapHJcxcGq-Mj4r4-'
-            }
-        };
-
-        const LEARN_COURSE_ORDER = Object.keys(LEARN_COURSES);
-        let learnPlayer = null;
-        let learnPlayerReady = false;
-        let learnInitialized = false;
-        let learnActiveCourseId = LEARN_COURSE_ORDER[0];
-        let learnActiveIndex = 0;
-        let learnPlaylistIds = [];
-        let learnLastStartedVideoId = null;
-        let learnProgressStore = loadLearnProgress();
-
-        function loadLearnProgress() {
-            try {
-                const raw = localStorage.getItem(CIRCLE_LEARN_STORAGE_KEY);
-                if (!raw) return {};
-                const parsed = JSON.parse(raw);
-                return parsed && typeof parsed === 'object' ? parsed : {};
-            } catch (error) {
-                console.warn('Circle Learn progress could not be loaded.', error);
-                return {};
-            }
-        }
-
-        function persistLearnProgress() {
-            try {
-                localStorage.setItem(CIRCLE_LEARN_STORAGE_KEY, JSON.stringify(learnProgressStore));
-            } catch (error) {
-                console.warn('Circle Learn progress could not be saved.', error);
-            }
-        }
-
-        function ensureLearnCourseProgress(courseId) {
-            if (!learnProgressStore[courseId]) {
-                learnProgressStore[courseId] = {
-                    lastIndex: 0,
-                    lastVideoId: null,
-                    completed: [],
-                    updatedAt: Date.now()
-                };
-            }
-            return learnProgressStore[courseId];
-        }
-
-        function saveLearnPosition(index, videoId, completed = false) {
-            const state = ensureLearnCourseProgress(learnActiveCourseId);
-            state.lastIndex = Math.max(0, Number(index) || 0);
-            state.lastVideoId = videoId || state.lastVideoId || null;
-            state.updatedAt = Date.now();
-
-            if (completed) {
-                const set = new Set(Array.isArray(state.completed) ? state.completed : []);
-                set.add(state.lastIndex);
-                state.completed = Array.from(set).sort((a, b) => a - b);
-            }
-
-            learnProgressStore[learnActiveCourseId] = state;
-            persistLearnProgress();
-        }
-
-        function getLearnSavedIndex(courseId) {
-            const state = ensureLearnCourseProgress(courseId);
-            return Number.isInteger(state.lastIndex) && state.lastIndex >= 0 ? state.lastIndex : 0;
-        }
-
-        function getLearnCompletedSet(courseId) {
-            const state = ensureLearnCourseProgress(courseId);
-            return new Set(Array.isArray(state.completed) ? state.completed : []);
-        }
-
-        function getLearnCourse() {
-            return LEARN_COURSES[learnActiveCourseId];
-        }
-
-        function showCircleView(viewName) {
-            const learnView = document.getElementById('learn-view');
-            const satyaView = document.getElementById('satya-view');
-            const learnBtn = document.getElementById('learn-nav-btn');
-            const satyaBtn = document.getElementById('satya-nav-btn');
-
-            const showingLearn = viewName === 'learn';
-
-            learnView.classList.toggle('active', showingLearn);
-            satyaView.classList.toggle('active', !showingLearn);
-            learnBtn.classList.toggle('active', showingLearn);
-            satyaBtn.classList.toggle('active', !showingLearn);
-
-            document.body.classList.toggle('circle-learning-mode', showingLearn);
-            document.body.classList.toggle('circle-satya-mode', !showingLearn);
-
-            document.getElementById('circle-more-menu').classList.remove('open');
-            document.getElementById('circle-more-btn').classList.remove('active');
-            document.getElementById('circle-more-btn').setAttribute('aria-expanded', 'false');
-
-            const modelMenu = document.getElementById('model-menu');
-            if (modelMenu) modelMenu.classList.remove('show');
-
-            if (!showingLearn) {
-                stopGreetingRotationIfNeeded();
-                updateSatyaContext();
-            }
-        }
-
-        function stopGreetingRotationIfNeeded() {
-            /* Preserve the existing function's behavior without forcing chat mode. */
-            if (typeof stopGreetingRotation === 'function') {
-                const satyaVisible = document.getElementById('satya-view').classList.contains('active');
-                if (!satyaVisible) return;
-            }
-        }
-
-        function updateSatyaContext() {
-            /* Intentionally blank. Circle.AI should never display the name of the
-               currently watched Learn course or video. Keep this function as a
-               compatibility no-op because existing navigation code calls it. */
-        }
-
-        function initializeLearnView() {
-            if (learnInitialized) return;
-            learnInitialized = true;
-            renderLearnCourseMenu();
-            wireLearnControls();
-            initializeLearnStateWhenPlayerReady();
-        }
-
-        function initializeLearnStateWhenPlayerReady() {
-            if (learnPlayerReady) {
-                loadLearnCourse(learnActiveCourseId, false);
-            }
-        }
-
-        function wireLearnControls() {
-            const courseBtn = document.getElementById('learn-course-btn');
-            const courseMenu = document.getElementById('learn-course-menu');
-            const prevBtn = document.getElementById('learn-prev-btn');
-            const nextBtn = document.getElementById('learn-next-btn');
-
-            courseBtn.addEventListener('click', (event) => {
-                event.stopPropagation();
-                const open = courseMenu.classList.toggle('open');
-                courseBtn.classList.toggle('open', open);
-                courseBtn.setAttribute('aria-expanded', String(open));
-            });
-
-            prevBtn.addEventListener('click', () => openLearnLesson(learnActiveIndex - 1));
-            nextBtn.addEventListener('click', () => openLearnLesson(learnActiveIndex + 1));
-
-            document.addEventListener('click', (event) => {
-                if (!courseMenu.contains(event.target) && !courseBtn.contains(event.target)) {
-                    courseMenu.classList.remove('open');
-                    courseBtn.classList.remove('open');
-                    courseBtn.setAttribute('aria-expanded', 'false');
-                }
-            });
-
-            document.addEventListener('visibilitychange', saveCurrentLearnPosition);
-            window.addEventListener('beforeunload', saveCurrentLearnPosition);
-
-            document.getElementById('learn-nav-btn').addEventListener('click', () => showCircleView('learn'));
-            document.getElementById('satya-nav-btn').addEventListener('click', () => showCircleView('satya'));
-            document.getElementById('circle-brand-home').addEventListener('click', () => showCircleView('learn'));
-
-            const moreBtn = document.getElementById('circle-more-btn');
-            const moreMenu = document.getElementById('circle-more-menu');
-            moreBtn.addEventListener('click', (event) => {
-                event.stopPropagation();
-                const open = moreMenu.classList.toggle('open');
-                moreBtn.classList.toggle('active', open);
-                moreBtn.setAttribute('aria-expanded', String(open));
-            });
-
-            document.addEventListener('click', (event) => {
-                if (!moreMenu.contains(event.target) && !moreBtn.contains(event.target)) {
-                    moreMenu.classList.remove('open');
-                    moreBtn.classList.remove('active');
-                    moreBtn.setAttribute('aria-expanded', 'false');
-                }
-            });
-
-            document.getElementById('circle-more-menu').addEventListener('click', (event) => {
-                if (event.target.closest('button')) {
-                    setTimeout(() => {
-                        moreMenu.classList.remove('open');
-                        moreBtn.classList.remove('active');
-                        moreBtn.setAttribute('aria-expanded', 'false');
-                    }, 0);
-                }
-            });
-
-            /* The existing setupEventListeners owns the original button IDs, so
-               we deliberately do not attach duplicate handlers here. */
-        }
-
-        function renderLearnCourseMenu() {
-            const menu = document.getElementById('learn-course-menu');
-            menu.innerHTML = LEARN_COURSE_ORDER.map(courseId => {
-                const course = LEARN_COURSES[courseId];
-                const state = ensureLearnCourseProgress(courseId);
-                const selected = courseId === learnActiveCourseId;
-                const descriptor = course.type === 'playlist' ? 'YouTube playlist' : 'Single lesson';
-
-                return `<button class="learn-course-option ${selected ? 'selected' : ''}" data-course-id="${courseId}" role="option">
-                    <div class="learn-course-option-title">${escapeLearnHtml(course.name)}</div>
-                    <div class="learn-course-option-meta">${descriptor}${state.lastIndex > 0 ? ` · Last lesson ${state.lastIndex + 1}` : ''}</div>
-                </button>`;
-            }).join('');
-
-            menu.querySelectorAll('.learn-course-option').forEach(button => {
-                button.addEventListener('click', () => {
-                    loadLearnCourse(button.dataset.courseId, false);
-                    menu.classList.remove('open');
-                    document.getElementById('learn-course-btn').classList.remove('open');
-                    document.getElementById('learn-course-btn').setAttribute('aria-expanded', 'false');
-                });
-            });
-        }
-
-        function escapeLearnHtml(value) {
-            return String(value).replace(/[&<>"']/g, char => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-            }[char]));
-        }
-
-        function loadLearnCourse(courseId, autoplay = false) {
-            if (!LEARN_COURSES[courseId]) return;
-            learnActiveCourseId = courseId;
-            const course = getLearnCourse();
-            learnPlaylistIds = [];
-            learnLastStartedVideoId = null;
-            learnActiveIndex = getLearnSavedIndex(courseId);
-
-            document.getElementById('learn-course-name').textContent = course.name;
-            document.getElementById('learn-course-subline').textContent =
-                learnActiveIndex > 0 ? `Continue from lesson ${learnActiveIndex + 1}` : 'Start this course';
-            document.getElementById('current-course-name')?.remove?.();
-            updateSatyaContext();
-            renderLearnCourseMenu();
-            renderLearnThumbnails();
-
-            if (!learnPlayerReady || !learnPlayer) return;
-
-            if (course.type === 'playlist') {
-                try {
-                    learnPlayer.cuePlaylist({
-                        listType: 'playlist',
-                        list: course.playlistId,
-                        index: learnActiveIndex
-                    });
-                } catch (error) {
-                    console.error('Unable to load Learn playlist:', error);
-                    showToast('Unable to load this playlist.');
-                    return;
-                }
-
-                waitForLearnPlaylist(() => {
-                    const max = Math.max(0, learnPlaylistIds.length - 1);
-                    learnActiveIndex = Math.min(learnActiveIndex, max);
-                    renderLearnThumbnails();
-                    updateLearnUI();
-                    if (autoplay) safeLearnPlayAt(learnActiveIndex);
-                });
-            } else {
-                learnPlaylistIds = [course.videoId];
-                learnActiveIndex = 0;
-                try {
-                    learnPlayer.cueVideoById({
-                        videoId: course.videoId,
-                        startSeconds: CIRCLE_LEARN_INTRO_SKIP
-                    });
-                } catch (error) {
-                    console.error('Unable to load Learn video:', error);
-                    showToast('Unable to load this lesson.');
-                }
-                renderLearnThumbnails();
-                updateLearnUI();
-                if (autoplay) safeLearnPlayAt(0);
-            }
-
-            ensureLearnCourseProgress(courseId).lastIndex = learnActiveIndex;
-            persistLearnProgress();
-        }
-
-        function waitForLearnPlaylist(callback) {
-            const started = performance.now();
-            const check = () => {
-                let list = [];
-                try { list = learnPlayer.getPlaylist() || []; } catch {}
-                if (list.length) {
-                    learnPlaylistIds = list;
-                    callback();
-                    return;
-                }
-                if (performance.now() - started > 8000) {
-                    callback();
-                    return;
-                }
-                setTimeout(check, 200);
-            };
-            check();
-        }
-
-        function safeLearnPlayAt(index) {
-            learnActiveIndex = Math.max(0, index);
-            try {
-                if (getLearnCourse().type === 'playlist') {
-                    learnPlayer.playVideoAt(learnActiveIndex);
-                } else {
-                    learnPlayer.playVideo();
-                }
-            } catch (error) {
-                console.warn('Learn playback could not start:', error);
-            }
-        }
-
-        function openLearnLesson(index) {
-            if (!learnPlaylistIds.length) return;
-            if (index < 0 || index >= learnPlaylistIds.length) return;
-
-            saveCurrentLearnPosition();
-            learnActiveIndex = index;
-            learnLastStartedVideoId = null;
-            const videoId = learnPlaylistIds[index] || null;
-            saveLearnPosition(index, videoId, false);
-            safeLearnPlayAt(index);
-            renderLearnThumbnails();
-            updateLearnUI();
-            showCircleView('learn');
-        }
-
-        function getLearnCurrentIndex() {
-            if (!learnPlayer) return learnActiveIndex;
-            try {
-                const idx = learnPlayer.getPlaylistIndex();
-                return Number.isInteger(idx) && idx >= 0 ? idx : learnActiveIndex;
-            } catch {
-                return learnActiveIndex;
-            }
-        }
-
-        function getLearnCurrentVideoId() {
-            try {
-                return learnPlayer.getVideoData().video_id || null;
-            } catch {
-                return learnPlaylistIds[learnActiveIndex] || null;
-            }
-        }
-
-        function saveCurrentLearnPosition() {
-            if (!learnPlayer || !learnPlayerReady) return;
-            const index = getLearnCurrentIndex();
-            const videoId = getLearnCurrentVideoId();
-            if (index >= 0) saveLearnPosition(index, videoId, false);
-        }
-
-        function renderLearnThumbnails() {
-            const list = document.getElementById('learn-thumbnail-list');
-            const course = getLearnCourse();
-            const completed = getLearnCompletedSet(learnActiveCourseId);
-
-            if (!learnPlaylistIds.length) {
-                list.innerHTML = '<div class="learn-empty">Course lessons are loading…</div>';
-                document.getElementById('learn-playlist-sub').textContent =
-                    course.type === 'playlist' ? 'Loading lessons…' : '1 lesson';
-                return;
-            }
-
-            document.getElementById('learn-playlist-sub').textContent =
-                `${learnPlaylistIds.length} ${learnPlaylistIds.length === 1 ? 'lesson' : 'lessons'}`;
-
-            list.innerHTML = learnPlaylistIds.map((videoId, index) => {
-                const active = index === learnActiveIndex;
-                const done = completed.has(index);
-                return `<button class="learn-thumb ${active ? 'active' : ''}" data-index="${index}" type="button">
-                    <img loading="lazy" src="https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/mqdefault.jpg" alt="">
-                    <div>
-                        <div class="learn-thumb-index">${done ? '✓ ' : ''}LESSON ${String(index + 1).padStart(2, '0')}</div>
-                        <div class="learn-thumb-title">${active ? 'Currently watching' : `Lesson ${index + 1}`}</div>
-                    </div>
-                </button>`;
-            }).join('');
-
-            list.querySelectorAll('.learn-thumb').forEach(button => {
-                button.addEventListener('click', () => openLearnLesson(Number(button.dataset.index)));
-            });
-        }
-
-        function updateLearnUI() {
-            const course = getLearnCourse();
-            const total = learnPlaylistIds.length || (course.type === 'video' ? 1 : 0);
-            const completed = getLearnCompletedSet(learnActiveCourseId).size;
-            const last = ensureLearnCourseProgress(learnActiveCourseId);
-            const current = Math.min(learnActiveIndex + 1, Math.max(1, total || 1));
-
-            document.getElementById('learn-progress-copy').textContent =
-                total ? `Lesson ${current} of ${total}` : `Lesson ${current}`;
-
-            const pct = total ? Math.min(100, Math.round((completed / total) * 100)) : 0;
-            document.getElementById('learn-progress-fill').style.width = `${pct}%`;
-
-            document.getElementById('learn-course-subline').textContent =
-                last.lastIndex > 0 && learnActiveIndex === last.lastIndex
-                    ? `Continue from lesson ${last.lastIndex + 1}`
-                    : (completed > 0 ? `${completed} ${completed === 1 ? 'lesson' : 'lessons'} completed` : 'Start this course');
-
-            document.getElementById('learn-prev-btn').disabled = learnActiveIndex <= 0;
-            document.getElementById('learn-next-btn').disabled = !total || learnActiveIndex >= total - 1;
-
-            document.getElementById('learn-lesson-title').textContent = `Lesson ${String(current).padStart(2, '0')}`;
-            document.getElementById('learn-lesson-meta').textContent =
-                `Starts after the first ${CIRCLE_LEARN_INTRO_SKIP} seconds · ${course.name}`;
-        }
-
-        function updateLearnCurrentTitle() {
-            let title = '';
-            try {
-                title = learnPlayer.getVideoData().title || '';
-            } catch {}
-            const current = learnActiveIndex + 1;
-            document.getElementById('learn-lesson-title').textContent =
-                title || `Lesson ${String(current).padStart(2, '0')}`;
-            document.getElementById('learn-lesson-meta').textContent =
-                `Lesson ${current}${learnPlaylistIds.length ? ` of ${learnPlaylistIds.length}` : ''} · Starts after ${CIRCLE_LEARN_INTRO_SKIP}s`;
-        }
-
-        window.onYouTubeIframeAPIReady = function () {
-            learnPlayer = new YT.Player('learn-player', {
-                width: '100%',
-                height: '100%',
-                playerVars: {
-                    controls: 1,
-                    rel: 0,
-                    modestbranding: 1,
-                    playsinline: 1,
-                    iv_load_policy: 3,
-                    enablejsapi: 1
-                },
-                events: {
-                    onReady: onLearnPlayerReady,
-                    onStateChange: onLearnPlayerStateChange,
-                    onError: onLearnPlayerError
-                }
-            });
-        };
-
-        function onLearnPlayerReady() {
-            learnPlayerReady = true;
-            if (learnInitialized) loadLearnCourse(learnActiveCourseId, false);
-        }
-
-        function onLearnPlayerError(event) {
-            console.warn('Circle Learn YouTube error:', event.data);
-            showToast('This lesson is unavailable right now.');
-        }
-
-        function onLearnPlayerStateChange(event) {
-            if (!learnPlayerReady) return;
-
-            if (event.data === YT.PlayerState.PLAYING) {
-                const currentId = getLearnCurrentVideoId();
-                learnActiveIndex = getLearnCurrentIndex();
-
-                if (currentId && currentId !== learnLastStartedVideoId) {
-                    learnLastStartedVideoId = currentId;
-                    setTimeout(() => {
-                        try {
-                            const duration = learnPlayer.getDuration();
-                            if (duration > CIRCLE_LEARN_INTRO_SKIP + 0.5) {
-                                learnPlayer.seekTo(CIRCLE_LEARN_INTRO_SKIP, true);
-                            }
-                        } catch {}
-                    }, 100);
-                }
-
-                saveLearnPosition(learnActiveIndex, currentId, false);
-                updateLearnCurrentTitle();
-                renderLearnThumbnails();
-                updateLearnUI();
-                updateSatyaContext();
-            }
-
-            if (event.data === YT.PlayerState.PAUSED) {
-                saveCurrentLearnPosition();
-            }
-
-            if (event.data === YT.PlayerState.ENDED) {
-                const index = getLearnCurrentIndex();
-                const videoId = getLearnCurrentVideoId();
-                saveLearnPosition(index, videoId, true);
-                renderLearnThumbnails();
-                updateLearnUI();
-
-                if (index < learnPlaylistIds.length - 1) {
-                    learnActiveIndex = index + 1;
-                    learnLastStartedVideoId = null;
-                    saveLearnPosition(learnActiveIndex, learnPlaylistIds[learnActiveIndex], false);
-                    renderLearnThumbnails();
-                    updateLearnUI();
-                    showToast('Next lesson');
-                    setTimeout(() => safeLearnPlayAt(learnActiveIndex), 160);
-                } else {
-                    showToast('Course complete.');
-                }
-            }
-        }
+        window.addEventListener('pagehide', persistLearnProgress);
+        window.addEventListener('beforeunload', persistLearnProgress);
     </script>
-    <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
