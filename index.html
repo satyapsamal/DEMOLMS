@@ -2970,7 +2970,7 @@
 .learn-panel-switcher {
     flex:0 0 auto;
     display:grid;
-    grid-template-columns:1.35fr .9fr .9fr;
+    grid-template-columns:1fr 1fr;
     align-items:stretch;
     min-height:50px;
     border-bottom:1px solid rgba(255,255,255,.07);
@@ -3217,6 +3217,201 @@ html, body {
 }
 </style>
 </style>
+
+<style id="circle-learn-final-requested-ui">
+/* =========================================================
+   REQUESTED LEARN SIDEBAR / TO-DO REFINEMENTS
+   ========================================================= */
+.learn-left-column {
+    min-width: 0;
+    min-height: 0;
+    height: var(--learn-fixed-panel-height, auto);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.learn-left-column .learn-course-sidebar {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto !important;
+    max-height: none !important;
+}
+
+.learn-sidebar-count {
+    margin-left: auto;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: rgba(255,255,255,.07);
+    color: #aaa;
+    font: 700 9px var(--font-conversational);
+}
+
+.learn-collapsible-heading {
+    width: 100%;
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+    background: transparent;
+    color: inherit;
+}
+
+.learn-sidebar-chevron-button {
+    width: 20px;
+    height: 20px;
+    margin-left: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #b8b8b8;
+    transition: transform .24s ease, color .18s ease;
+}
+.learn-sidebar-chevron-button svg { width: 16px; height: 16px; fill: currentColor; }
+.learn-todo-sidebar:not(.is-open) .learn-sidebar-chevron-button { transform: rotate(-90deg); }
+.learn-collapsible-heading:hover .learn-sidebar-chevron-button { color: #fff; }
+
+.learn-todo-sidebar {
+    flex: 0 1 auto;
+    min-height: 50px;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(16,16,16,.98), rgba(8,8,8,.98));
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(0,0,0,.22);
+    transition: flex-basis .24s ease, max-height .24s ease;
+}
+.learn-todo-sidebar.is-open { flex: 0 1 238px; }
+.learn-todo-sidebar:not(.is-open) { flex: 0 0 50px; }
+.learn-todo-sidebar-body {
+    min-height: 0;
+    max-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transition: max-height .26s ease, opacity .2s ease;
+}
+.learn-todo-sidebar.is-open .learn-todo-sidebar-body {
+    max-height: 238px;
+    opacity: 1;
+}
+.learn-todo-sidebar-heading { padding: 10px 12px 8px; }
+.learn-todo-sidebar .learn-todo-list { min-height: 0; max-height: 132px; }
+.learn-todo-sidebar .learn-tool-footnote { padding-bottom: 9px; }
+
+
+.learn-todo-sidebar .learn-collapsible-heading { min-height: 50px !important; }
+.learn-todo-sidebar .learn-sidebar-chevron-button { width: 26px !important; height: 26px !important; }
+.learn-todo-sidebar .learn-sidebar-chevron-button svg { width: 19px !important; height: 19px !important; }
+.learn-todo-sidebar .learn-sidebar-heading-icon svg { width: 18px !important; height: 18px !important; }
+.learn-todo-sidebar .learn-collapsible-heading:focus-visible { outline: 1px solid rgba(255,255,255,.45); outline-offset: -3px; border-radius: 12px; }
+
+/* Your Learning stays open on desktop, so its header has no collapse control. */
+@media (min-width: 1100px) {
+    .learn-shell {
+        grid-template-columns: 240px minmax(0, 1fr) !important;
+    }
+    .learn-left-column { height: var(--learn-fixed-panel-height) !important; }
+    .learn-course-sidebar { height: auto !important; }
+}
+
+/* Mobile: use the compact progress control already present, but open the course
+   list as an overlay over the video instead of increasing document height. */
+@media (max-width: 768px) {
+    .learn-left-column { display: none !important; }
+    .learn-mobile-progress {
+        position: absolute !important;
+        top: 10px !important;
+        left: 10px !important;
+        right: 10px !important;
+        z-index: 140 !important;
+        margin: 0 !important;
+        pointer-events: none;
+    }
+    .learn-main-column { position: relative !important; }
+    #learn-mobile-progress-toggle {
+        pointer-events: auto !important;
+        min-height: 58px !important;
+        border-color: rgba(255,255,255,.14) !important;
+        background: rgba(8,8,8,.92) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        box-shadow: 0 12px 30px rgba(0,0,0,.4) !important;
+    }
+    .learn-mobile-progress-chevron {
+        width: 24px !important;
+        height: 24px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #eee !important;
+        transition: transform .22s ease !important;
+    }
+    .learn-mobile-progress-chevron svg { width: 18px !important; height: 18px !important; fill: currentColor !important; }
+    #learn-mobile-progress-toggle[aria-expanded="true"] .learn-mobile-progress-chevron { transform: rotate(180deg) !important; }
+    .learn-mobile-course-list {
+        pointer-events: auto !important;
+        margin-top: 7px !important;
+        max-height: min(58vh, 420px) !important;
+        overflow-y: auto !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+        box-shadow: 0 18px 45px rgba(0,0,0,.5) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+    }
+    .learn-mobile-course-list::-webkit-scrollbar { display:none !important; width:0 !important; height:0 !important; }
+
+    /* On narrow screens the desktop left to-do panel becomes a compact overlay
+       below the course progress card, without changing page height. */
+    .learn-left-column { display: block !important; position: absolute !important; inset: 0 !important; height: auto !important; pointer-events: none !important; z-index: 132 !important; }
+    .learn-left-column .learn-course-sidebar { display: none !important; }
+    .learn-todo-sidebar {
+        display: block !important;
+        position: absolute !important;
+        top: 78px !important;
+        left: 10px !important;
+        width: min(330px, calc(100vw - 20px)) !important;
+        height: auto !important;
+        max-height: 50px !important;
+        pointer-events: auto !important;
+        z-index: 146 !important;
+    }
+    .learn-todo-sidebar.is-open { max-height: min(310px, 52vh) !important; }
+    .learn-todo-sidebar-body { max-height: 0 !important; }
+    .learn-todo-sidebar.is-open .learn-todo-sidebar-body { max-height: min(260px, 45vh) !important; }
+    .learn-todo-sidebar .learn-todo-list { max-height: 155px !important; }
+}
+
+/* Hide note scrollbars but keep native scrolling. */
+.learn-notes-input {
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+.learn-notes-input::-webkit-scrollbar { width: 0 !important; height: 0 !important; display: none !important; }
+
+/* Remove the old selector UI completely. */
+.learn-course-select-wrap,
+#learn-course-btn,
+#learn-course-menu,
+#learn-course-chevron { display: none !important; }
+
+/* Lecture number uses the same headline family as the Circle brand. */
+#learn-lecture-label {
+    font-family: var(--font-ui) !important;
+    font-size: 18px !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+}
+</style>
+
 </head>
 <body>
 
@@ -3378,16 +3573,40 @@ html, body {
              ===================================================== -->
         <section id="learn-layer" aria-label="Circle Learn">
             <div class="learn-shell">
-                <aside id="learn-course-sidebar" class="learn-course-sidebar" aria-label="Your learning">
-                    <div class="learn-sidebar-heading">
-                        <span class="learn-sidebar-heading-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5A2.5 2.5 0 0 0 17.5 16H4V5.5Zm0 0V19a2 2 0 0 0 2 2h12.5A1.5 1.5 0 0 0 20 19.5V18H6.5A2.5 2.5 0 0 1 4 15.5V5.5Z"/></svg>
-                        </span>
-                        <span>Your Learning</span>
-                        <span class="learn-sidebar-chevron" aria-hidden="true">⌃</span>
-                    </div>
-                    <div id="learn-course-sidebar-list" class="learn-course-sidebar-list"></div>
-                </aside>
+                <div class="learn-left-column">
+                    <aside id="learn-course-sidebar" class="learn-course-sidebar" aria-label="Your learning">
+                        <div class="learn-sidebar-heading">
+                            <span class="learn-sidebar-heading-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5A2.5 2.5 0 0 0 17.5 16H4V5.5Zm0 0V19a2 2 0 0 0 2 2h12.5A1.5 1.5 0 0 0 20 19.5V18H6.5A2.5 2.5 0 0 1 4 15.5V5.5Z"/></svg>
+                            </span>
+                            <span>Your Learning</span>
+                        </div>
+                        <div id="learn-course-sidebar-list" class="learn-course-sidebar-list"></div>
+                    </aside>
+
+                    <aside id="learn-todo-sidebar" class="learn-todo-sidebar is-open" aria-label="To-do list">
+                        <button id="learn-todo-sidebar-toggle" class="learn-sidebar-heading learn-collapsible-heading" type="button" aria-expanded="true" aria-controls="learn-todo-sidebar-body">
+                            <span class="learn-sidebar-heading-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><path d="M9 2h6a2 2 0 0 1 2 2h2.5A2.5 2.5 0 0 1 22 6.5v13A2.5 2.5 0 0 1 19.5 22h-15A2.5 2.5 0 0 1 2 19.5v-13A2.5 2.5 0 0 1 4.5 4H7a2 2 0 0 1 2-2Zm0 2a.5.5 0 0 0-.5.5V5h7v-.5A.5.5 0 0 0 15 4H9Zm-3.5 4A1.5 1.5 0 0 0 4 9.5v10A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 18.5 8h-13ZM8 12h8v2H8v-2Zm0 4h6v2H8v-2Z"/></svg>
+                            </span>
+                            <span>To-do list</span>
+                            <span class="learn-sidebar-count learn-sidebar-todo-count" id="learn-sidebar-todo-count">0</span>
+                            <span class="learn-sidebar-chevron learn-sidebar-chevron-button" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7.4 8.4 4.6 4.6 4.6-4.6 1.4 1.4-6 6-6-6 1.4-1.4Z"/></svg></span>
+                        </button>
+                        <div id="learn-todo-sidebar-body" class="learn-todo-sidebar-body">
+                            <div class="learn-tool-heading learn-todo-sidebar-heading">
+                                <div>
+                                    <strong>Tasks for Circle Learn</strong>
+                                    <span>Available across every course and lecture</span>
+                                </div>
+                                <button id="learn-add-todo-btn" class="learn-tool-action" type="button">+ Add task</button>
+                            </div>
+                            <div id="learn-todo-list" class="learn-todo-list"></div>
+                            <div id="learn-todo-empty" class="learn-empty-state">Add tasks you want to finish.</div>
+                            <div class="learn-tool-footnote">Tasks are saved in this browser and synced to your Circle Google Sheet.</div>
+                        </div>
+                    </aside>
+                </div>
 
                 <div class="learn-main-column">
                     <div class="learn-mobile-progress" id="learn-mobile-progress" aria-label="Your learning progress">
@@ -3401,7 +3620,7 @@ html, body {
                             </span>
                             <span class="learn-mobile-progress-meter"><span id="learn-mobile-progress-bar"></span></span>
                             <span id="learn-mobile-progress-percent">0%</span>
-                            <span class="learn-mobile-progress-chevron" aria-hidden="true">⌄</span>
+                            <span class="learn-mobile-progress-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6.6 9.4 5.4 5.4 5.4-5.4 1.4 1.4-6.8 6.8-6.8-6.8 1.4-1.4Z"/></svg></span>
                         </button>
                         <div id="learn-mobile-course-list" class="learn-mobile-course-list" hidden></div>
                     </div>
@@ -3418,10 +3637,6 @@ html, body {
                                     <span>Playlist</span>
                                     <span class="learn-panel-count" id="learn-panel-progress-count">0 / 0</span>
                                 </button>
-                                <button type="button" class="learn-panel-tab" data-panel="todo" role="tab" aria-selected="false">
-                                    <span>To-do</span>
-                                    <span class="learn-tab-badge" id="learn-todo-count">0</span>
-                                </button>
                                 <button type="button" class="learn-panel-tab" data-panel="notes" role="tab" aria-selected="false">
                                     <span>Notes</span>
                                 </button>
@@ -3435,19 +3650,6 @@ html, body {
                                     </div>
                                     <div class="learn-panel-progress-track"><span id="learn-panel-progress-bar"></span></div>
                                     <div id="learn-thumbnails" class="learn-thumbnails"></div>
-                                </section>
-
-                                <section id="learn-panel-todo" class="learn-panel-pane" data-pane="todo" role="tabpanel" hidden>
-                                    <div class="learn-tool-heading">
-                                        <div>
-                                            <strong>This Lecture To-do</strong>
-                                            <span id="learn-todo-course-label">Business Communication • Lecture 01</span>
-                                        </div>
-                                        <button id="learn-add-todo-btn" class="learn-tool-action" type="button">+ Add task</button>
-                                    </div>
-                                    <div id="learn-todo-list" class="learn-todo-list"></div>
-                                    <div id="learn-todo-empty" class="learn-empty-state">Add tasks you want to finish for this lecture.</div>
-                                    <div class="learn-tool-footnote">Tasks are saved in this browser.</div>
                                 </section>
 
                                 <section id="learn-panel-notes" class="learn-panel-pane" data-pane="notes" role="tabpanel" hidden>
@@ -3468,13 +3670,6 @@ html, body {
                     <div class="learn-controls">
                         <div class="learn-lesson-meta">
                             <div id="learn-lecture-label">Lecture 01</div>
-                            <div class="learn-course-select-wrap">
-                                <button id="learn-course-btn" type="button" aria-expanded="false" aria-controls="learn-course-menu">
-                                    <span id="learn-course-name">Business Communication</span>
-                                    <span id="learn-course-chevron">⌄</span>
-                                </button>
-                                <div id="learn-course-menu"></div>
-                            </div>
                         </div>
 
                         <div class="learn-nav" aria-label="Lesson navigation">
@@ -4607,8 +4802,9 @@ html, body {
         let learnProgressSheetLastAt = 0;
         let learnCourseStats = {};
         let learnNotes = {};
-        let learnTodos = {};
+        let learnTodos = [];
         let learnNotesSaveTimer = null;
+        let learnTodoSidebarOpen = true;
         let learnPendingNotePayload = null;
         let learnStudyContextKey = '';
         let learnActiveRightPanel = 'playlist';
@@ -4624,9 +4820,20 @@ html, body {
             learnNotes = {};
         }
         try {
-            learnTodos = JSON.parse(localStorage.getItem('circle_learn_todos_v1') || '{}') || {};
+            const storedTodosV2 = JSON.parse(localStorage.getItem('circle_learn_todos_v2') || 'null');
+            if (Array.isArray(storedTodosV2)) {
+                learnTodos = storedTodosV2;
+            } else {
+                const legacyTodos = JSON.parse(localStorage.getItem('circle_learn_todos_v1') || '{}') || {};
+                learnTodos = Object.values(legacyTodos).flatMap(value => Array.isArray(value) ? value : []);
+            }
         } catch (_) {
-            learnTodos = {};
+            learnTodos = [];
+        }
+        try {
+            learnTodoSidebarOpen = localStorage.getItem('circle_learn_todo_sidebar_open') !== 'false';
+        } catch (_) {
+            learnTodoSidebarOpen = true;
         }
         try {
             learnProgress = JSON.parse(localStorage.getItem('circle_learn_progress_v2') || '{}') || {};
@@ -6239,7 +6446,8 @@ setInterval(() => {
             try {
                 localStorage.setItem('circle_learn_course_stats_v1', JSON.stringify(learnCourseStats));
                 localStorage.setItem('circle_learn_notes_v1', JSON.stringify(learnNotes));
-                localStorage.setItem('circle_learn_todos_v1', JSON.stringify(learnTodos));
+                localStorage.setItem('circle_learn_todos_v2', JSON.stringify(learnTodos));
+                localStorage.setItem('circle_learn_todo_sidebar_open', learnTodoSidebarOpen ? 'true' : 'false');
             } catch (_) {}
         }
 
@@ -6256,12 +6464,12 @@ setInterval(() => {
             return Math.max(0, Math.min(100, Math.round(((Math.min(index + 1, total)) / total) * 100)));
         }
 
-        function getLearnTodoItemsForCurrentLesson() {
-            return Array.isArray(learnTodos[getLearnLessonKey()]) ? learnTodos[getLearnLessonKey()] : [];
+        function getLearnTodoItems() {
+            return Array.isArray(learnTodos) ? learnTodos : [];
         }
 
-        function saveLearnTodosForCurrentLesson(items) {
-            learnTodos[getLearnLessonKey()] = Array.isArray(items) ? items : [];
+        function saveLearnTodoItems(items) {
+            learnTodos = Array.isArray(items) ? items : [];
             saveLearnAuxState();
         }
 
@@ -6335,7 +6543,7 @@ setInterval(() => {
         }
 
         function switchLearnRightPanel(panel) {
-            const allowed = ['playlist', 'todo', 'notes'];
+            const allowed = ['playlist', 'notes'];
             const next = allowed.includes(panel) ? panel : 'playlist';
             learnActiveRightPanel = next;
             document.querySelectorAll('.learn-panel-tab').forEach(tab => {
@@ -6348,21 +6556,22 @@ setInterval(() => {
                 pane.classList.toggle('active', active);
                 pane.hidden = !active;
             });
-            if (next === 'todo') renderLearnTodoList();
             if (next === 'notes') loadLearnNotesForCurrentLesson();
         }
 
         function updateLearnTodoCount() {
-            const count = getLearnTodoItemsForCurrentLesson().length;
+            const count = getLearnTodoItems().length;
             const el = document.getElementById('learn-todo-count');
             if (el) el.textContent = String(count);
+            const sidebarEl = document.getElementById('learn-sidebar-todo-count');
+            if (sidebarEl) sidebarEl.textContent = String(count);
         }
 
         function renderLearnTodoList() {
             const list = document.getElementById('learn-todo-list');
             const empty = document.getElementById('learn-todo-empty');
             if (!list || !empty) return;
-            const items = getLearnTodoItemsForCurrentLesson();
+            const items = getLearnTodoItems();
             list.innerHTML = items.map(item => `
                 <div class="learn-todo-item ${item.done ? 'done' : ''}" data-todo-id="${escapeHtml(item.id)}">
                     <label class="learn-todo-check-row">
@@ -6398,9 +6607,9 @@ setInterval(() => {
                 const text = input.value.trim();
                 if (!text) return;
                 const item = { id: 'todo_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8), text, done: false, createdAt: Date.now(), updatedAt: Date.now() };
-                const items = getLearnTodoItemsForCurrentLesson();
+                const items = getLearnTodoItems();
                 items.unshift(item);
-                saveLearnTodosForCurrentLesson(items);
+                saveLearnTodoItems(items);
                 renderLearnTodoList();
                 logLearnTodoToGoogleSheets('add', item);
             };
@@ -6413,13 +6622,13 @@ setInterval(() => {
             const itemEl = event.target.closest('.learn-todo-item');
             if (!itemEl) return;
             const id = itemEl.dataset.todoId;
-            const items = getLearnTodoItemsForCurrentLesson();
+            const items = getLearnTodoItems();
             const item = items.find(x => x.id === id);
             if (!item) return;
 
             if (event.target.closest('.learn-todo-delete')) {
                 const next = items.filter(x => x.id !== id);
-                saveLearnTodosForCurrentLesson(next);
+                saveLearnTodoItems(next);
                 renderLearnTodoList();
                 logLearnTodoToGoogleSheets('delete', item);
                 return;
@@ -6428,7 +6637,7 @@ setInterval(() => {
             if (event.target.closest('.learn-todo-checkbox')) {
                 item.done = !item.done;
                 item.updatedAt = Date.now();
-                saveLearnTodosForCurrentLesson(items);
+                saveLearnTodoItems(items);
                 renderLearnTodoList();
                 logLearnTodoToGoogleSheets('update', item);
             }
@@ -6471,17 +6680,12 @@ setInterval(() => {
 
         function syncLearnStudyToolsContext() {
             const key = getLearnLessonKey();
-            if (key === learnStudyContextKey) {
-                updateLearnTodoCount();
-                return;
-            }
             learnStudyContextKey = key;
             const course = getLearnCourse(learnActiveCourseId);
             const label = `${course.name} • Lecture ${String(learnActiveIndex + 1).padStart(2, '0')}`;
-            const todoLabel = document.getElementById('learn-todo-course-label');
             const notesLabel = document.getElementById('learn-notes-course-label');
-            if (todoLabel) todoLabel.textContent = label;
             if (notesLabel) notesLabel.textContent = label;
+            updateLearnTodoCount();
             renderLearnTodoList();
             loadLearnNotesForCurrentLesson();
         }
@@ -6499,6 +6703,20 @@ setInterval(() => {
                 notes.addEventListener('input', () => queueLearnNotesSave(notes.value));
                 notes.addEventListener('blur', flushLearnNotesSave);
             }
+
+            const todoSidebarToggle = document.getElementById('learn-todo-sidebar-toggle');
+            const todoSidebar = document.getElementById('learn-todo-sidebar');
+            if (todoSidebarToggle && todoSidebar) {
+                const applyTodoState = (open) => {
+                    learnTodoSidebarOpen = Boolean(open);
+                    todoSidebar.classList.toggle('is-open', learnTodoSidebarOpen);
+                    todoSidebarToggle.setAttribute('aria-expanded', String(learnTodoSidebarOpen));
+                    try { localStorage.setItem('circle_learn_todo_sidebar_open', learnTodoSidebarOpen ? 'true' : 'false'); } catch (_) {}
+                };
+                applyTodoState(learnTodoSidebarOpen);
+                todoSidebarToggle.addEventListener('click', () => applyTodoState(!learnTodoSidebarOpen));
+            }
+
             const mobileToggle = document.getElementById('learn-mobile-progress-toggle');
             const mobileList = document.getElementById('learn-mobile-course-list');
             if (mobileToggle && mobileList) {
@@ -6528,15 +6746,12 @@ setInterval(() => {
         }
 
         function logLearnTodoToGoogleSheets(action, item) {
-            if (!circleUserId || !learnActiveCourseId || !item) return;
-            const course = getLearnCourse(learnActiveCourseId);
+            if (!circleUserId || !item) return;
             void logToGoogleSheets({
                 type: 'learn_todo',
                 userId: circleUserId,
                 name: userName,
-                courseId: learnActiveCourseId,
-                courseName: course.name,
-                lectureNumber: learnActiveIndex + 1,
+                scope: 'global',
                 taskId: item.id,
                 task: item.text,
                 completed: Boolean(item.done),
@@ -6881,8 +7096,6 @@ setInterval(() => {
         }
 
         function updateLearnCourseUI() {
-            const course = getLearnCourse(learnActiveCourseId);
-            document.getElementById('learn-course-name').textContent = course.name;
             document.getElementById('learn-lecture-label').textContent = 'Lecture ' + String(learnActiveIndex + 1).padStart(2, '0');
 
             document.getElementById('learn-prev-btn').disabled = learnActiveIndex <= 0;
@@ -6904,6 +7117,7 @@ setInterval(() => {
 
         function renderLearnCourseMenu() {
             const menu = document.getElementById('learn-course-menu');
+            if (!menu) return;
             menu.innerHTML = Object.entries(LEARN_COURSES).map(([id, course]) => `
                 <button type="button" class="learn-course-option ${id === learnActiveCourseId ? 'active' : ''}" data-course-id="${id}">
                     ${escapeHtml(course.name)}
@@ -6979,11 +7193,13 @@ setInterval(() => {
             const menu = document.getElementById('learn-course-menu');
             if (!menu) return;
             menu.classList.remove('open');
-            document.getElementById('learn-course-btn').setAttribute('aria-expanded', 'false');
+            const button = document.getElementById('learn-course-btn');
+            if (button) button.setAttribute('aria-expanded', 'false');
         }
 
         function toggleLearnCourseMenu() {
             const menu = document.getElementById('learn-course-menu');
+            if (!menu) return;
             if (menu.classList.contains('open')) closeLearnCourseMenu();
             else openLearnCourseMenu();
         }
