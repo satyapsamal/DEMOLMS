@@ -3130,7 +3130,190 @@
     .learn-nav { width:100% !important; justify-content:flex-end !important; }
     .learn-notes-input { min-height:180px; }
 }
-\n<style id="circle-final-size-and-functionality">
+\n<style id="circle-desktop-sidebar-layout-system">
+/* =========================================================
+   DESKTOP SIDEBAR LAYOUT SYSTEM
+   Both left panels share the fixed video height. They never add
+   document height, even when expanded.
+   ========================================================= */
+@media (min-width: 1100px) {
+    .learn-left-column {
+        display:flex !important;
+        flex-direction:column !important;
+        gap:10px !important;
+        height:var(--learn-fixed-panel-height) !important;
+        min-height:0 !important;
+        overflow:hidden !important;
+    }
+
+    .learn-left-column .learn-course-sidebar,
+    .learn-left-column .learn-todo-sidebar {
+        min-height:50px !important;
+        max-height:100% !important;
+        height:auto !important;
+        margin:0 !important;
+        box-sizing:border-box !important;
+        flex:1 1 0 !important;
+        overflow:hidden !important;
+        transition:flex .24s ease, height .24s ease, max-height .24s ease, min-height .24s ease !important;
+    }
+
+    .learn-left-column[data-layout="half"] .learn-course-sidebar,
+    .learn-left-column[data-layout="half"] .learn-todo-sidebar {
+        flex:1 1 0 !important;
+    }
+
+    .learn-left-column[data-layout="learning-expanded"] .learn-course-sidebar {
+        flex:1 1 0 !important;
+    }
+    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar {
+        flex:0 0 50px !important;
+    }
+
+    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar {
+        flex:0 0 50px !important;
+    }
+    .learn-left-column[data-layout="todo-expanded"] .learn-todo-sidebar {
+        flex:1 1 0 !important;
+    }
+
+    .learn-left-column[data-layout="learning-minimized"] .learn-course-sidebar {
+        flex:0 0 50px !important;
+    }
+    .learn-left-column[data-layout="learning-minimized"] .learn-todo-sidebar {
+        flex:1 1 0 !important;
+    }
+
+    .learn-left-column[data-layout="todo-minimized"] .learn-course-sidebar {
+        flex:1 1 0 !important;
+    }
+    .learn-left-column[data-layout="todo-minimized"] .learn-todo-sidebar {
+        flex:0 0 50px !important;
+    }
+
+    .learn-left-column[data-layout="half"] .learn-course-sidebar-list,
+    .learn-left-column[data-layout="half"] .learn-todo-sidebar-body,
+    .learn-left-column[data-layout="learning-expanded"] .learn-course-sidebar-list,
+    .learn-left-column[data-layout="todo-expanded"] .learn-todo-sidebar-body,
+    .learn-left-column[data-layout="learning-minimized"] .learn-todo-sidebar-body,
+    .learn-left-column[data-layout="todo-minimized"] .learn-course-sidebar-list {
+        min-height:0 !important;
+    }
+
+    .learn-left-column .learn-course-sidebar .learn-sidebar-heading,
+    .learn-left-column .learn-todo-sidebar .learn-collapsible-heading {
+        flex:0 0 48px !important;
+        box-sizing:border-box !important;
+    }
+
+    .learn-left-column .learn-course-sidebar-list {
+        flex:1 1 auto !important;
+        height:auto !important;
+        max-height:none !important;
+        overflow-y:auto !important;
+    }
+
+    .learn-left-column .learn-todo-sidebar-body {
+        flex:1 1 auto !important;
+        height:auto !important;
+        max-height:none !important;
+        overflow:hidden !important;
+    }
+
+    /* Compact three-action menu in each sidebar header. */
+    .learn-sidebar-control { position:relative; margin-left:auto; flex:0 0 auto; }
+    .learn-sidebar-control-toggle {
+        width:30px; height:30px; border:1px solid rgba(255,255,255,.10);
+        background:rgba(255,255,255,.035); color:#a9a9a9; border-radius:9px;
+        display:inline-flex; align-items:center; justify-content:center;
+        cursor:pointer; transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease;
+    }
+    .learn-sidebar-control-toggle:hover,
+    .learn-sidebar-control-toggle[aria-expanded="true"] {
+        background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.20); color:#fff;
+    }
+    .learn-sidebar-control-toggle svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s ease; }
+    .learn-sidebar-control-toggle[aria-expanded="true"] svg { transform:rotate(180deg); }
+    .learn-sidebar-control-menu {
+        position:absolute; top:35px; right:0; z-index:500; display:none;
+        padding:5px; border:1px solid rgba(255,255,255,.12); border-radius:11px;
+        background:rgba(10,10,10,.98); box-shadow:0 16px 36px rgba(0,0,0,.38);
+        gap:4px;
+    }
+    .learn-sidebar-control-menu.open { display:flex; }
+    .learn-sidebar-control-menu button {
+        width:32px; height:30px; border:0; border-radius:8px; background:transparent; color:#aaa;
+        display:inline-flex; align-items:center; justify-content:center; cursor:pointer;
+    }
+    .learn-sidebar-control-menu button:hover { background:rgba(255,255,255,.08); color:#fff; }
+    .learn-sidebar-control-menu button svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .learn-sidebar-control-menu button[data-layout-action="half"] svg { transform:rotate(180deg); }
+}
+
+@media (max-width:1099px) {
+    .learn-sidebar-control { display:none !important; }
+}
+</style>
+
+<style id="circle-profile-menu-ui">
+/* =========================================================
+   PROFILE IN MORE MENU
+   ========================================================= */
+.more-profile-item {
+    width:100%; border:0; background:transparent; color:#eee; text-align:left;
+    padding:10px 10px; border-radius:11px; display:flex; align-items:center; gap:10px;
+    cursor:pointer; transition:background .18s ease;
+}
+.more-profile-item:hover { background:rgba(255,255,255,.06); }
+.more-profile-avatar { width:34px; height:34px; flex:0 0 34px; border-radius:50%; object-fit:cover;
+    border:1px solid rgba(255,255,255,.14); background:#171717; }
+.more-profile-copy { min-width:0; flex:1; }
+.more-profile-title { display:block; font:600 11px var(--font-conversational); color:#f0f0f0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.more-profile-subtitle { display:block; margin-top:2px; color:#727272; font:500 8px var(--font-conversational); }
+.more-profile-arrow { color:#696969; font:500 16px/1 var(--font-conversational); }
+.more-menu-divider { height:1px; margin:4px 6px; background:rgba(255,255,255,.07); }
+
+#profile-modal {
+    position:fixed; inset:0; z-index:120000; display:flex; align-items:center; justify-content:center;
+    padding:20px; background:rgba(0,0,0,.62); opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .22s ease,visibility .22s ease; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+}
+#profile-modal.open { opacity:1; visibility:visible; pointer-events:auto; }
+.profile-modal-card {
+    width:min(390px, calc(100vw - 32px)); border:1px solid rgba(255,255,255,.12);
+    border-radius:18px; background:linear-gradient(180deg,#151515,#0a0a0a);
+    box-shadow:0 25px 70px rgba(0,0,0,.48); padding:20px; transform:translateY(8px) scale(.985);
+    transition:transform .24s ease;
+}
+#profile-modal.open .profile-modal-card { transform:translateY(0) scale(1); }
+.profile-modal-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
+.profile-modal-header strong { font:600 14px var(--font-conversational); color:#f2f2f2; }
+.profile-modal-close { width:30px; height:30px; border:1px solid rgba(255,255,255,.10); border-radius:9px; background:rgba(255,255,255,.03); color:#aaa; cursor:pointer; font-size:18px; }
+.profile-modal-close:hover { color:#fff; background:rgba(255,255,255,.07); }
+.profile-edit-photo-label { position:relative; width:94px; height:94px; margin:0 auto 15px; border-radius:50%; overflow:hidden;
+    border:1px solid rgba(255,255,255,.15); background:#171717; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.profile-edit-photo-label img { width:100%; height:100%; object-fit:cover; }
+.profile-edit-photo-overlay { position:absolute; inset:0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:8px;
+    font:600 8px var(--font-conversational); color:#fff; background:linear-gradient(transparent,rgba(0,0,0,.72)); opacity:0; transition:opacity .18s ease; }
+.profile-edit-photo-label:hover .profile-edit-photo-overlay { opacity:1; }
+#profile-edit-photo-input { display:none; }
+.profile-edit-field { display:flex; flex-direction:column; gap:7px; margin-top:14px; }
+.profile-edit-field label { color:#878787; font:500 9px var(--font-conversational); }
+.profile-edit-field input { width:100%; box-sizing:border-box; border:1px solid rgba(255,255,255,.10); border-radius:10px; padding:11px 12px;
+    background:#101010; color:#eee; outline:none; font:500 11px var(--font-conversational); }
+.profile-edit-field input:focus { border-color:rgba(255,255,255,.24); }
+.profile-modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:18px; }
+.profile-modal-actions button { border-radius:10px; padding:9px 13px; cursor:pointer; font:600 10px var(--font-conversational); }
+#profile-edit-cancel { border:1px solid rgba(255,255,255,.10); background:transparent; color:#aaa; }
+#profile-edit-save { border:1px solid rgba(84,219,148,.28); background:rgba(84,219,148,.10); color:#8aeab7; }
+#profile-edit-save:hover { background:rgba(84,219,148,.15); }
+.profile-edit-note { margin-top:10px; color:#555; font:500 8px/1.4 var(--font-conversational); }
+@media (max-width:768px) {
+    .more-profile-item { padding:10px 8px; }
+    .profile-modal-card { padding:17px; border-radius:16px; }
+}
+</style>
+<style id="circle-final-size-and-functionality">
 /* Final production sizing: use more of the desktop viewport at browser 100%. */
 @media (min-width: 1100px) {
     :root {
@@ -3546,6 +3729,15 @@ html, body {
         </header>
 
         <div id="more-menu" aria-hidden="true">
+            <button id="more-profile" class="more-profile-item" type="button" aria-label="Open profile">
+                <img id="more-profile-avatar" class="more-profile-avatar" src="" alt="Profile picture">
+                <span class="more-profile-copy">
+                    <span id="more-profile-name" class="more-profile-title">Profile</span>
+                    <span class="more-profile-subtitle">View or customise your profile</span>
+                </span>
+                <span class="more-profile-arrow" aria-hidden="true">›</span>
+            </button>
+            <div class="more-menu-divider" aria-hidden="true"></div>
             <button id="more-settings" class="more-menu-item" type="button">
                 <svg class="more-menu-icon" viewBox="0 0 24 24" aria-hidden="true">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 0 0-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 0 0-2.282.819l-.922 1.597a1.875 1.875 0 0 0 .432 2.385l.84.692c.097.078.16.208.18.327.05.297.086.6.108.908.02.296-.06.49-.18.587l-.84.692a1.875 1.875 0 0 0-.432 2.385l.922 1.597a1.875 1.875 0 0 0 2.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 0 0 2.28-.819l.923-1.597a1.875 1.875 0 0 0-.432-2.385l-.84-.692c-.098-.078-.16-.208-.18-.327-.023-.308-.059-.611-.108-.908-.02-.296.06-.49.18-.587l.84-.692a1.875 1.875 0 0 0 .432-2.385l-.922-1.597a1.875 1.875 0 0 0-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 0 0-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 0 0-1.85-1.567h-1.843ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z"/>
@@ -3566,6 +3758,29 @@ html, body {
             </button>
         </div>
 
+        <div id="profile-modal" aria-hidden="true">
+            <div class="profile-modal-card" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+                <div class="profile-modal-header">
+                    <strong id="profile-modal-title">Your Profile</strong>
+                    <button id="profile-edit-close" class="profile-modal-close" type="button" aria-label="Close profile">×</button>
+                </div>
+                <label class="profile-edit-photo-label" for="profile-edit-photo-input">
+                    <img id="profile-edit-photo-preview" src="" alt="Profile picture">
+                    <span class="profile-edit-photo-overlay">Change picture</span>
+                    <input id="profile-edit-photo-input" type="file" accept="image/jpeg,image/png,image/webp">
+                </label>
+                <div class="profile-edit-field">
+                    <label for="profile-edit-name">Name</label>
+                    <input id="profile-edit-name" type="text" maxlength="150" autocomplete="name" placeholder="Your name">
+                </div>
+                <div class="profile-edit-note">Your profile is stored locally for personalisation and sent to Circle's connected Google account when you save changes.</div>
+                <div class="profile-modal-actions">
+                    <button id="profile-edit-cancel" type="button">Cancel</button>
+                    <button id="profile-edit-save" type="button">Save changes</button>
+                </div>
+            </div>
+        </div>
+
         <!-- =====================================================
              LEARN MODE
              Desktop: Your Learning | Video | Playlist / To-do / Notes
@@ -3580,19 +3795,38 @@ html, body {
                                 <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5A2.5 2.5 0 0 0 17.5 16H4V5.5Zm0 0V19a2 2 0 0 0 2 2h12.5A1.5 1.5 0 0 0 20 19.5V18H6.5A2.5 2.5 0 0 1 4 15.5V5.5Z"/></svg>
                             </span>
                             <span>Your Learning</span>
+                            <span class="learn-sidebar-control" data-sidebar-control="learning">
+                                <button class="learn-sidebar-control-toggle" type="button" aria-expanded="false" aria-label="Your Learning panel controls">
+                                    <svg viewBox="0 0 24 24"><path d="m6.6 9 5.4 5.4L17.4 9"/></svg>
+                                </button>
+                                <span class="learn-sidebar-control-menu" role="menu">
+                                    <button type="button" data-layout-action="minimize" aria-label="Minimise Your Learning" title="Minimise"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+                                    <button type="button" data-layout-action="expand" aria-label="Expand Your Learning" title="Expand"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+                                    <button type="button" data-layout-action="half" aria-label="Make both panels half" title="Split 50/50"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg></button>
+                                </span>
+                            </span>
                         </div>
                         <div id="learn-course-sidebar-list" class="learn-course-sidebar-list"></div>
                     </aside>
 
                     <aside id="learn-todo-sidebar" class="learn-todo-sidebar is-open" aria-label="To-do list">
-                        <button id="learn-todo-sidebar-toggle" class="learn-sidebar-heading learn-collapsible-heading" type="button" aria-expanded="true" aria-controls="learn-todo-sidebar-body">
+                        <div id="learn-todo-sidebar-toggle" class="learn-sidebar-heading learn-collapsible-heading" role="button" tabindex="0" aria-expanded="true" aria-controls="learn-todo-sidebar-body">
                             <span class="learn-sidebar-heading-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24"><path d="M9 2h6a2 2 0 0 1 2 2h2.5A2.5 2.5 0 0 1 22 6.5v13A2.5 2.5 0 0 1 19.5 22h-15A2.5 2.5 0 0 1 2 19.5v-13A2.5 2.5 0 0 1 4.5 4H7a2 2 0 0 1 2-2Zm0 2a.5.5 0 0 0-.5.5V5h7v-.5A.5.5 0 0 0 15 4H9Zm-3.5 4A1.5 1.5 0 0 0 4 9.5v10A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 18.5 8h-13ZM8 12h8v2H8v-2Zm0 4h6v2H8v-2Z"/></svg>
                             </span>
-                            <span>To-do list</span>
+                            <span>My Tasks</span>
                             <span class="learn-sidebar-count learn-sidebar-todo-count" id="learn-sidebar-todo-count">0</span>
-                            <span class="learn-sidebar-chevron learn-sidebar-chevron-button" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7.4 8.4 4.6 4.6 4.6-4.6 1.4 1.4-6 6-6-6 1.4-1.4Z"/></svg></span>
-                        </button>
+                            <span class="learn-sidebar-control" data-sidebar-control="todo">
+                                <button class="learn-sidebar-control-toggle" type="button" aria-expanded="false" aria-label="My Tasks panel controls">
+                                    <svg viewBox="0 0 24 24"><path d="m6.6 9 5.4 5.4L17.4 9"/></svg>
+                                </button>
+                                <span class="learn-sidebar-control-menu" role="menu">
+                                    <button type="button" data-layout-action="minimize" aria-label="Minimise My Tasks" title="Minimise"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+                                    <button type="button" data-layout-action="expand" aria-label="Expand My Tasks" title="Expand"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+                                    <button type="button" data-layout-action="half" aria-label="Make both panels half" title="Split 50/50"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg></button>
+                                </span>
+                            </span>
+                        </div>
                         <div id="learn-todo-sidebar-body" class="learn-todo-sidebar-body">
                             <div class="learn-tool-heading learn-todo-sidebar-heading">
                                 <div>
@@ -4805,6 +5039,8 @@ html, body {
         let learnTodos = [];
         let learnNotesSaveTimer = null;
         let learnTodoSidebarOpen = true;
+        let learnLeftLayout = 'half';
+        let profileEditPhotoDataUrl = profilePhotoDataUrl;
         let learnPendingNotePayload = null;
         let learnStudyContextKey = '';
         let learnActiveRightPanel = 'playlist';
@@ -4835,6 +5071,12 @@ html, body {
         } catch (_) {
             learnTodoSidebarOpen = true;
         }
+        try {
+            const storedLeftLayout = localStorage.getItem('circle_learn_left_layout_v1');
+            if (['half','learning-expanded','todo-expanded','learning-minimized','todo-minimized'].includes(storedLeftLayout)) {
+                learnLeftLayout = storedLeftLayout;
+            }
+        } catch (_) {}
         try {
             learnProgress = JSON.parse(localStorage.getItem('circle_learn_progress_v2') || '{}') || {};
         } catch (_) {
@@ -5411,6 +5653,136 @@ html, body {
             slot.setAttribute('aria-hidden', 'false');
         }
 
+        function refreshMoreProfileUI() {
+            const avatar = document.getElementById('more-profile-avatar');
+            const name = document.getElementById('more-profile-name');
+            if (name) name.textContent = userName || 'Profile';
+            if (avatar) {
+                if (profilePhotoDataUrl) {
+                    avatar.src = profilePhotoDataUrl;
+                    avatar.style.display = 'block';
+                } else {
+                    avatar.removeAttribute('src');
+                    avatar.style.display = 'block';
+                }
+            }
+        }
+
+        function openProfileModal() {
+            const modal = document.getElementById('profile-modal');
+            const nameInput = document.getElementById('profile-edit-name');
+            const photoPreview = document.getElementById('profile-edit-photo-preview');
+            if (!modal) return;
+            profileEditPhotoDataUrl = profilePhotoDataUrl || '';
+            if (nameInput) nameInput.value = userName || '';
+            if (photoPreview) {
+                if (profileEditPhotoDataUrl) photoPreview.src = profileEditPhotoDataUrl;
+                else photoPreview.removeAttribute('src');
+            }
+            modal.classList.add('open');
+            modal.setAttribute('aria-hidden','false');
+            setTimeout(() => nameInput?.focus(), 40);
+        }
+
+        function closeProfileModal() {
+            const modal = document.getElementById('profile-modal');
+            if (!modal) return;
+            modal.classList.remove('open');
+            modal.setAttribute('aria-hidden','true');
+        }
+
+        async function handleProfileEditPhotoUpload(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            if (!/^image\/(jpeg|png|webp)$/i.test(file.type)) {
+                showToast('Please choose JPG, PNG or WEBP.');
+                return;
+            }
+            try {
+                profileEditPhotoDataUrl = await compressProfileImage(file, 512, 0.78);
+                const preview = document.getElementById('profile-edit-photo-preview');
+                if (preview) preview.src = profileEditPhotoDataUrl;
+            } catch (error) {
+                console.error('Profile edit image processing failed:', error);
+                showToast('Could not process that picture.');
+            }
+        }
+
+        function saveEditedProfile() {
+            const nameInput = document.getElementById('profile-edit-name');
+            const nextName = String(nameInput?.value || '').trim();
+            if (!nextName) {
+                showToast('Please enter your name.');
+                nameInput?.focus();
+                return;
+            }
+            if (!circleUserId) circleUserId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : `circle-${Date.now()}-${Math.random().toString(36).slice(2,10)}`;
+            userName = nextName;
+            profilePhotoDataUrl = profileEditPhotoDataUrl || profilePhotoDataUrl || '';
+            localStorage.setItem('circle_user_registered','true');
+            localStorage.setItem('circle_username', userName);
+            localStorage.setItem('circle_user_id', circleUserId);
+            localStorage.setItem('circle_profile_photo_data_url', profilePhotoDataUrl);
+            refreshMoreProfileUI();
+            const rot = document.getElementById('greeting-rotator');
+            if (rot && document.body.classList.contains('circle-ask-mode') && !isChatMode) {
+                rot.textContent = formatText(greetingsList[0], userName);
+            }
+            void logToGoogleSheets({
+                type:'user_profile', timestamp:new Date().toISOString(), userId:circleUserId, name:userName,
+                profilePhoto:{ fileName:'profile.jpg', mimeType:'image/jpeg', dataUrl:profilePhotoDataUrl }
+            });
+            closeProfileModal();
+            showToast('Profile updated.');
+        }
+
+        function applyLearnLeftLayout(layout, persist=true) {
+            const column = document.querySelector('.learn-left-column');
+            if (!column) return;
+            const allowed = ['half','learning-expanded','todo-expanded','learning-minimized','todo-minimized'];
+            learnLeftLayout = allowed.includes(layout) ? layout : 'half';
+            column.dataset.layout = learnLeftLayout;
+            if (persist) {
+                try { localStorage.setItem('circle_learn_left_layout_v1', learnLeftLayout); } catch (_) {}
+            }
+            document.querySelectorAll('.learn-sidebar-control-menu').forEach(menu => menu.classList.remove('open'));
+            document.querySelectorAll('.learn-sidebar-control-toggle').forEach(toggle => toggle.setAttribute('aria-expanded','false'));
+        }
+
+        function setupLearnLeftPanelControls() {
+            const column = document.querySelector('.learn-left-column');
+            if (!column) return;
+            applyLearnLeftLayout(learnLeftLayout, false);
+            column.querySelectorAll('[data-sidebar-control]').forEach(control => {
+                const toggle = control.querySelector('.learn-sidebar-control-toggle');
+                const menu = control.querySelector('.learn-sidebar-control-menu');
+                if (!toggle || !menu) return;
+                toggle.addEventListener('click', (event) => {
+                    event.preventDefault(); event.stopPropagation();
+                    const wasOpen = menu.classList.contains('open');
+                    document.querySelectorAll('.learn-sidebar-control-menu').forEach(m => m.classList.remove('open'));
+                    document.querySelectorAll('.learn-sidebar-control-toggle').forEach(t => t.setAttribute('aria-expanded','false'));
+                    if (!wasOpen) { menu.classList.add('open'); toggle.setAttribute('aria-expanded','true'); }
+                });
+                menu.querySelectorAll('button[data-layout-action]').forEach(actionBtn => {
+                    actionBtn.addEventListener('click', (event) => {
+                        event.preventDefault(); event.stopPropagation();
+                        const which = control.dataset.sidebarControl;
+                        const action = actionBtn.dataset.layoutAction;
+                        if (action === 'half') applyLearnLeftLayout('half');
+                        else if (which === 'learning') applyLearnLeftLayout(action === 'expand' ? 'learning-expanded' : 'learning-minimized');
+                        else applyLearnLeftLayout(action === 'expand' ? 'todo-expanded' : 'todo-minimized');
+                    });
+                });
+            });
+            document.addEventListener('click', (event) => {
+                if (!event.target.closest('.learn-sidebar-control')) {
+                    document.querySelectorAll('.learn-sidebar-control-menu').forEach(m => m.classList.remove('open'));
+                    document.querySelectorAll('.learn-sidebar-control-toggle').forEach(t => t.setAttribute('aria-expanded','false'));
+                }
+            });
+        }
+
         function setupEventListeners() {
             mountShellModelControl();
             /* Unified shell navigation */
@@ -5432,6 +5804,21 @@ html, body {
                 closeMoreMenu();
                 showInstallModal();
             });
+            document.getElementById('more-profile').addEventListener('click', () => {
+                closeMoreMenu();
+                openProfileModal();
+            });
+            document.getElementById('profile-edit-close').addEventListener('click', closeProfileModal);
+            document.getElementById('profile-edit-cancel').addEventListener('click', closeProfileModal);
+            document.getElementById('profile-edit-save').addEventListener('click', saveEditedProfile);
+            document.getElementById('profile-edit-photo-input').addEventListener('change', handleProfileEditPhotoUpload);
+            document.getElementById('profile-modal').addEventListener('click', (event) => {
+                if (event.target.id === 'profile-modal') closeProfileModal();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') closeProfileModal();
+            });
+            refreshMoreProfileUI();
             document.getElementById('app-new-chat-btn').addEventListener('click', startNewChat);
 
             /* Learn navigation */
@@ -5446,6 +5833,7 @@ html, body {
             document.getElementById('learn-prev-btn').addEventListener('click', () => openLearnLesson(learnActiveIndex - 1));
             document.getElementById('learn-next-btn').addEventListener('click', () => openLearnLesson(learnActiveIndex + 1));
             setupLearnStudyTools();
+            setupLearnLeftPanelControls();
             window.addEventListener('resize', () => {
                 const menu = document.getElementById('learn-course-menu');
                 if (menu && menu.classList.contains('open')) positionLearnCourseMenu();
@@ -6707,14 +7095,26 @@ setInterval(() => {
             const todoSidebarToggle = document.getElementById('learn-todo-sidebar-toggle');
             const todoSidebar = document.getElementById('learn-todo-sidebar');
             if (todoSidebarToggle && todoSidebar) {
-                const applyTodoState = (open) => {
+                // Desktop uses the unified three-action panel layout system.
+                // Mobile keeps the compact collapse behavior only.
+                const applyMobileTodoState = (open) => {
                     learnTodoSidebarOpen = Boolean(open);
                     todoSidebar.classList.toggle('is-open', learnTodoSidebarOpen);
                     todoSidebarToggle.setAttribute('aria-expanded', String(learnTodoSidebarOpen));
                     try { localStorage.setItem('circle_learn_todo_sidebar_open', learnTodoSidebarOpen ? 'true' : 'false'); } catch (_) {}
                 };
-                applyTodoState(learnTodoSidebarOpen);
-                todoSidebarToggle.addEventListener('click', () => applyTodoState(!learnTodoSidebarOpen));
+                if (window.innerWidth < 1100) {
+                    applyMobileTodoState(learnTodoSidebarOpen);
+                }
+                todoSidebarToggle.addEventListener('click', () => {
+                    if (window.innerWidth < 1100) applyMobileTodoState(!learnTodoSidebarOpen);
+                });
+                todoSidebarToggle.addEventListener('keydown', (event) => {
+                    if (window.innerWidth < 1100 && (event.key === 'Enter' || event.key === ' ')) {
+                        event.preventDefault();
+                        applyMobileTodoState(!learnTodoSidebarOpen);
+                    }
+                });
             }
 
             const mobileToggle = document.getElementById('learn-mobile-progress-toggle');
@@ -6939,6 +7339,7 @@ setInterval(() => {
 
             const height = Math.round(stage.getBoundingClientRect().height);
             if (height > 0) {
+                if (window.innerWidth >= 1100) applyLearnLeftLayout(learnLeftLayout, false);
                 const fixed = height + 'px';
                 if (workspace) workspace.style.setProperty('--learn-fixed-panel-height', fixed);
                 playlist.style.height = fixed;
