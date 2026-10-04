@@ -3130,7 +3130,7 @@
     .learn-nav { width:100% !important; justify-content:flex-end !important; }
     .learn-notes-input { min-height:180px; }
 }
-\n<style id="circle-desktop-sidebar-layout-system">
+<style id="circle-desktop-sidebar-layout-system">
 /* =========================================================
    DESKTOP SIDEBAR LAYOUT SYSTEM
    Both left panels share the fixed video height. They never add
@@ -3175,6 +3175,16 @@
     }
     .learn-left-column[data-layout="todo-expanded"] .learn-todo-sidebar {
         flex:1 1 0 !important;
+    }
+    /* When one panel is minimised, keep only its title and the down control. */
+    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar .learn-sidebar-heading-icon,
+    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar .learn-sidebar-count,
+    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar .learn-sidebar-heading-icon {
+        display:none !important;
+    }
+    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar .learn-sidebar-heading,
+    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar .learn-sidebar-heading {
+        gap:8px !important;
     }
 
     .learn-left-column[data-layout="learning-minimized"] .learn-course-sidebar {
@@ -3595,6 +3605,193 @@ html, body {
 }
 </style>
 
+
+<style id="circle-final-panel-state-system">
+/* Final panel state system. Desktop uses a fixed-height three-state layout.
+   Mobile uses two buttons with an absolute overlay so opening a panel never
+   adds page height. */
+
+#learn-mobile-tools { display:none !important; }
+@media (min-width:1100px) {
+    .learn-left-column {
+        height:var(--learn-fixed-panel-height) !important;
+        min-height:0 !important;
+        max-height:var(--learn-fixed-panel-height) !important;
+        display:flex !important;
+        flex-direction:column !important;
+        gap:10px !important;
+        overflow:visible !important;
+        position:relative !important;
+    }
+    .learn-left-column .learn-course-sidebar,
+    .learn-left-column .learn-todo-sidebar {
+        flex:1 1 0 !important;
+        min-height:48px !important;
+        max-height:none !important;
+        height:auto !important;
+        margin:0 !important;
+        box-sizing:border-box !important;
+        overflow:visible !important;
+        transition:flex .24s ease, min-height .24s ease !important;
+    }
+    .learn-left-column[data-layout="half"] .learn-course-sidebar,
+    .learn-left-column[data-layout="half"] .learn-todo-sidebar {
+        flex:1 1 0 !important;
+    }
+    .learn-left-column[data-layout="learning-expanded"] .learn-course-sidebar {
+        flex:1 1 0 !important;
+    }
+    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar {
+        flex:0 0 49px !important;
+    }
+    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar {
+        flex:0 0 49px !important;
+    }
+    .learn-left-column[data-layout="todo-expanded"] .learn-todo-sidebar {
+        flex:1 1 0 !important;
+    }
+    .learn-left-column .learn-course-sidebar-list {
+        height:auto !important;
+        min-height:0 !important;
+        max-height:none !important;
+        flex:1 1 auto !important;
+        overflow-y:auto !important;
+    }
+    .learn-left-column .learn-todo-sidebar-body {
+        min-height:0 !important;
+        max-height:none !important;
+        flex:1 1 auto !important;
+        overflow:hidden !important;
+    }
+    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar-body,
+    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar-list {
+        opacity:.0 !important;
+        pointer-events:none !important;
+    }
+    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar,
+    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar {
+        overflow:hidden !important;
+    }
+    .learn-sidebar-control-toggle {
+        width:32px !important;
+        height:32px !important;
+        border-radius:10px !important;
+        font-weight:700 !important;
+    }
+    .learn-sidebar-control-toggle svg { width:17px !important; height:17px !important; stroke-width:2.5 !important; }
+    .learn-sidebar-control-menu { top:37px !important; }
+}
+
+@media (max-width:1099px) {
+    .learn-sidebar-control { display:none !important; }
+}
+
+@media (max-width:768px) {
+    .learn-mobile-progress { display:none !important; }
+    .learn-mobile-tools {
+        display:block !important;
+        position:relative !important;
+        width:100% !important;
+        margin:0 0 10px !important;
+        z-index:500 !important;
+    }
+    .learn-mobile-tool-buttons {
+        display:grid !important;
+        grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+        gap:8px !important;
+        width:100% !important;
+    }
+    .learn-mobile-tool-button {
+        min-width:0 !important;
+        min-height:56px !important;
+        border:1px solid rgba(255,255,255,.10) !important;
+        border-radius:13px !important;
+        background:linear-gradient(180deg,#111,#0a0a0a) !important;
+        color:#fff !important;
+        display:grid !important;
+        grid-template-columns:22px minmax(0,1fr) auto 14px !important;
+        align-items:center !important;
+        gap:8px !important;
+        padding:9px 10px !important;
+        text-align:left !important;
+        cursor:pointer !important;
+        box-shadow:0 10px 26px rgba(0,0,0,.22) !important;
+    }
+    .learn-mobile-tool-button.active {
+        border-color:rgba(84,219,148,.28) !important;
+        background:linear-gradient(180deg,#131914,#0b0d0c) !important;
+    }
+    .learn-mobile-tool-icon,
+    .learn-mobile-tool-icon svg { width:19px !important; height:19px !important; }
+    .learn-mobile-tool-icon { color:#d4d4d4 !important; }
+    .learn-mobile-tool-icon svg { fill:currentColor !important; }
+    .learn-mobile-tool-copy { min-width:0 !important; }
+    .learn-mobile-tool-copy strong { display:block !important; font:700 10px/1.2 var(--font-conversational) !important; color:#eee !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; }
+    .learn-mobile-tool-copy span { display:block !important; margin-top:3px !important; color:#777 !important; font:500 8px/1.2 var(--font-conversational) !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; }
+    .learn-mobile-tool-meta { color:#999 !important; text-align:right !important; font:600 8px/1.2 var(--font-conversational) !important; white-space:nowrap !important; }
+    .learn-mobile-tool-chevron,
+    .learn-mobile-tool-chevron svg { width:14px !important; height:14px !important; }
+    .learn-mobile-tool-chevron { color:#aaa !important; display:flex !important; align-items:center !important; justify-content:center !important; transition:transform .22s ease !important; }
+    .learn-mobile-tool-chevron svg { fill:currentColor !important; }
+    .learn-mobile-tool-button[aria-expanded="true"] .learn-mobile-tool-chevron { transform:rotate(180deg) !important; }
+
+    .learn-mobile-tool-overlay {
+        position:absolute !important;
+        top:64px !important;
+        left:0 !important;
+        right:0 !important;
+        z-index:700 !important;
+        max-height:min(62vh,520px) !important;
+        overflow:hidden !important;
+        border:1px solid rgba(255,255,255,.12) !important;
+        border-radius:15px !important;
+        background:rgba(8,8,8,.98) !important;
+        box-shadow:0 24px 60px rgba(0,0,0,.60) !important;
+        backdrop-filter:blur(16px) !important;
+        -webkit-backdrop-filter:blur(16px) !important;
+    }
+    .learn-mobile-tool-pane {
+        max-height:min(62vh,520px) !important;
+        overflow:hidden !important;
+        flex-direction:column !important;
+    }
+    .learn-mobile-tool-pane[hidden] { display:none !important; }
+    .learn-mobile-overlay-heading {
+        min-height:52px !important;
+        padding:10px 12px !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:space-between !important;
+        gap:10px !important;
+        border-bottom:1px solid rgba(255,255,255,.07) !important;
+    }
+    .learn-mobile-overlay-heading strong { display:block !important; color:#eee !important; font:700 11px var(--font-conversational) !important; }
+    .learn-mobile-overlay-heading span { display:block !important; margin-top:3px !important; color:#777 !important; font:500 8px var(--font-conversational) !important; }
+    #learn-mobile-course-list {
+        max-height:calc(min(62vh,520px) - 52px) !important;
+        overflow-y:auto !important;
+        scrollbar-width:none !important;
+        -ms-overflow-style:none !important;
+        padding:7px !important;
+    }
+    #learn-mobile-course-list::-webkit-scrollbar { display:none !important; width:0 !important; height:0 !important; }
+    #learn-mobile-course-list .learn-course-progress-item { margin-bottom:4px !important; }
+    #learn-mobile-todo-list {
+        min-height:0 !important;
+        max-height:calc(min(62vh,520px) - 98px) !important;
+        overflow-y:auto !important;
+        scrollbar-width:none !important;
+        -ms-overflow-style:none !important;
+        padding:7px !important;
+    }
+    #learn-mobile-todo-list::-webkit-scrollbar { display:none !important; width:0 !important; height:0 !important; }
+    .learn-mobile-tool-pane .learn-empty-state { padding:10px 12px !important; }
+    .learn-mobile-tool-pane .learn-todo-composer { margin:0 7px 7px !important; }
+
+    .learn-workspace { position:relative !important; z-index:1 !important; }
+}
+</style>
+
 </head>
 <body>
 
@@ -3843,20 +4040,59 @@ html, body {
                 </div>
 
                 <div class="learn-main-column">
-                    <div class="learn-mobile-progress" id="learn-mobile-progress" aria-label="Your learning progress">
-                        <button id="learn-mobile-progress-toggle" type="button" aria-expanded="false">
-                            <span class="learn-mobile-progress-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5A2.5 2.5 0 0 0 17.5 16H4V5.5Zm0 0V19a2 2 0 0 0 2 2h12.5A1.5 1.5 0 0 0 20 19.5V18H6.5A2.5 2.5 0 0 1 4 15.5V5.5Z"/></svg>
-                            </span>
-                            <span class="learn-mobile-progress-copy">
-                                <strong id="learn-mobile-progress-course">Business Communication</strong>
-                                <span id="learn-mobile-progress-detail">Lecture 01</span>
-                            </span>
-                            <span class="learn-mobile-progress-meter"><span id="learn-mobile-progress-bar"></span></span>
-                            <span id="learn-mobile-progress-percent">0%</span>
-                            <span class="learn-mobile-progress-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6.6 9.4 5.4 5.4 5.4-5.4 1.4 1.4-6.8 6.8-6.8-6.8 1.4-1.4Z"/></svg></span>
-                        </button>
-                        <div id="learn-mobile-course-list" class="learn-mobile-course-list" hidden></div>
+                    <div id="learn-mobile-tools" class="learn-mobile-tools" aria-label="Learn controls">
+                        <div class="learn-mobile-tool-buttons" role="tablist" aria-label="Learn panels">
+                            <button id="learn-mobile-progress-toggle" class="learn-mobile-tool-button" type="button" aria-expanded="false" aria-controls="learn-mobile-tool-overlay" data-mobile-panel="learning">
+                                <span class="learn-mobile-tool-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5A2.5 2.5 0 0 0 17.5 16H4V5.5Zm0 0V19a2 2 0 0 0 2 2h12.5A1.5 1.5 0 0 0 20 19.5V18H6.5A2.5 2.5 0 0 1 4 15.5V5.5Z"/></svg>
+                                </span>
+                                <span class="learn-mobile-tool-copy">
+                                    <strong>Your Learning</strong>
+                                    <span id="learn-mobile-progress-course">Business Communication</span>
+                                </span>
+                                <span class="learn-mobile-tool-meta">
+                                    <span id="learn-mobile-progress-detail">Lecture 01</span>
+                                    <span id="learn-mobile-progress-percent">0%</span>
+                                </span>
+                                <span class="learn-mobile-tool-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6.6 9 5.4 5.4L17.4 9"/></svg></span>
+                            </button>
+
+                            <button id="learn-mobile-todo-toggle" class="learn-mobile-tool-button" type="button" aria-expanded="false" aria-controls="learn-mobile-tool-overlay" data-mobile-panel="todo">
+                                <span class="learn-mobile-tool-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24"><path d="M9 2h6a2 2 0 0 1 2 2h2.5A2.5 2.5 0 0 1 22 6.5v13A2.5 2.5 0 0 1 19.5 22h-15A2.5 2.5 0 0 1 2 19.5v-13A2.5 2.5 0 0 1 4.5 4H7a2 2 0 0 1 2-2Zm0 2a.5.5 0 0 0-.5.5V5h7v-.5A.5.5 0 0 0 15 4H9Zm-3.5 4A1.5 1.5 0 0 0 4 9.5v10A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 18.5 8h-13ZM8 12h8v2H8v-2Zm0 4h6v2H8v-2Z"/></svg>
+                                </span>
+                                <span class="learn-mobile-tool-copy">
+                                    <strong>My Tasks</strong>
+                                    <span>Saved across Learn</span>
+                                </span>
+                                <span class="learn-mobile-tool-meta">
+                                    <span id="learn-mobile-todo-count">0</span>
+                                </span>
+                                <span class="learn-mobile-tool-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6.6 9 5.4 5.4L17.4 9"/></svg></span>
+                            </button>
+                        </div>
+
+                        <div id="learn-mobile-tool-overlay" class="learn-mobile-tool-overlay" hidden>
+                            <section id="learn-mobile-learning-pane" class="learn-mobile-tool-pane" data-mobile-pane="learning" hidden>
+                                <div class="learn-mobile-overlay-heading">
+                                    <strong>Your Learning</strong>
+                                    <span>Course progress</span>
+                                </div>
+                                <div id="learn-mobile-course-list" class="learn-mobile-course-list"></div>
+                            </section>
+
+                            <section id="learn-mobile-todo-pane" class="learn-mobile-tool-pane" data-mobile-pane="todo" hidden>
+                                <div class="learn-mobile-overlay-heading">
+                                    <div>
+                                        <strong>My Tasks</strong>
+                                        <span>Available across every course and lecture</span>
+                                    </div>
+                                    <button id="learn-mobile-add-todo-btn" class="learn-tool-action" type="button">+ Add task</button>
+                                </div>
+                                <div id="learn-mobile-todo-list" class="learn-todo-list"></div>
+                                <div id="learn-mobile-todo-empty" class="learn-empty-state">Add tasks you want to finish.</div>
+                            </section>
+                        </div>
                     </div>
 
                     <div class="learn-workspace">
@@ -5073,8 +5309,11 @@ html, body {
         }
         try {
             const storedLeftLayout = localStorage.getItem('circle_learn_left_layout_v1');
-            if (['half','learning-expanded','todo-expanded','learning-minimized','todo-minimized'].includes(storedLeftLayout)) {
-                learnLeftLayout = storedLeftLayout;
+            const normalizedLeftLayout = storedLeftLayout === 'learning-minimized' ? 'todo-expanded'
+                : storedLeftLayout === 'todo-minimized' ? 'learning-expanded'
+                : storedLeftLayout;
+            if (['half','learning-expanded','todo-expanded'].includes(normalizedLeftLayout)) {
+                learnLeftLayout = normalizedLeftLayout;
             }
         } catch (_) {}
         try {
@@ -5739,12 +5978,40 @@ html, body {
         function applyLearnLeftLayout(layout, persist=true) {
             const column = document.querySelector('.learn-left-column');
             if (!column) return;
-            const allowed = ['half','learning-expanded','todo-expanded','learning-minimized','todo-minimized'];
-            learnLeftLayout = allowed.includes(layout) ? layout : 'half';
+
+            // Three-state desktop system only. The left column never grows beyond
+            // the fixed player height, and only one panel may occupy the full area.
+            const legacyMap = {
+                'learning-minimized': 'todo-expanded',
+                'todo-minimized': 'learning-expanded'
+            };
+            const next = legacyMap[layout] || layout;
+            learnLeftLayout = ['half', 'learning-expanded', 'todo-expanded'].includes(next) ? next : 'half';
             column.dataset.layout = learnLeftLayout;
+
             if (persist) {
                 try { localStorage.setItem('circle_learn_left_layout_v1', learnLeftLayout); } catch (_) {}
             }
+
+            // Update the visual state of the compact control toggles.
+            column.querySelectorAll('[data-sidebar-control]').forEach(control => {
+                const which = control.dataset.sidebarControl;
+                const toggle = control.querySelector('.learn-sidebar-control-toggle');
+                if (!toggle) return;
+                const isExpanded = learnLeftLayout === (which === 'learning' ? 'learning-expanded' : 'todo-expanded');
+                const isCollapsed = learnLeftLayout === (which === 'learning' ? 'todo-expanded' : 'learning-expanded');
+                const path = toggle.querySelector('path');
+                if (path) {
+                    path.setAttribute('d', isExpanded
+                        ? 'm6.6 15 5.4-5.4 5.4 5.4'
+                        : isCollapsed
+                            ? 'm6.6 9 5.4 5.4L17.4 9'
+                            : 'm6.6 9 5.4 5.4L17.4 9');
+                }
+                toggle.setAttribute('data-panel-state', isExpanded ? 'expanded' : (isCollapsed ? 'minimized' : 'split'));
+                toggle.setAttribute('aria-label', `${which === 'learning' ? 'Your Learning' : 'My Tasks'} panel controls`);
+            });
+
             document.querySelectorAll('.learn-sidebar-control-menu').forEach(menu => menu.classList.remove('open'));
             document.querySelectorAll('.learn-sidebar-control-toggle').forEach(toggle => toggle.setAttribute('aria-expanded','false'));
         }
@@ -5752,29 +6019,46 @@ html, body {
         function setupLearnLeftPanelControls() {
             const column = document.querySelector('.learn-left-column');
             if (!column) return;
+
             applyLearnLeftLayout(learnLeftLayout, false);
+
             column.querySelectorAll('[data-sidebar-control]').forEach(control => {
                 const toggle = control.querySelector('.learn-sidebar-control-toggle');
                 const menu = control.querySelector('.learn-sidebar-control-menu');
                 if (!toggle || !menu) return;
+
                 toggle.addEventListener('click', (event) => {
-                    event.preventDefault(); event.stopPropagation();
+                    event.preventDefault();
+                    event.stopPropagation();
                     const wasOpen = menu.classList.contains('open');
                     document.querySelectorAll('.learn-sidebar-control-menu').forEach(m => m.classList.remove('open'));
                     document.querySelectorAll('.learn-sidebar-control-toggle').forEach(t => t.setAttribute('aria-expanded','false'));
-                    if (!wasOpen) { menu.classList.add('open'); toggle.setAttribute('aria-expanded','true'); }
+                    if (!wasOpen) {
+                        menu.classList.add('open');
+                        toggle.setAttribute('aria-expanded','true');
+                    }
                 });
+
                 menu.querySelectorAll('button[data-layout-action]').forEach(actionBtn => {
                     actionBtn.addEventListener('click', (event) => {
-                        event.preventDefault(); event.stopPropagation();
+                        event.preventDefault();
+                        event.stopPropagation();
                         const which = control.dataset.sidebarControl;
                         const action = actionBtn.dataset.layoutAction;
-                        if (action === 'half') applyLearnLeftLayout('half');
-                        else if (which === 'learning') applyLearnLeftLayout(action === 'expand' ? 'learning-expanded' : 'learning-minimized');
-                        else applyLearnLeftLayout(action === 'expand' ? 'todo-expanded' : 'todo-minimized');
+
+                        if (action === 'half') {
+                            applyLearnLeftLayout('half');
+                        } else if (action === 'expand') {
+                            applyLearnLeftLayout(which === 'learning' ? 'learning-expanded' : 'todo-expanded');
+                        } else if (action === 'minimize') {
+                            // Minimise the selected panel. The opposite panel takes
+                            // the available height, while the selected header stays visible.
+                            applyLearnLeftLayout(which === 'learning' ? 'todo-expanded' : 'learning-expanded');
+                        }
                     });
                 });
             });
+
             document.addEventListener('click', (event) => {
                 if (!event.target.closest('.learn-sidebar-control')) {
                     document.querySelectorAll('.learn-sidebar-control-menu').forEach(m => m.classList.remove('open'));
@@ -6895,9 +7179,13 @@ setInterval(() => {
                     button.addEventListener('click', () => {
                         loadLearnCourse(button.dataset.courseId, false);
                         if (target === mobile) {
-                            const toggle = document.getElementById('learn-mobile-progress-toggle');
-                            toggle?.setAttribute('aria-expanded', 'false');
-                            mobile.hidden = true;
+                            const overlay = document.getElementById('learn-mobile-tool-overlay');
+                            if (overlay) overlay.hidden = true;
+                            document.querySelectorAll('.learn-mobile-tool-button').forEach(btn => {
+                                btn.setAttribute('aria-expanded', 'false');
+                                btn.classList.remove('active');
+                            });
+                            document.querySelectorAll('.learn-mobile-tool-pane').forEach(pane => { pane.hidden = true; });
                         }
                     });
                 });
@@ -6953,14 +7241,18 @@ setInterval(() => {
             if (el) el.textContent = String(count);
             const sidebarEl = document.getElementById('learn-sidebar-todo-count');
             if (sidebarEl) sidebarEl.textContent = String(count);
+            const mobileEl = document.getElementById('learn-mobile-todo-count');
+            if (mobileEl) mobileEl.textContent = String(count);
         }
 
         function renderLearnTodoList() {
-            const list = document.getElementById('learn-todo-list');
-            const empty = document.getElementById('learn-todo-empty');
-            if (!list || !empty) return;
+            const targets = [
+                [document.getElementById('learn-todo-list'), document.getElementById('learn-todo-empty')],
+                [document.getElementById('learn-mobile-todo-list'), document.getElementById('learn-mobile-todo-empty')]
+            ].filter(([list, empty]) => list && empty);
+            if (!targets.length) return;
             const items = getLearnTodoItems();
-            list.innerHTML = items.map(item => `
+            const markup = items.map(item => `
                 <div class="learn-todo-item ${item.done ? 'done' : ''}" data-todo-id="${escapeHtml(item.id)}">
                     <label class="learn-todo-check-row">
                         <input type="checkbox" class="learn-todo-checkbox" ${item.done ? 'checked' : ''} aria-label="Mark task complete">
@@ -6970,20 +7262,20 @@ setInterval(() => {
                     <button type="button" class="learn-todo-delete" aria-label="Delete task">×</button>
                 </div>
             `).join('');
-            empty.style.display = items.length ? 'none' : 'block';
+            targets.forEach(([list, empty]) => { list.innerHTML = markup; empty.style.display = items.length ? 'none' : 'block'; });
             updateLearnTodoCount();
         }
 
-        function openLearnTodoComposer() {
-            const list = document.getElementById('learn-todo-list');
+        function openLearnTodoComposer(targetListId='learn-todo-list') {
+            const list = document.getElementById(targetListId);
             if (!list) return;
-            const existing = document.getElementById('learn-todo-composer');
+            const existing = document.getElementById(`${targetListId}-composer`);
             if (existing) {
                 existing.querySelector('input')?.focus();
                 return;
             }
             const row = document.createElement('div');
-            row.id = 'learn-todo-composer';
+            row.id = `${targetListId}-composer`;
             row.className = 'learn-todo-composer';
             row.innerHTML = `
                 <input type="text" maxlength="180" placeholder="Add a task…" aria-label="New task">
@@ -7085,48 +7377,84 @@ setInterval(() => {
             const addTodo = document.getElementById('learn-add-todo-btn');
             const todoList = document.getElementById('learn-todo-list');
             const notes = document.getElementById('learn-notes-input');
-            if (addTodo) addTodo.addEventListener('click', openLearnTodoComposer);
+            if (addTodo) addTodo.addEventListener('click', () => openLearnTodoComposer('learn-todo-list'));
             if (todoList) todoList.addEventListener('click', handleLearnTodoListClick);
+            const mobileTodoAdd = document.getElementById('learn-mobile-add-todo-btn');
+            const mobileTodoList = document.getElementById('learn-mobile-todo-list');
+            if (mobileTodoAdd) mobileTodoAdd.addEventListener('click', () => openLearnTodoComposer('learn-mobile-todo-list'));
+            if (mobileTodoList) mobileTodoList.addEventListener('click', handleLearnTodoListClick);
             if (notes) {
                 notes.addEventListener('input', () => queueLearnNotesSave(notes.value));
                 notes.addEventListener('blur', flushLearnNotesSave);
             }
 
+            const mobileOverlay = document.getElementById('learn-mobile-tool-overlay');
+            const mobileButtons = document.querySelectorAll('.learn-mobile-tool-button');
+            const mobilePanes = document.querySelectorAll('.learn-mobile-tool-pane');
+            let mobileOpenPanel = null;
+
+            const closeMobilePanels = () => {
+                mobileOpenPanel = null;
+                if (mobileOverlay) mobileOverlay.hidden = true;
+                mobileButtons.forEach(button => button.setAttribute('aria-expanded', 'false'));
+                mobilePanes.forEach(pane => pane.hidden = true);
+            };
+
+            const openMobilePanel = (panel) => {
+                if (!mobileOverlay) return;
+                const next = mobileOpenPanel === panel ? null : panel;
+                mobileOpenPanel = next;
+                mobileOverlay.hidden = !next;
+                mobileButtons.forEach(button => {
+                    const active = button.dataset.mobilePanel === next;
+                    button.setAttribute('aria-expanded', String(active));
+                    button.classList.toggle('active', active);
+                });
+                mobilePanes.forEach(pane => {
+                    const active = pane.dataset.mobilePane === next;
+                    pane.hidden = !active;
+                });
+                if (next === 'todo') renderLearnTodoList();
+                if (next === 'learning') renderLearnCourseSidebar();
+            };
+
+            mobileButtons.forEach(button => {
+                button.addEventListener('click', event => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    openMobilePanel(button.dataset.mobilePanel);
+                });
+            });
+
+            document.addEventListener('click', event => {
+                if (window.innerWidth > 768 || !mobileOpenPanel) return;
+                if (!event.target.closest('#learn-mobile-tools')) closeMobilePanels();
+            });
+
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape' && mobileOpenPanel) closeMobilePanels();
+            });
+
+            // Legacy desktop-only collapsible behavior is intentionally disabled;
+            // the unified desktop three-action state machine above owns the left side.
             const todoSidebarToggle = document.getElementById('learn-todo-sidebar-toggle');
-            const todoSidebar = document.getElementById('learn-todo-sidebar');
-            if (todoSidebarToggle && todoSidebar) {
-                // Desktop uses the unified three-action panel layout system.
-                // Mobile keeps the compact collapse behavior only.
-                const applyMobileTodoState = (open) => {
-                    learnTodoSidebarOpen = Boolean(open);
-                    todoSidebar.classList.toggle('is-open', learnTodoSidebarOpen);
-                    todoSidebarToggle.setAttribute('aria-expanded', String(learnTodoSidebarOpen));
-                    try { localStorage.setItem('circle_learn_todo_sidebar_open', learnTodoSidebarOpen ? 'true' : 'false'); } catch (_) {}
-                };
-                if (window.innerWidth < 1100) {
-                    applyMobileTodoState(learnTodoSidebarOpen);
-                }
-                todoSidebarToggle.addEventListener('click', () => {
-                    if (window.innerWidth < 1100) applyMobileTodoState(!learnTodoSidebarOpen);
-                });
-                todoSidebarToggle.addEventListener('keydown', (event) => {
-                    if (window.innerWidth < 1100 && (event.key === 'Enter' || event.key === ' ')) {
+            if (todoSidebarToggle) {
+                todoSidebarToggle.addEventListener('click', event => {
+                    if (window.innerWidth >= 1100) {
                         event.preventDefault();
-                        applyMobileTodoState(!learnTodoSidebarOpen);
+                        event.stopImmediatePropagation();
                     }
-                });
+                }, true);
+                todoSidebarToggle.addEventListener('keydown', event => {
+                    if (window.innerWidth >= 1100) {
+                        event.preventDefault();
+                        event.stopImmediatePropagation();
+                    }
+                }, true);
             }
 
-            const mobileToggle = document.getElementById('learn-mobile-progress-toggle');
-            const mobileList = document.getElementById('learn-mobile-course-list');
-            if (mobileToggle && mobileList) {
-                mobileToggle.addEventListener('click', () => {
-                    const open = mobileToggle.getAttribute('aria-expanded') === 'true';
-                    mobileToggle.setAttribute('aria-expanded', String(!open));
-                    mobileList.hidden = open;
-                });
-            }
             renderLearnCourseSidebar();
+            renderLearnTodoList();
             syncLearnStudyToolsContext();
         }
 
