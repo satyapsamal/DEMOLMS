@@ -2867,404 +2867,6 @@
         }
 </style>
 
-<style id="circle-learn-sidebar-tools-css">
-/* =========================================================
-   CIRCLE LEARN: THREE-COLUMN DESKTOP + MOBILE ADAPTATION
-   ========================================================= */
-#learn-layer {
-    box-sizing: border-box !important;
-}
-
-.learn-shell {
-    width: min(1840px, calc(100vw - 32px)) !important;
-    max-width: 1650px !important;
-}
-
-.learn-shell {
-    display: block !important;
-}
-
-.learn-course-sidebar,
-.learn-mobile-progress {
-    box-sizing: border-box !important;
-}
-
-.learn-course-sidebar {
-    background: linear-gradient(180deg, rgba(16,16,16,.98), rgba(8,8,8,.98)) !important;
-    border: 1px solid rgba(255,255,255,.09) !important;
-    border-radius: 14px !important;
-    overflow: hidden !important;
-    box-shadow: 0 16px 40px rgba(0,0,0,.24) !important;
-}
-
-.learn-sidebar-heading {
-    height: 48px !important;
-    padding: 0 14px !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 9px !important;
-    font: 600 12px var(--font-conversational) !important;
-    color: #f2f2f2 !important;
-    border-bottom: 1px solid rgba(255,255,255,.07) !important;
-}
-.learn-sidebar-heading-icon { width: 17px; height: 17px; display:flex; align-items:center; justify-content:center; color:#d9d9d9; }
-.learn-sidebar-heading-icon svg { width:17px; height:17px; fill:currentColor; }
-.learn-sidebar-chevron { margin-left:auto; color:#777; font-size:14px; }
-.learn-course-sidebar-list { height: calc(100% - 48px); overflow-y:auto; scrollbar-width:none; padding:8px; }
-.learn-course-sidebar-list::-webkit-scrollbar { display:none; width:0; height:0; }
-
-.learn-course-progress-item {
-    width:100%;
-    border:1px solid transparent;
-    background:transparent;
-    color:#fff;
-    border-radius:10px;
-    display:flex;
-    align-items:flex-start;
-    gap:10px;
-    padding:10px 8px;
-    margin:0 0 4px;
-    text-align:left;
-    cursor:pointer;
-    font-family:var(--font-conversational);
-    transition:background .18s ease,border-color .18s ease;
-}
-.learn-course-progress-item:hover { background:rgba(255,255,255,.045); }
-.learn-course-progress-item.active { background:rgba(255,255,255,.055); border-color:rgba(255,255,255,.08); }
-.learn-course-icon {
-    width:28px; height:28px; border-radius:8px; flex:0 0 28px;
-    display:flex; align-items:center; justify-content:center;
-    font:700 9px var(--font-conversational); color:#fff;
-    border:1px solid rgba(255,255,255,.12);
-    background:rgba(255,255,255,.08);
-}
-.learn-course-icon-businessCommunication { background:rgba(88,145,255,.18); }
-.learn-course-icon-businessMathematics { background:rgba(160,94,255,.18); }
-.learn-course-icon-computerApplications { background:rgba(255,166,67,.18); }
-.learn-course-icon-marketingSales { background:rgba(255,85,100,.18); }
-.learn-course-icon-entrepreneurship { background:rgba(80,190,125,.18); }
-.learn-course-progress-copy { flex:1; min-width:0; display:block; }
-.learn-course-progress-copy strong { display:block; font:600 11px/1.25 var(--font-conversational); color:#f0f0f0; white-space:normal; }
-.learn-course-progress-copy small { display:block; margin-top:2px; color:#7c7c7c; font:500 9px var(--font-conversational); }
-.learn-course-progress-line { display:block; width:100%; height:4px; margin:7px 0 4px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
-.learn-course-progress-line > span { display:block; height:100%; border-radius:inherit; background:rgba(100,214,145,.9); transition:width .35s ease; }
-.learn-course-progress-meta { display:flex; justify-content:space-between; gap:8px; color:#787878; font:500 8px var(--font-conversational); }
-
-.learn-main-column { min-width:0 !important; }
-.learn-workspace {
-    width:100% !important;
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) 320px !important;
-    gap:16px !important;
-    align-items:stretch !important;
-}
-
-.learn-playlist {
-    display:flex !important;
-    flex-direction:column !important;
-    min-height:0 !important;
-    aspect-ratio:auto !important;
-    background:#080808 !important;
-    overflow:hidden !important;
-}
-.learn-panel-switcher {
-    flex:0 0 auto;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    align-items:stretch;
-    min-height:50px;
-    border-bottom:1px solid rgba(255,255,255,.07);
-    background:rgba(255,255,255,.012);
-}
-.learn-panel-tab {
-    position:relative;
-    border:0;
-    background:transparent;
-    color:#858585;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-    padding:0 9px;
-    font:600 11px var(--font-conversational);
-    cursor:pointer;
-    transition:color .18s ease,background .18s ease;
-}
-.learn-panel-tab:hover { color:#d8d8d8; background:rgba(255,255,255,.03); }
-.learn-panel-tab.active { color:#fff; }
-.learn-panel-tab.active::after {
-    content:''; position:absolute; left:10px; right:10px; bottom:0; height:2px;
-    background:#54db94; border-radius:999px 999px 0 0;
-}
-.learn-panel-count { color:#757575; font-weight:500; font-size:9px; }
-.learn-tab-badge {
-    min-width:18px; height:18px; padding:0 5px; border-radius:999px;
-    display:inline-flex; align-items:center; justify-content:center;
-    background:rgba(255,255,255,.08); color:#bcbcbc; font:700 9px var(--font-conversational);
-}
-.learn-panel-content { flex:1; min-height:0; overflow:hidden; }
-.learn-panel-pane { display:none; height:100%; min-height:0; flex-direction:column; overflow:hidden; }
-.learn-panel-pane.active { display:flex; }
-.learn-panel-pane[hidden] { display:none !important; }
-
-.learn-panel-course-line {
-    flex:0 0 auto;
-    display:flex; align-items:center; justify-content:space-between; gap:8px;
-    padding:11px 13px 7px;
-    font-family:var(--font-conversational);
-}
-.learn-panel-course-line strong { font:600 11px var(--font-conversational); color:#ededed; }
-.learn-panel-course-line span { color:#767676; font:500 9px var(--font-conversational); }
-.learn-panel-progress-track { flex:0 0 auto; margin:0 13px 8px; height:4px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
-.learn-panel-progress-track > span { display:block; height:100%; width:0; border-radius:inherit; background:#54db94; transition:width .35s ease; }
-.learn-thumbnails {
-    flex:1 !important;
-    min-height:0 !important;
-    height:auto !important;
-    max-height:none !important;
-    overflow-y:auto !important;
-    overflow-x:hidden !important;
-    padding:8px !important;
-    scrollbar-width:none !important;
-    -ms-overflow-style:none !important;
-}
-.learn-thumbnails::-webkit-scrollbar { width:0 !important; height:0 !important; display:none !important; }
-.learn-thumb { margin-bottom:8px !important; border-radius:9px !important; }
-
-.learn-tool-heading {
-    display:flex; align-items:center; justify-content:space-between; gap:10px;
-    padding:14px 13px 10px; flex:0 0 auto;
-}
-.learn-tool-heading strong { display:block; font:600 11px var(--font-conversational); color:#eee; }
-.learn-tool-heading span { display:block; margin-top:3px; color:#777; font:500 8px var(--font-conversational); }
-.learn-tool-action {
-    border:1px solid rgba(84,219,148,.25); background:rgba(84,219,148,.07); color:#83e7b1;
-    border-radius:999px; padding:7px 10px; font:600 9px var(--font-conversational); cursor:pointer;
-}
-.learn-tool-action:hover { background:rgba(84,219,148,.12); color:#a6f0c6; }
-.learn-todo-list { flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; padding:0 8px 8px; }
-.learn-todo-list::-webkit-scrollbar { display:none; width:0; height:0; }
-.learn-todo-item { display:flex; align-items:center; gap:6px; padding:9px 7px; border-radius:9px; margin-bottom:4px; background:rgba(255,255,255,.025); border:1px solid transparent; }
-.learn-todo-item:hover { border-color:rgba(255,255,255,.07); }
-.learn-todo-check-row { flex:1; min-width:0; display:flex; align-items:center; gap:8px; cursor:pointer; }
-.learn-todo-checkbox { position:absolute; opacity:0; pointer-events:none; }
-.learn-todo-checkmark { width:15px; height:15px; border:1px solid rgba(255,255,255,.35); border-radius:4px; flex:0 0 15px; display:block; position:relative; }
-.learn-todo-item.done .learn-todo-checkmark { border-color:#54db94; background:#54db94; }
-.learn-todo-item.done .learn-todo-checkmark::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#07130d; font:700 10px var(--font-conversational); }
-.learn-todo-text { color:#d5d5d5; font:500 10px/1.35 var(--font-conversational); }
-.learn-todo-item.done .learn-todo-text { color:#777; text-decoration:line-through; }
-.learn-todo-delete { border:0; background:transparent; color:#666; font:500 17px/1 var(--font-conversational); cursor:pointer; padding:2px 4px; }
-.learn-todo-delete:hover { color:#c8c8c8; }
-.learn-todo-composer { display:flex; gap:6px; margin-bottom:7px; padding:2px; }
-.learn-todo-composer input { flex:1; min-width:0; border:1px solid rgba(255,255,255,.11); background:#101010; border-radius:8px; color:#eee; padding:9px 10px; outline:none; font:500 10px var(--font-conversational); }
-.learn-todo-composer input:focus { border-color:rgba(255,255,255,.25); }
-.learn-todo-composer button { border:0; border-radius:8px; padding:0 10px; background:#ededed; color:#0a0a0a; font:700 9px var(--font-conversational); cursor:pointer; }
-.learn-empty-state { padding:10px 14px; color:#686868; font:500 9px/1.4 var(--font-conversational); }
-.learn-tool-footnote { flex:0 0 auto; padding:9px 13px 12px; color:#5e5e5e; font:500 8px/1.35 var(--font-conversational); }
-
-.learn-notes-input {
-    flex:1; min-height:0; width:calc(100% - 26px); margin:0 13px 10px;
-    box-sizing:border-box; resize:none; border:1px solid rgba(255,255,255,.08); border-radius:10px;
-    background:#0c0c0c; color:#e8e8e8; padding:12px; outline:none; font:500 10px/1.5 var(--font-conversational);
-}
-.learn-notes-input:focus { border-color:rgba(255,255,255,.18); }
-.learn-notes-input::placeholder { color:#555; }
-.learn-save-status { color:#65d99b !important; font-size:8px !important; white-space:nowrap; }
-
-.learn-mobile-progress { display:none; }
-
-@media (min-width:1100px) {
-    .learn-shell { width:min(1650px, calc(100vw - 48px)) !important; }
-    .learn-shell > .learn-main-column { min-width:0; }
-    .learn-shell {
-        display:grid !important;
-        grid-template-columns:230px minmax(0,1fr) !important;
-        gap:16px !important;
-    }
-    .learn-main-column { grid-column:2; }
-    .learn-workspace { grid-template-columns:minmax(0,1fr) 320px !important; }
-    .learn-course-sidebar { display:block !important; height:var(--learn-fixed-panel-height, auto) !important; }
-}
-
-@media (min-width:769px) and (max-width:1099px) {
-    .learn-mobile-progress { display:block !important; margin-bottom:10px; }
-    .learn-workspace { grid-template-columns:minmax(0,1fr) 300px !important; }
-    .learn-course-sidebar { display:none !important; }
-}
-
-@media (max-width:768px) {
-    #learn-layer { padding-left:10px !important; padding-right:10px !important; padding-top:calc(var(--shell-header-height) + 10px) !important; }
-    .learn-shell { width:100% !important; max-width:none !important; }
-    .learn-course-sidebar { display:none !important; }
-    .learn-mobile-progress { display:block !important; margin-bottom:10px; }
-    #learn-mobile-progress-toggle {
-        width:100%; min-height:60px; border:1px solid rgba(255,255,255,.09); border-radius:13px; background:#090909; color:#fff;
-        display:grid; grid-template-columns:24px minmax(0,1fr) 68px 35px 16px; gap:8px; align-items:center; padding:10px 11px; cursor:pointer;
-        text-align:left;
-    }
-    .learn-mobile-progress-icon { width:20px; height:20px; color:#cfcfcf; }
-    .learn-mobile-progress-icon svg { width:20px; height:20px; fill:currentColor; }
-    .learn-mobile-progress-copy { min-width:0; }
-    .learn-mobile-progress-copy strong { display:block; color:#eee; font:600 10px/1.25 var(--font-conversational); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .learn-mobile-progress-copy span { display:block; margin-top:2px; color:#777; font:500 8px var(--font-conversational); }
-    .learn-mobile-progress-meter { display:block; height:4px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
-    .learn-mobile-progress-meter span { display:block; height:100%; width:0; background:#54db94; border-radius:inherit; transition:width .35s ease; }
-    .learn-mobile-progress-percent { color:#868686; text-align:right; font:600 9px var(--font-conversational); }
-    .learn-mobile-progress-chevron { color:#777; font-size:13px; text-align:right; }
-    .learn-mobile-course-list { margin-top:7px; padding:7px; border:1px solid rgba(255,255,255,.08); border-radius:13px; background:#090909; }
-    .learn-mobile-course-list .learn-course-progress-item { padding:10px 7px; }
-
-    .learn-workspace { grid-template-columns:1fr !important; grid-template-rows:auto minmax(0,340px) !important; gap:10px !important; }
-    .learn-video-stage { width:100% !important; height:auto !important; aspect-ratio:16/9 !important; border-radius:14px !important; }
-    .learn-playlist { width:100% !important; height:340px !important; max-height:340px !important; border-radius:14px !important; }
-    .learn-panel-switcher { min-height:46px; }
-    .learn-panel-tab { font-size:10px; }
-    .learn-panel-course-line { padding:9px 11px 6px; }
-    .learn-panel-course-line strong { font-size:10px; }
-    .learn-thumbnails { padding:7px !important; }
-    .learn-thumb { width:100% !important; aspect-ratio:16/9 !important; margin-bottom:7px !important; }
-    .learn-controls { padding-top:11px !important; }
-    .learn-lesson-meta { width:100% !important; }
-    #learn-course-btn { max-width:calc(100vw - 155px) !important; }
-    #learn-lecture-label { font-size:17px !important; }
-    .learn-nav { width:100% !important; justify-content:flex-end !important; }
-    .learn-notes-input { min-height:180px; }
-}
-<style id="circle-desktop-sidebar-layout-system">
-/* =========================================================
-   DESKTOP SIDEBAR LAYOUT SYSTEM
-   Both left panels share the fixed video height. They never add
-   document height, even when expanded.
-   ========================================================= */
-@media (min-width: 1100px) {
-    .learn-left-column {
-        display:flex !important;
-        flex-direction:column !important;
-        gap:10px !important;
-        height:var(--learn-fixed-panel-height) !important;
-        min-height:0 !important;
-        overflow:hidden !important;
-    }
-
-    .learn-left-column .learn-course-sidebar,
-    .learn-left-column .learn-todo-sidebar {
-        min-height:50px !important;
-        max-height:100% !important;
-        height:auto !important;
-        margin:0 !important;
-        box-sizing:border-box !important;
-        flex:1 1 0 !important;
-        overflow:hidden !important;
-        transition:flex .24s ease, height .24s ease, max-height .24s ease, min-height .24s ease !important;
-    }
-
-    .learn-left-column[data-layout="half"] .learn-course-sidebar,
-    .learn-left-column[data-layout="half"] .learn-todo-sidebar {
-        flex:1 1 0 !important;
-    }
-
-    .learn-left-column[data-layout="learning-expanded"] .learn-course-sidebar {
-        flex:1 1 0 !important;
-    }
-    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar {
-        flex:0 0 50px !important;
-    }
-
-    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar {
-        flex:0 0 50px !important;
-    }
-    .learn-left-column[data-layout="todo-expanded"] .learn-todo-sidebar {
-        flex:1 1 0 !important;
-    }
-    /* When one panel is minimised, keep only its title and the down control. */
-    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar .learn-sidebar-heading-icon,
-    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar .learn-sidebar-count,
-    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar .learn-sidebar-heading-icon {
-        display:none !important;
-    }
-    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar .learn-sidebar-heading,
-    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar .learn-sidebar-heading {
-        gap:8px !important;
-    }
-
-    .learn-left-column[data-layout="learning-minimized"] .learn-course-sidebar {
-        flex:0 0 50px !important;
-    }
-    .learn-left-column[data-layout="learning-minimized"] .learn-todo-sidebar {
-        flex:1 1 0 !important;
-    }
-
-    .learn-left-column[data-layout="todo-minimized"] .learn-course-sidebar {
-        flex:1 1 0 !important;
-    }
-    .learn-left-column[data-layout="todo-minimized"] .learn-todo-sidebar {
-        flex:0 0 50px !important;
-    }
-
-    .learn-left-column[data-layout="half"] .learn-course-sidebar-list,
-    .learn-left-column[data-layout="half"] .learn-todo-sidebar-body,
-    .learn-left-column[data-layout="learning-expanded"] .learn-course-sidebar-list,
-    .learn-left-column[data-layout="todo-expanded"] .learn-todo-sidebar-body,
-    .learn-left-column[data-layout="learning-minimized"] .learn-todo-sidebar-body,
-    .learn-left-column[data-layout="todo-minimized"] .learn-course-sidebar-list {
-        min-height:0 !important;
-    }
-
-    .learn-left-column .learn-course-sidebar .learn-sidebar-heading,
-    .learn-left-column .learn-todo-sidebar .learn-collapsible-heading {
-        flex:0 0 48px !important;
-        box-sizing:border-box !important;
-    }
-
-    .learn-left-column .learn-course-sidebar-list {
-        flex:1 1 auto !important;
-        height:auto !important;
-        max-height:none !important;
-        overflow-y:auto !important;
-    }
-
-    .learn-left-column .learn-todo-sidebar-body {
-        flex:1 1 auto !important;
-        height:auto !important;
-        max-height:none !important;
-        overflow:hidden !important;
-    }
-
-    /* Compact three-action menu in each sidebar header. */
-    .learn-sidebar-control { position:relative; margin-left:auto; flex:0 0 auto; }
-    .learn-sidebar-control-toggle {
-        width:30px; height:30px; border:1px solid rgba(255,255,255,.10);
-        background:rgba(255,255,255,.035); color:#a9a9a9; border-radius:9px;
-        display:inline-flex; align-items:center; justify-content:center;
-        cursor:pointer; transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease;
-    }
-    .learn-sidebar-control-toggle:hover,
-    .learn-sidebar-control-toggle[aria-expanded="true"] {
-        background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.20); color:#fff;
-    }
-    .learn-sidebar-control-toggle svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s ease; }
-    .learn-sidebar-control-toggle[aria-expanded="true"] svg { transform:rotate(180deg); }
-    .learn-sidebar-control-menu {
-        position:absolute; top:35px; right:0; z-index:500; display:none;
-        padding:5px; border:1px solid rgba(255,255,255,.12); border-radius:11px;
-        background:rgba(10,10,10,.98); box-shadow:0 16px 36px rgba(0,0,0,.38);
-        gap:4px;
-    }
-    .learn-sidebar-control-menu.open { display:flex; }
-    .learn-sidebar-control-menu button {
-        width:32px; height:30px; border:0; border-radius:8px; background:transparent; color:#aaa;
-        display:inline-flex; align-items:center; justify-content:center; cursor:pointer;
-    }
-    .learn-sidebar-control-menu button:hover { background:rgba(255,255,255,.08); color:#fff; }
-    .learn-sidebar-control-menu button svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-    .learn-sidebar-control-menu button[data-layout-action="half"] svg { transform:rotate(180deg); }
-}
-
-@media (max-width:1099px) {
-    .learn-sidebar-control { display:none !important; }
-}
-</style>
-
 <style id="circle-profile-menu-ui">
 /* =========================================================
    PROFILE IN MORE MENU
@@ -3323,472 +2925,661 @@
     .profile-modal-card { padding:17px; border-radius:16px; }
 }
 </style>
-<style id="circle-final-size-and-functionality">
-/* Final production sizing: use more of the desktop viewport at browser 100%. */
-@media (min-width: 1100px) {
-    :root {
-        --learn-max-width: 1840px;
-        --learn-playlist-width: 340px;
-    }
+</style>
 
+
+<style id="circle-learn-layout-system">
+/* =========================================================
+   CIRCLE LEARN LAYOUT SYSTEM
+   One authoritative responsive layout/state system.
+   Existing Learn visual language is preserved.
+   ========================================================= */
+
+#learn-layer { box-sizing:border-box; }
+.learn-shell { box-sizing:border-box; min-width:0; }
+.learn-main-column { min-width:0; }
+
+/* ---------- Desktop: >= 1100px ---------- */
+@media (min-width:1100px) {
     #learn-layer {
-        padding-left: 16px !important;
-        padding-right: 16px !important;
-        padding-bottom: 28px !important;
+        overflow-y:auto;
+        overflow-x:hidden;
+        padding-left:16px;
+        padding-right:16px;
+        padding-bottom:28px;
     }
 
     .learn-shell {
-        width: min(1840px, calc(100vw - 32px)) !important;
-        max-width: 1840px !important;
-    }
-
-    .learn-shell {
-        grid-template-columns: 240px minmax(0, 1fr) !important;
-        gap: 16px !important;
+        width:min(1840px, calc(100vw - 32px));
+        max-width:1840px;
+        margin:0 auto;
+        display:grid;
+        grid-template-columns:240px minmax(0,1fr);
+        gap:16px;
+        align-items:start;
     }
 
     .learn-workspace {
-        grid-template-columns: minmax(0, 1fr) 340px !important;
-        gap: 16px !important;
+        width:100%;
+        display:grid;
+        grid-template-columns:minmax(0,1fr) 340px;
+        grid-template-rows:var(--learn-fixed-panel-height, auto);
+        gap:16px;
+        align-items:start;
+        min-width:0;
     }
 
     .learn-video-stage {
-        width: 100% !important;
-        aspect-ratio: 16 / 9 !important;
-        height: auto !important;
+        width:100%;
+        height:auto;
+        min-height:0;
+        aspect-ratio:16 / 9;
+        align-self:start;
     }
 
     .learn-playlist {
-        height: var(--learn-fixed-panel-height) !important;
-        max-height: var(--learn-fixed-panel-height) !important;
-        min-height: 0 !important;
-        overflow: hidden !important;
+        width:100%;
+        height:var(--learn-fixed-panel-height, auto);
+        min-height:0;
+        max-height:var(--learn-fixed-panel-height, none);
+        aspect-ratio:auto;
+        align-self:start;
+        display:flex;
+        flex-direction:column;
+        overflow:hidden;
+        box-sizing:border-box;
     }
 
-    #learn-thumbnails {
-        height: 100% !important;
-        max-height: 100% !important;
-        overflow-y: auto !important;
-        scrollbar-width: none !important;
-        -ms-overflow-style: none !important;
-    }
-
-    #learn-thumbnails::-webkit-scrollbar {
-        display: none !important;
-        width: 0 !important;
-        height: 0 !important;
-    }
-
-    .learn-course-sidebar {
-        height: var(--learn-fixed-panel-height) !important;
-        max-height: var(--learn-fixed-panel-height) !important;
-        min-height: 0 !important;
-    }
-}
-
-/* Keep mobile course/playlist layout unchanged in structure, but ensure one
-   full-width thumbnail per row. */
-@media (max-width: 768px) {
     .learn-thumbnails {
-        display: grid !important;
-        grid-template-columns: minmax(0, 1fr) !important;
-        grid-auto-rows: max-content !important;
-        gap: 8px !important;
+        flex:1 1 auto;
+        min-height:0;
+        height:auto;
+        max-height:none;
+        overflow-y:auto;
+        overflow-x:hidden;
+        scrollbar-width:none;
+        -ms-overflow-style:none;
+        overscroll-behavior:contain;
+        padding:8px;
+    }
+
+    .learn-thumbnails::-webkit-scrollbar {
+        display:none;
+        width:0;
+        height:0;
     }
 
     .learn-thumb {
-        width: 100% !important;
-        aspect-ratio: 16 / 9 !important;
-        margin: 0 !important;
+        width:100%;
+        aspect-ratio:16 / 9;
+        margin:0 0 8px;
+        border-radius:9px;
+    }
+
+    /* Left column exactly follows rendered video height. */
+    .learn-left-column {
+        width:100%;
+        height:var(--learn-fixed-panel-height, auto);
+        min-height:0;
+        max-height:var(--learn-fixed-panel-height, none);
+        display:grid;
+        grid-template-columns:minmax(0,1fr);
+        grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+        gap:10px;
+        position:relative;
+        overflow:visible;
+        box-sizing:border-box;
+        align-self:start;
+    }
+
+    .learn-left-column > .learn-course-sidebar,
+    .learn-left-column > .learn-todo-sidebar {
+        min-height:0;
+        height:auto;
+        max-height:none;
+        margin:0;
+        box-sizing:border-box;
+        overflow:visible;
+        position:relative;
+        display:flex;
+        flex-direction:column;
+        min-width:0;
+    }
+
+    .learn-left-column > .learn-course-sidebar { z-index:2; }
+    .learn-left-column > .learn-todo-sidebar { z-index:1; }
+
+    /* The ONLY three desktop states. */
+    .learn-left-column[data-layout="half"] {
+        grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+    }
+
+    .learn-left-column[data-layout="learning-expanded"] {
+        grid-template-rows:minmax(0,1fr) 48px;
+    }
+
+    .learn-left-column[data-layout="todo-expanded"] {
+        grid-template-rows:48px minmax(0,1fr);
+    }
+
+    .learn-left-column .learn-sidebar-heading,
+    .learn-left-column .learn-collapsible-heading {
+        flex:0 0 48px;
+        box-sizing:border-box;
+    }
+
+    .learn-left-column .learn-course-sidebar-list {
+        flex:1 1 auto;
+        min-height:0;
+        height:auto;
+        max-height:none;
+        overflow-y:auto;
+        overflow-x:hidden;
+        scrollbar-width:none;
+        -ms-overflow-style:none;
+    }
+
+    .learn-left-column .learn-course-sidebar-list::-webkit-scrollbar {
+        display:none;
+        width:0;
+        height:0;
+    }
+
+    .learn-left-column .learn-todo-sidebar-body {
+        flex:1 1 auto;
+        min-height:0;
+        height:auto;
+        max-height:none;
+        overflow:hidden;
+        display:flex;
+        flex-direction:column;
+    }
+
+    /* Collapsed/minimised partner remains as a clickable header only. */
+    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar-body,
+    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar-list {
+        display:none;
+    }
+
+    .learn-left-column[data-layout="learning-expanded"] > .learn-todo-sidebar,
+    .learn-left-column[data-layout="todo-expanded"] > .learn-course-sidebar {
+        overflow:visible;
+    }
+
+    /* Keep the collapsed header visually useful. */
+    .learn-left-column[data-layout="learning-expanded"] > .learn-todo-sidebar .learn-sidebar-heading,
+    .learn-left-column[data-layout="todo-expanded"] > .learn-course-sidebar .learn-sidebar-heading {
+        min-height:48px;
+    }
+
+    /* Context-aware control, with one three-action menu. */
+    .learn-sidebar-control {
+        position:relative;
+        margin-left:auto;
+        flex:0 0 auto;
+    }
+
+    .learn-sidebar-control-toggle {
+        width:32px;
+        height:32px;
+        border:1px solid rgba(255,255,255,.10);
+        background:rgba(255,255,255,.035);
+        color:#aaa;
+        border-radius:9px;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        cursor:pointer;
+        padding:0;
+        transition:background .18s ease,border-color .18s ease,color .18s ease;
+    }
+
+    .learn-sidebar-control-toggle:hover,
+    .learn-sidebar-control-toggle[aria-expanded="true"] {
+        background:rgba(255,255,255,.08);
+        border-color:rgba(255,255,255,.20);
+        color:#fff;
+    }
+
+    .learn-sidebar-control-toggle svg {
+        width:17px;
+        height:17px;
+        fill:none;
+        stroke:currentColor;
+        stroke-width:2.5;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+        transition:transform .18s ease;
+    }
+
+    .learn-sidebar-control-toggle[data-panel-state="expanded"] svg {
+        transform:translateY(-1px);
+    }
+
+    .learn-sidebar-control-toggle[data-panel-state="minimized"] svg {
+        transform:translateY(1px);
+    }
+
+    .learn-sidebar-control-menu {
+        position:absolute;
+        top:38px;
+        right:0;
+        z-index:10000;
+        display:none;
+        gap:4px;
+        padding:5px;
+        border:1px solid rgba(255,255,255,.12);
+        border-radius:11px;
+        background:rgba(10,10,10,.98);
+        box-shadow:0 16px 36px rgba(0,0,0,.48);
+        white-space:nowrap;
+    }
+
+    .learn-sidebar-control-menu.open { display:flex; }
+
+    .learn-sidebar-control-menu button {
+        width:32px;
+        height:30px;
+        border:0;
+        border-radius:8px;
+        background:transparent;
+        color:#aaa;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        cursor:pointer;
+        padding:0;
+    }
+
+    .learn-sidebar-control-menu button:hover {
+        background:rgba(255,255,255,.08);
+        color:#fff;
+    }
+
+    .learn-sidebar-control-menu button svg {
+        width:15px;
+        height:15px;
+        fill:none;
+        stroke:currentColor;
+        stroke-width:2.2;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+    }
+
+    .learn-sidebar-control-menu button[data-layout-action="half"] svg {
+        transform:none;
     }
 }
 
-/* Browser/page zoom deterrents. Browser chrome zoom menus remain outside webpage control. */
-html, body {
-    touch-action: pan-y !important;
-    overscroll-behavior: none !important;
-}
-</style>
-</style>
-
-<style id="circle-learn-final-requested-ui">
-/* =========================================================
-   REQUESTED LEARN SIDEBAR / TO-DO REFINEMENTS
-   ========================================================= */
-.learn-left-column {
-    min-width: 0;
-    min-height: 0;
-    height: var(--learn-fixed-panel-height, auto);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.learn-left-column .learn-course-sidebar {
-    flex: 1 1 auto;
-    min-height: 0;
-    height: auto !important;
-    max-height: none !important;
-}
-
-.learn-sidebar-count {
-    margin-left: auto;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    background: rgba(255,255,255,.07);
-    color: #aaa;
-    font: 700 9px var(--font-conversational);
-}
-
-.learn-collapsible-heading {
-    width: 100%;
-    border: 0;
-    cursor: pointer;
-    text-align: left;
-    background: transparent;
-    color: inherit;
-}
-
-.learn-sidebar-chevron-button {
-    width: 20px;
-    height: 20px;
-    margin-left: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #b8b8b8;
-    transition: transform .24s ease, color .18s ease;
-}
-.learn-sidebar-chevron-button svg { width: 16px; height: 16px; fill: currentColor; }
-.learn-todo-sidebar:not(.is-open) .learn-sidebar-chevron-button { transform: rotate(-90deg); }
-.learn-collapsible-heading:hover .learn-sidebar-chevron-button { color: #fff; }
-
-.learn-todo-sidebar {
-    flex: 0 1 auto;
-    min-height: 50px;
-    border: 1px solid rgba(255,255,255,.09);
-    border-radius: 14px;
-    background: linear-gradient(180deg, rgba(16,16,16,.98), rgba(8,8,8,.98));
-    overflow: hidden;
-    box-shadow: 0 16px 40px rgba(0,0,0,.22);
-    transition: flex-basis .24s ease, max-height .24s ease;
-}
-.learn-todo-sidebar.is-open { flex: 0 1 238px; }
-.learn-todo-sidebar:not(.is-open) { flex: 0 0 50px; }
-.learn-todo-sidebar-body {
-    min-height: 0;
-    max-height: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    opacity: 0;
-    transition: max-height .26s ease, opacity .2s ease;
-}
-.learn-todo-sidebar.is-open .learn-todo-sidebar-body {
-    max-height: 238px;
-    opacity: 1;
-}
-.learn-todo-sidebar-heading { padding: 10px 12px 8px; }
-.learn-todo-sidebar .learn-todo-list { min-height: 0; max-height: 132px; }
-.learn-todo-sidebar .learn-tool-footnote { padding-bottom: 9px; }
-
-
-.learn-todo-sidebar .learn-collapsible-heading { min-height: 50px !important; }
-.learn-todo-sidebar .learn-sidebar-chevron-button { width: 26px !important; height: 26px !important; }
-.learn-todo-sidebar .learn-sidebar-chevron-button svg { width: 19px !important; height: 19px !important; }
-.learn-todo-sidebar .learn-sidebar-heading-icon svg { width: 18px !important; height: 18px !important; }
-.learn-todo-sidebar .learn-collapsible-heading:focus-visible { outline: 1px solid rgba(255,255,255,.45); outline-offset: -3px; border-radius: 12px; }
-
-/* Your Learning stays open on desktop, so its header has no collapse control. */
-@media (min-width: 1100px) {
+/* ---------- Tablet: 769px–1099px ---------- */
+@media (min-width:769px) and (max-width:1099px) {
+    .learn-left-column { display:none !important; }
+    #learn-layer {
+        padding-left:20px;
+        padding-right:20px;
+    }
     .learn-shell {
-        grid-template-columns: 240px minmax(0, 1fr) !important;
+        width:min(100%, calc(100vw - 40px));
+        max-width:none;
     }
-    .learn-left-column { height: var(--learn-fixed-panel-height) !important; }
-    .learn-course-sidebar { height: auto !important; }
+    .learn-workspace {
+        display:grid;
+        grid-template-columns:minmax(0,1fr) 300px;
+        grid-template-rows:auto;
+        gap:12px;
+        align-items:start;
+    }
+    .learn-video-stage {
+        width:100%;
+        height:auto;
+        aspect-ratio:16 / 9;
+    }
+    .learn-playlist {
+        width:100%;
+        height:var(--learn-fixed-panel-height, auto);
+        min-height:0;
+        max-height:var(--learn-fixed-panel-height, none);
+        display:flex;
+        flex-direction:column;
+        overflow:hidden;
+    }
+    .learn-thumbnails {
+        flex:1 1 auto;
+        min-height:0;
+        overflow-y:auto;
+        scrollbar-width:none;
+        -ms-overflow-style:none;
+    }
+    .learn-thumbnails::-webkit-scrollbar { display:none; width:0; height:0; }
+    #learn-mobile-tools { display:none !important; }
 }
 
-/* Mobile: use the compact progress control already present, but open the course
-   list as an overlay over the video instead of increasing document height. */
-@media (max-width: 768px) {
-    .learn-left-column { display: none !important; }
+/* ---------- Mobile: <= 768px ---------- */
+@media (max-width:768px) {
+    #learn-layer {
+        overflow-y:auto;
+        overflow-x:hidden;
+        padding:calc(var(--shell-header-height) + 10px) 10px 28px;
+    }
+
+    .learn-shell {
+        width:100%;
+        max-width:none;
+        display:block;
+    }
+
+    .learn-left-column,
     .learn-mobile-progress {
-        position: absolute !important;
-        top: 10px !important;
-        left: 10px !important;
-        right: 10px !important;
-        z-index: 140 !important;
-        margin: 0 !important;
-        pointer-events: none;
+        display:none !important;
     }
-    .learn-main-column { position: relative !important; }
-    #learn-mobile-progress-toggle {
-        pointer-events: auto !important;
-        min-height: 58px !important;
-        border-color: rgba(255,255,255,.14) !important;
-        background: rgba(8,8,8,.92) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
-        box-shadow: 0 12px 30px rgba(0,0,0,.4) !important;
-    }
-    .learn-mobile-progress-chevron {
-        width: 24px !important;
-        height: 24px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        color: #eee !important;
-        transition: transform .22s ease !important;
-    }
-    .learn-mobile-progress-chevron svg { width: 18px !important; height: 18px !important; fill: currentColor !important; }
-    #learn-mobile-progress-toggle[aria-expanded="true"] .learn-mobile-progress-chevron { transform: rotate(180deg) !important; }
-    .learn-mobile-course-list {
-        pointer-events: auto !important;
-        margin-top: 7px !important;
-        max-height: min(58vh, 420px) !important;
-        overflow-y: auto !important;
-        scrollbar-width: none !important;
-        -ms-overflow-style: none !important;
-        box-shadow: 0 18px 45px rgba(0,0,0,.5) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
-    }
-    .learn-mobile-course-list::-webkit-scrollbar { display:none !important; width:0 !important; height:0 !important; }
 
-    /* On narrow screens the desktop left to-do panel becomes a compact overlay
-       below the course progress card, without changing page height. */
-    .learn-left-column { display: block !important; position: absolute !important; inset: 0 !important; height: auto !important; pointer-events: none !important; z-index: 132 !important; }
-    .learn-left-column .learn-course-sidebar { display: none !important; }
-    .learn-todo-sidebar {
-        display: block !important;
-        position: absolute !important;
-        top: 78px !important;
-        left: 10px !important;
-        width: min(330px, calc(100vw - 20px)) !important;
-        height: auto !important;
-        max-height: 50px !important;
-        pointer-events: auto !important;
-        z-index: 146 !important;
+    /* Buttons first, then optional panel, then video. */
+    #learn-mobile-tools {
+        display:block;
+        position:relative;
+        width:100%;
+        margin:0 0 10px;
+        z-index:500;
+        overflow:visible;
     }
-    .learn-todo-sidebar.is-open { max-height: min(310px, 52vh) !important; }
-    .learn-todo-sidebar-body { max-height: 0 !important; }
-    .learn-todo-sidebar.is-open .learn-todo-sidebar-body { max-height: min(260px, 45vh) !important; }
-    .learn-todo-sidebar .learn-todo-list { max-height: 155px !important; }
+
+    .learn-mobile-tool-buttons {
+        display:grid;
+        grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+        gap:8px;
+        width:100%;
+        position:relative;
+        z-index:2;
+    }
+
+    .learn-mobile-tool-button {
+        width:100%;
+        min-width:0;
+        min-height:54px;
+        padding:9px 11px;
+        border:1px solid rgba(255,255,255,.10);
+        border-radius:13px;
+        background:linear-gradient(180deg,#111,#0a0a0a);
+        color:#fff;
+        display:grid;
+        grid-template-columns:20px minmax(0,1fr) auto 18px;
+        align-items:center;
+        gap:8px;
+        box-sizing:border-box;
+        text-align:left;
+        cursor:pointer;
+        box-shadow:0 10px 26px rgba(0,0,0,.22);
+    }
+
+    .learn-mobile-tool-button.active {
+        border-color:rgba(84,219,148,.28);
+        background:linear-gradient(180deg,#131914,#0b0d0c);
+    }
+
+    .learn-mobile-tool-icon,
+    .learn-mobile-tool-icon svg {
+        width:19px;
+        height:19px;
+    }
+
+    .learn-mobile-tool-icon {
+        color:#d4d4d4;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+
+    .learn-mobile-tool-icon svg { fill:currentColor; }
+
+    .learn-mobile-tool-copy {
+        min-width:0;
+    }
+
+    .learn-mobile-tool-copy strong {
+        display:block;
+        color:#eee;
+        font:700 10px/1.2 var(--font-conversational);
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    .learn-mobile-tool-copy span {
+        display:block;
+        margin-top:3px;
+        color:#777;
+        font:500 8px/1.2 var(--font-conversational);
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    .learn-mobile-tool-meta {
+        color:#999;
+        text-align:right;
+        font:600 8px/1.2 var(--font-conversational);
+        white-space:nowrap;
+    }
+
+    .learn-mobile-tool-chevron,
+    .learn-mobile-tool-chevron svg {
+        width:17px;
+        height:17px;
+    }
+
+    .learn-mobile-tool-chevron {
+        color:#ddd;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        transition:transform .22s ease,color .18s ease;
+    }
+
+    .learn-mobile-tool-chevron svg { fill:currentColor; }
+
+    .learn-mobile-tool-button[aria-expanded="true"] .learn-mobile-tool-chevron {
+        transform:rotate(180deg);
+        color:#fff;
+    }
+
+    /* Normal document flow. Opening this panel pushes the video downward. */
+    #learn-mobile-tool-overlay {
+        display:block;
+        position:relative;
+        width:100%;
+        max-height:0;
+        margin:0;
+        opacity:0;
+        visibility:hidden;
+        overflow:hidden;
+        pointer-events:none;
+        border:1px solid transparent;
+        border-radius:15px;
+        background:rgba(8,8,8,.985);
+        box-shadow:0 20px 55px rgba(0,0,0,.52);
+        transition:max-height .26s cubic-bezier(.25,1,.5,1),
+                   margin .22s ease,
+                   opacity .18s ease,
+                   border-color .18s ease;
+        box-sizing:border-box;
+        z-index:1;
+    }
+
+    #learn-mobile-tool-overlay.is-open {
+        max-height:min(62vh,520px);
+        margin:10px 0 0;
+        opacity:1;
+        visibility:visible;
+        pointer-events:auto;
+        border-color:rgba(255,255,255,.12);
+    }
+
+    .learn-mobile-tool-pane {
+        display:flex;
+        flex-direction:column;
+        min-height:0;
+        max-height:min(62vh,520px);
+        overflow:hidden;
+    }
+
+    .learn-mobile-tool-pane[hidden] { display:none !important; }
+
+    .learn-mobile-overlay-heading {
+        flex:0 0 52px;
+        min-height:52px;
+        padding:10px 12px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        border-bottom:1px solid rgba(255,255,255,.07);
+    }
+
+    .learn-mobile-overlay-heading strong {
+        display:block;
+        color:#eee;
+        font:700 11px var(--font-conversational);
+    }
+
+    .learn-mobile-overlay-heading span {
+        display:block;
+        margin-top:3px;
+        color:#777;
+        font:500 8px var(--font-conversational);
+    }
+
+    #learn-mobile-course-list,
+    #learn-mobile-todo-list {
+        flex:1 1 auto;
+        min-height:0;
+        max-height:none;
+        overflow-y:auto;
+        overflow-x:hidden;
+        scrollbar-width:none;
+        -ms-overflow-style:none;
+        padding:7px;
+    }
+
+    #learn-mobile-course-list::-webkit-scrollbar,
+    #learn-mobile-todo-list::-webkit-scrollbar {
+        display:none;
+        width:0;
+        height:0;
+    }
+
+    .learn-mobile-tool-pane .learn-empty-state { padding:10px 12px; }
+    .learn-mobile-tool-pane .learn-todo-composer { margin:0 7px 7px; }
+
+    /* Video follows the optional expanded panel naturally. */
+    .learn-main-column { min-width:0; }
+    .learn-workspace {
+        width:100%;
+        display:grid;
+        grid-template-columns:1fr;
+        grid-template-rows:auto auto;
+        gap:10px;
+        align-items:start;
+        position:relative;
+        z-index:1;
+    }
+
+    .learn-video-stage {
+        width:100%;
+        height:auto;
+        aspect-ratio:16 / 9;
+        border-radius:14px;
+    }
+
+    .learn-playlist {
+        width:100%;
+        height:min(42vh,340px);
+        min-height:0;
+        max-height:min(42vh,340px);
+        display:flex;
+        flex-direction:column;
+        aspect-ratio:auto;
+        overflow:hidden;
+        border-radius:14px;
+    }
+
+    .learn-thumbnails {
+        flex:1 1 auto;
+        min-height:0;
+        height:auto;
+        max-height:none;
+        display:grid;
+        grid-template-columns:1fr;
+        grid-auto-rows:max-content;
+        align-content:start;
+        gap:8px;
+        padding:8px;
+        overflow-y:auto;
+        overflow-x:hidden;
+        scrollbar-width:none;
+        -ms-overflow-style:none;
+    }
+
+    .learn-thumbnails::-webkit-scrollbar {
+        display:none;
+        width:0;
+        height:0;
+    }
+
+    .learn-thumb {
+        width:100%;
+        height:auto;
+        aspect-ratio:16 / 9;
+        margin:0;
+        border-radius:8px;
+        overflow:hidden;
+    }
+
+    .learn-thumb img {
+        width:100%;
+        height:100%;
+        object-fit:cover;
+    }
+
+    .learn-controls {
+        padding-top:11px;
+    }
+
+    .learn-lesson-meta {
+        width:100%;
+    }
+
+    .learn-nav {
+        width:100%;
+        justify-content:flex-end;
+    }
+
+    .learn-notes-input {
+        min-height:180px;
+        overflow-y:auto;
+        scrollbar-width:none;
+        -ms-overflow-style:none;
+    }
+
+    .learn-notes-input::-webkit-scrollbar {
+        display:none;
+        width:0;
+        height:0;
+    }
 }
 
-/* Hide note scrollbars but keep native scrolling. */
-.learn-notes-input {
-    overflow-y: auto !important;
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-}
-.learn-notes-input::-webkit-scrollbar { width: 0 !important; height: 0 !important; display: none !important; }
-
-/* Remove the old selector UI completely. */
+/* Remove the obsolete selector beside Lecture number, while preserving
+   the existing course-switching/progress UI elsewhere. */
 .learn-course-select-wrap,
 #learn-course-btn,
 #learn-course-menu,
-#learn-course-chevron { display: none !important; }
+#learn-course-chevron {
+    display:none !important;
+}
 
-/* Lecture number uses the same headline family as the Circle brand. */
+/* Lecture heading styling from the existing Circle visual system. */
 #learn-lecture-label {
-    font-family: var(--font-ui) !important;
-    font-size: 18px !important;
-    line-height: 1.2 !important;
-    font-weight: 500 !important;
-    letter-spacing: 0 !important;
-}
-</style>
-
-
-<style id="circle-final-panel-state-system">
-/* Final panel state system. Desktop uses a fixed-height three-state layout.
-   Mobile uses two buttons with an absolute overlay so opening a panel never
-   adds page height. */
-
-#learn-mobile-tools { display:none !important; }
-@media (min-width:1100px) {
-    .learn-left-column {
-        height:var(--learn-fixed-panel-height) !important;
-        min-height:0 !important;
-        max-height:var(--learn-fixed-panel-height) !important;
-        display:flex !important;
-        flex-direction:column !important;
-        gap:10px !important;
-        overflow:visible !important;
-        position:relative !important;
-    }
-    .learn-left-column .learn-course-sidebar,
-    .learn-left-column .learn-todo-sidebar {
-        flex:1 1 0 !important;
-        min-height:48px !important;
-        max-height:none !important;
-        height:auto !important;
-        margin:0 !important;
-        box-sizing:border-box !important;
-        overflow:visible !important;
-        transition:flex .24s ease, min-height .24s ease !important;
-    }
-    .learn-left-column[data-layout="half"] .learn-course-sidebar,
-    .learn-left-column[data-layout="half"] .learn-todo-sidebar {
-        flex:1 1 0 !important;
-    }
-    .learn-left-column[data-layout="learning-expanded"] .learn-course-sidebar {
-        flex:1 1 0 !important;
-    }
-    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar {
-        flex:0 0 49px !important;
-    }
-    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar {
-        flex:0 0 49px !important;
-    }
-    .learn-left-column[data-layout="todo-expanded"] .learn-todo-sidebar {
-        flex:1 1 0 !important;
-    }
-    .learn-left-column .learn-course-sidebar-list {
-        height:auto !important;
-        min-height:0 !important;
-        max-height:none !important;
-        flex:1 1 auto !important;
-        overflow-y:auto !important;
-    }
-    .learn-left-column .learn-todo-sidebar-body {
-        min-height:0 !important;
-        max-height:none !important;
-        flex:1 1 auto !important;
-        overflow:hidden !important;
-    }
-    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar-body,
-    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar-list {
-        opacity:.0 !important;
-        pointer-events:none !important;
-    }
-    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar,
-    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar {
-        overflow:hidden !important;
-    }
-    .learn-sidebar-control-toggle {
-        width:32px !important;
-        height:32px !important;
-        border-radius:10px !important;
-        font-weight:700 !important;
-    }
-    .learn-sidebar-control-toggle svg { width:17px !important; height:17px !important; stroke-width:2.5 !important; }
-    .learn-sidebar-control-menu { top:37px !important; }
-}
-
-@media (max-width:1099px) {
-    .learn-sidebar-control { display:none !important; }
-}
-
-@media (max-width:768px) {
-    .learn-mobile-progress { display:none !important; }
-    .learn-mobile-tools {
-        display:block !important;
-        position:relative !important;
-        width:100% !important;
-        margin:0 0 10px !important;
-        z-index:500 !important;
-    }
-    .learn-mobile-tool-buttons {
-        display:grid !important;
-        grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-        gap:8px !important;
-        width:100% !important;
-    }
-    .learn-mobile-tool-button {
-        min-width:0 !important;
-        min-height:56px !important;
-        border:1px solid rgba(255,255,255,.10) !important;
-        border-radius:13px !important;
-        background:linear-gradient(180deg,#111,#0a0a0a) !important;
-        color:#fff !important;
-        display:grid !important;
-        grid-template-columns:22px minmax(0,1fr) auto 14px !important;
-        align-items:center !important;
-        gap:8px !important;
-        padding:9px 10px !important;
-        text-align:left !important;
-        cursor:pointer !important;
-        box-shadow:0 10px 26px rgba(0,0,0,.22) !important;
-    }
-    .learn-mobile-tool-button.active {
-        border-color:rgba(84,219,148,.28) !important;
-        background:linear-gradient(180deg,#131914,#0b0d0c) !important;
-    }
-    .learn-mobile-tool-icon,
-    .learn-mobile-tool-icon svg { width:19px !important; height:19px !important; }
-    .learn-mobile-tool-icon { color:#d4d4d4 !important; }
-    .learn-mobile-tool-icon svg { fill:currentColor !important; }
-    .learn-mobile-tool-copy { min-width:0 !important; }
-    .learn-mobile-tool-copy strong { display:block !important; font:700 10px/1.2 var(--font-conversational) !important; color:#eee !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; }
-    .learn-mobile-tool-copy span { display:block !important; margin-top:3px !important; color:#777 !important; font:500 8px/1.2 var(--font-conversational) !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; }
-    .learn-mobile-tool-meta { color:#999 !important; text-align:right !important; font:600 8px/1.2 var(--font-conversational) !important; white-space:nowrap !important; }
-    .learn-mobile-tool-chevron,
-    .learn-mobile-tool-chevron svg { width:14px !important; height:14px !important; }
-    .learn-mobile-tool-chevron { color:#aaa !important; display:flex !important; align-items:center !important; justify-content:center !important; transition:transform .22s ease !important; }
-    .learn-mobile-tool-chevron svg { fill:currentColor !important; }
-    .learn-mobile-tool-button[aria-expanded="true"] .learn-mobile-tool-chevron { transform:rotate(180deg) !important; }
-
-    .learn-mobile-tool-overlay {
-        position:absolute !important;
-        top:64px !important;
-        left:0 !important;
-        right:0 !important;
-        z-index:700 !important;
-        max-height:min(62vh,520px) !important;
-        overflow:hidden !important;
-        border:1px solid rgba(255,255,255,.12) !important;
-        border-radius:15px !important;
-        background:rgba(8,8,8,.98) !important;
-        box-shadow:0 24px 60px rgba(0,0,0,.60) !important;
-        backdrop-filter:blur(16px) !important;
-        -webkit-backdrop-filter:blur(16px) !important;
-    }
-    .learn-mobile-tool-pane {
-        max-height:min(62vh,520px) !important;
-        overflow:hidden !important;
-        flex-direction:column !important;
-    }
-    .learn-mobile-tool-pane[hidden] { display:none !important; }
-    .learn-mobile-overlay-heading {
-        min-height:52px !important;
-        padding:10px 12px !important;
-        display:flex !important;
-        align-items:center !important;
-        justify-content:space-between !important;
-        gap:10px !important;
-        border-bottom:1px solid rgba(255,255,255,.07) !important;
-    }
-    .learn-mobile-overlay-heading strong { display:block !important; color:#eee !important; font:700 11px var(--font-conversational) !important; }
-    .learn-mobile-overlay-heading span { display:block !important; margin-top:3px !important; color:#777 !important; font:500 8px var(--font-conversational) !important; }
-    #learn-mobile-course-list {
-        max-height:calc(min(62vh,520px) - 52px) !important;
-        overflow-y:auto !important;
-        scrollbar-width:none !important;
-        -ms-overflow-style:none !important;
-        padding:7px !important;
-    }
-    #learn-mobile-course-list::-webkit-scrollbar { display:none !important; width:0 !important; height:0 !important; }
-    #learn-mobile-course-list .learn-course-progress-item { margin-bottom:4px !important; }
-    #learn-mobile-todo-list {
-        min-height:0 !important;
-        max-height:calc(min(62vh,520px) - 98px) !important;
-        overflow-y:auto !important;
-        scrollbar-width:none !important;
-        -ms-overflow-style:none !important;
-        padding:7px !important;
-    }
-    #learn-mobile-todo-list::-webkit-scrollbar { display:none !important; width:0 !important; height:0 !important; }
-    .learn-mobile-tool-pane .learn-empty-state { padding:10px 12px !important; }
-    .learn-mobile-tool-pane .learn-todo-composer { margin:0 7px 7px !important; }
-
-    .learn-workspace { position:relative !important; z-index:1 !important; }
+    font-family:var(--font-ui);
+    font-weight:500;
 }
 </style>
 
@@ -5280,6 +5071,7 @@ html, body {
         let learnPendingNotePayload = null;
         let learnStudyContextKey = '';
         let learnActiveRightPanel = 'playlist';
+        let learnMobileOpenPanel = null;
 
         try {
             learnCourseStats = JSON.parse(localStorage.getItem('circle_learn_course_stats_v1') || '{}') || {};
@@ -5979,8 +5771,7 @@ html, body {
             const column = document.querySelector('.learn-left-column');
             if (!column) return;
 
-            // Three-state desktop system only. The left column never grows beyond
-            // the fixed player height, and only one panel may occupy the full area.
+            /* Exactly one source of truth for desktop left-panel layout. */
             const legacyMap = {
                 'learning-minimized': 'todo-expanded',
                 'todo-minimized': 'learning-expanded'
@@ -5990,25 +5781,36 @@ html, body {
             column.dataset.layout = learnLeftLayout;
 
             if (persist) {
-                try { localStorage.setItem('circle_learn_left_layout_v1', learnLeftLayout); } catch (_) {}
+                try {
+                    localStorage.setItem('circle_learn_left_layout_v1', learnLeftLayout);
+                } catch (_) {}
             }
 
-            // Update the visual state of the compact control toggles.
             column.querySelectorAll('[data-sidebar-control]').forEach(control => {
                 const which = control.dataset.sidebarControl;
                 const toggle = control.querySelector('.learn-sidebar-control-toggle');
                 if (!toggle) return;
-                const isExpanded = learnLeftLayout === (which === 'learning' ? 'learning-expanded' : 'todo-expanded');
-                const isCollapsed = learnLeftLayout === (which === 'learning' ? 'todo-expanded' : 'learning-expanded');
+
+                const panelState =
+                    learnLeftLayout === 'half'
+                        ? 'split'
+                        : learnLeftLayout === (which === 'learning' ? 'learning-expanded' : 'todo-expanded')
+                            ? 'expanded'
+                            : 'minimized';
+
                 const path = toggle.querySelector('path');
                 if (path) {
-                    path.setAttribute('d', isExpanded
-                        ? 'm6.6 15 5.4-5.4 5.4 5.4'
-                        : isCollapsed
-                            ? 'm6.6 9 5.4 5.4L17.4 9'
-                            : 'm6.6 9 5.4 5.4L17.4 9');
+                    /* Split = double chevron, expanded = up, minimized = down. */
+                    path.setAttribute('d',
+                        panelState === 'split'
+                            ? 'M7 6l5 5 5-5 M7 18l5-5 5 5'
+                            : panelState === 'expanded'
+                                ? 'M6.6 14.5 12 9.1l5.4 5.4'
+                                : 'M6.6 9.5 12 14.9l5.4-5.4'
+                    );
                 }
-                toggle.setAttribute('data-panel-state', isExpanded ? 'expanded' : (isCollapsed ? 'minimized' : 'split'));
+
+                toggle.setAttribute('data-panel-state', panelState);
                 toggle.setAttribute('aria-label', `${which === 'learning' ? 'Your Learning' : 'My Tasks'} panel controls`);
             });
 
@@ -7145,6 +6947,59 @@ setInterval(() => {
             saveLearnAuxState();
         }
 
+        function closeLearnMobilePanels() {
+            const overlay = document.getElementById('learn-mobile-tool-overlay');
+            learnMobileOpenPanel = null;
+
+            if (overlay) {
+                overlay.classList.remove('is-open');
+                overlay.setAttribute('aria-hidden', 'true');
+                /* Keep it in layout flow at zero height so open/close can animate. */
+                overlay.hidden = false;
+            }
+
+            document.querySelectorAll('.learn-mobile-tool-button').forEach(button => {
+                button.setAttribute('aria-expanded', 'false');
+                button.classList.remove('active');
+            });
+            document.querySelectorAll('.learn-mobile-tool-pane').forEach(pane => {
+                pane.hidden = true;
+            });
+        }
+
+        function toggleLearnMobilePanel(panel) {
+            const overlay = document.getElementById('learn-mobile-tool-overlay');
+            const buttons = document.querySelectorAll('.learn-mobile-tool-button');
+            const panes = document.querySelectorAll('.learn-mobile-tool-pane');
+            if (!overlay || !panel) return;
+
+            const next = learnMobileOpenPanel === panel ? null : panel;
+            learnMobileOpenPanel = next;
+
+            buttons.forEach(button => {
+                const active = button.dataset.mobilePanel === next;
+                button.setAttribute('aria-expanded', String(active));
+                button.classList.toggle('active', active);
+            });
+
+            panes.forEach(pane => {
+                pane.hidden = pane.dataset.mobilePane !== next;
+            });
+
+            overlay.hidden = false;
+            if (!next) {
+                overlay.classList.remove('is-open');
+                overlay.setAttribute('aria-hidden', 'true');
+                return;
+            }
+
+            overlay.setAttribute('aria-hidden', 'false');
+            requestAnimationFrame(() => overlay.classList.add('is-open'));
+
+            if (next === 'todo') renderLearnTodoList();
+            if (next === 'learning') renderLearnCourseSidebar();
+        }
+
         function renderLearnCourseSidebar() {
             const desktop = document.getElementById('learn-course-sidebar-list');
             const mobile = document.getElementById('learn-mobile-course-list');
@@ -7179,13 +7034,7 @@ setInterval(() => {
                     button.addEventListener('click', () => {
                         loadLearnCourse(button.dataset.courseId, false);
                         if (target === mobile) {
-                            const overlay = document.getElementById('learn-mobile-tool-overlay');
-                            if (overlay) overlay.hidden = true;
-                            document.querySelectorAll('.learn-mobile-tool-button').forEach(btn => {
-                                btn.setAttribute('aria-expanded', 'false');
-                                btn.classList.remove('active');
-                            });
-                            document.querySelectorAll('.learn-mobile-tool-pane').forEach(pane => { pane.hidden = true; });
+                            closeLearnMobilePanels();
                         }
                     });
                 });
@@ -7390,53 +7239,43 @@ setInterval(() => {
 
             const mobileOverlay = document.getElementById('learn-mobile-tool-overlay');
             const mobileButtons = document.querySelectorAll('.learn-mobile-tool-button');
-            const mobilePanes = document.querySelectorAll('.learn-mobile-tool-pane');
-            let mobileOpenPanel = null;
 
-            const closeMobilePanels = () => {
-                mobileOpenPanel = null;
-                if (mobileOverlay) mobileOverlay.hidden = true;
-                mobileButtons.forEach(button => button.setAttribute('aria-expanded', 'false'));
-                mobilePanes.forEach(pane => pane.hidden = true);
-            };
-
-            const openMobilePanel = (panel) => {
-                if (!mobileOverlay) return;
-                const next = mobileOpenPanel === panel ? null : panel;
-                mobileOpenPanel = next;
-                mobileOverlay.hidden = !next;
-                mobileButtons.forEach(button => {
-                    const active = button.dataset.mobilePanel === next;
-                    button.setAttribute('aria-expanded', String(active));
-                    button.classList.toggle('active', active);
-                });
-                mobilePanes.forEach(pane => {
-                    const active = pane.dataset.mobilePane === next;
-                    pane.hidden = !active;
-                });
-                if (next === 'todo') renderLearnTodoList();
-                if (next === 'learning') renderLearnCourseSidebar();
-            };
+            /* Mobile starts closed, but the overlay stays in normal flow at zero
+               height so opening it can push the video downward naturally. */
+            if (mobileOverlay) {
+                mobileOverlay.hidden = false;
+                mobileOverlay.classList.remove('is-open');
+                mobileOverlay.setAttribute('aria-hidden', 'true');
+            }
+            closeLearnMobilePanels();
 
             mobileButtons.forEach(button => {
                 button.addEventListener('click', event => {
                     event.preventDefault();
                     event.stopPropagation();
-                    openMobilePanel(button.dataset.mobilePanel);
+                    if (window.innerWidth <= 768) {
+                        toggleLearnMobilePanel(button.dataset.mobilePanel);
+                    }
                 });
             });
 
             document.addEventListener('click', event => {
-                if (window.innerWidth > 768 || !mobileOpenPanel) return;
-                if (!event.target.closest('#learn-mobile-tools')) closeMobilePanels();
+                if (window.innerWidth > 768 || !learnMobileOpenPanel) return;
+                if (!event.target.closest('#learn-mobile-tools')) closeLearnMobilePanels();
             });
 
             document.addEventListener('keydown', event => {
-                if (event.key === 'Escape' && mobileOpenPanel) closeMobilePanels();
+                if (event.key === 'Escape' && learnMobileOpenPanel) closeLearnMobilePanels();
             });
 
-            // Legacy desktop-only collapsible behavior is intentionally disabled;
-            // the unified desktop three-action state machine above owns the left side.
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768 && learnMobileOpenPanel) {
+                    closeLearnMobilePanels();
+                }
+            });
+
+            /* Legacy desktop collapsible behaviour remains disabled because the
+               three-state desktop controller above owns the left side. */
             const todoSidebarToggle = document.getElementById('learn-todo-sidebar-toggle');
             if (todoSidebarToggle) {
                 todoSidebarToggle.addEventListener('click', event => {
