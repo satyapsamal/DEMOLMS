@@ -2867,6 +2867,134 @@
         }
 </style>
 
+<style id="circle-learn-layout-system">
+/* =========================================================
+   CIRCLE LEARN - SINGLE AUTHORITATIVE RESPONSIVE LAYOUT
+   ========================================================= */
+#learn-layer{box-sizing:border-box;overflow-y:auto;overflow-x:hidden}
+/* Mobile Learn controls are opt-in and must never render on desktop/tablet. */
+#learn-mobile-tools{display:none}
+.learn-shell{width:min(1840px,calc(100vw - 32px));max-width:1840px;min-height:0;margin:0 auto}
+.learn-main-column{min-width:0}
+.learn-video-stage{width:100%;height:auto;aspect-ratio:16/9;min-width:0}
+.learn-playlist{width:100%;min-width:0;min-height:0;aspect-ratio:auto;overflow:hidden}
+.learn-thumbnails{width:100%;height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none}
+.learn-thumbnails::-webkit-scrollbar{width:0;height:0;display:none}
+
+.learn-left-column{min-width:0;min-height:0}
+.learn-left-column>.learn-course-sidebar,.learn-left-column>.learn-todo-sidebar{
+  min-width:0;min-height:0;margin:0;box-sizing:border-box;display:flex;flex-direction:column;
+  background:linear-gradient(180deg,rgba(16,16,16,.98),rgba(8,8,8,.98));
+  border:1px solid rgba(255,255,255,.09);border-radius:14px;box-shadow:0 16px 40px rgba(0,0,0,.22);overflow:visible;
+}
+.learn-sidebar-heading,.learn-todo-sidebar .learn-collapsible-heading{
+  position:relative;flex:0 0 48px;min-height:48px;box-sizing:border-box;padding:0 12px;
+  display:flex;align-items:center;gap:9px;color:#f2f2f2;border-bottom:1px solid rgba(255,255,255,.07);
+  font:600 12px var(--font-conversational)
+}
+.learn-sidebar-heading-icon{width:17px;height:17px;flex:0 0 17px;display:inline-flex;align-items:center;justify-content:center;color:#d9d9d9}
+.learn-sidebar-heading-icon svg{width:17px;height:17px;fill:currentColor}
+.learn-sidebar-count{margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.07);color:#aaa;font:700 9px var(--font-conversational)}
+.learn-course-sidebar-list{flex:1 1 auto;min-height:0;height:auto;max-height:none;padding:8px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none}
+.learn-course-sidebar-list::-webkit-scrollbar{width:0;height:0;display:none}
+.learn-course-progress-item{width:100%;min-width:0;border:1px solid transparent;background:transparent;color:#fff;border-radius:10px;display:flex;align-items:flex-start;gap:10px;padding:10px 8px;margin:0 0 4px;text-align:left;cursor:pointer;font-family:var(--font-conversational);transition:background .18s ease,border-color .18s ease}
+.learn-course-progress-item:hover{background:rgba(255,255,255,.045)}
+.learn-course-progress-item.active{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.08)}
+.learn-course-icon{width:28px;height:28px;flex:0 0 28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font:700 9px var(--font-conversational);color:#fff;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08)}
+.learn-course-icon-businessCommunication{background:rgba(88,145,255,.18)}
+.learn-course-icon-businessMathematics{background:rgba(160,94,255,.18)}
+.learn-course-icon-computerApplications{background:rgba(255,166,67,.18)}
+.learn-course-icon-marketingSales{background:rgba(255,85,100,.18)}
+.learn-course-icon-entrepreneurship{background:rgba(80,190,125,.18)}
+.learn-course-progress-copy{flex:1;min-width:0}
+.learn-course-progress-copy strong{display:block;color:#f0f0f0;font:600 11px/1.25 var(--font-conversational)}
+.learn-course-progress-copy small{display:block;margin-top:2px;color:#7c7c7c;font:500 9px var(--font-conversational)}
+.learn-course-progress-line{display:block;width:100%;height:4px;margin:7px 0 4px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+.learn-course-progress-line>span{display:block;height:100%;border-radius:inherit;background:rgba(100,214,145,.9);transition:width .35s ease}
+.learn-course-progress-meta{display:flex;justify-content:space-between;gap:8px;color:#787878;font:500 8px var(--font-conversational)}
+
+@media (min-width:1100px){
+  #learn-layer{padding-left:16px;padding-right:16px;padding-bottom:28px}
+  .learn-shell{display:grid;grid-template-columns:240px minmax(0,1fr);gap:16px;align-items:start}
+  .learn-main-column{grid-column:2}
+  .learn-workspace{width:100%;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start;min-width:0}
+  .learn-left-column{grid-column:1;display:grid;grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:10px;height:var(--learn-fixed-panel-height,auto);max-height:var(--learn-fixed-panel-height,none);overflow:visible}
+  .learn-left-column[data-layout="half"]{grid-template-rows:minmax(0,1fr) minmax(0,1fr)}
+  .learn-left-column[data-layout="learning-expanded"]{grid-template-rows:minmax(0,1fr) 48px}
+  .learn-left-column[data-layout="todo-expanded"]{grid-template-rows:48px minmax(0,1fr)}
+  .learn-left-column>.learn-course-sidebar,.learn-left-column>.learn-todo-sidebar{overflow:visible;transition:grid-template-rows .22s ease,min-height .22s ease}
+  .learn-left-column[data-layout="learning-expanded"]>.learn-todo-sidebar,.learn-left-column[data-layout="todo-expanded"]>.learn-course-sidebar{min-height:48px;overflow:hidden}
+  .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar-body,.learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar-list{display:none!important}
+  .learn-todo-sidebar-body{flex:1 1 auto;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+  .learn-todo-list{flex:1 1 auto;min-height:0;max-height:none;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none}
+  .learn-todo-list::-webkit-scrollbar{width:0;height:0;display:none}
+  .learn-sidebar-control{position:relative;margin-left:auto;flex:0 0 auto}
+  .learn-sidebar-control-toggle{width:32px;height:32px;padding:0;border:1px solid rgba(255,255,255,.12);border-radius:9px;background:rgba(255,255,255,.035);color:#c9c9c9;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease}
+  .learn-sidebar-control-toggle:hover,.learn-sidebar-control-toggle[aria-expanded="true"]{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);color:#fff}
+  .learn-sidebar-control-toggle svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  .learn-sidebar-control-menu{position:absolute;top:38px;right:0;z-index:10000;display:none;gap:4px;padding:5px;border:1px solid rgba(255,255,255,.12);border-radius:11px;background:rgba(10,10,10,.98);box-shadow:0 16px 36px rgba(0,0,0,.5)}
+  .learn-sidebar-control-menu.open{display:flex}
+  .learn-sidebar-control-menu button{width:32px;height:30px;border:0;border-radius:8px;background:transparent;color:#aaa;display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+  .learn-sidebar-control-menu button:hover{background:rgba(255,255,255,.08);color:#fff}
+  .learn-sidebar-control-menu button svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+}
+
+@media (min-width:769px) and (max-width:1099px){
+  .learn-left-column{display:none!important}
+  .learn-shell{width:min(100%,calc(100vw - 40px));}
+  .learn-main-column{width:100%}
+  .learn-workspace{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:12px;align-items:start}
+  .learn-playlist{height:var(--learn-fixed-panel-height,auto);min-height:0}
+  .learn-thumbnails{height:100%}
+}
+
+@media (max-width:768px){
+  #learn-layer{padding-left:10px;padding-right:10px;padding-top:calc(var(--shell-header-height) + 10px);padding-bottom:20px}
+  #learn-mobile-tools{display:block}
+  .learn-shell{width:100%;max-width:none;display:block}
+  .learn-left-column{display:none!important}
+  .learn-main-column{width:100%;position:relative;min-width:0}
+  #learn-mobile-tools{display:block;width:100%;margin:0 0 10px;position:relative;z-index:20}
+  .learn-mobile-tool-buttons{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;width:100%}
+  .learn-mobile-tool-button{min-width:0;min-height:54px;width:100%;padding:9px 10px;border:1px solid rgba(255,255,255,.10);border-radius:13px;background:linear-gradient(180deg,#111,#0a0a0a);color:#fff;display:grid;grid-template-columns:20px minmax(0,1fr) auto 17px;align-items:center;gap:8px;text-align:left;cursor:pointer;box-sizing:border-box}
+  .learn-mobile-tool-button.active{border-color:rgba(84,219,148,.30);background:linear-gradient(180deg,#131914,#0b0d0c)}
+  .learn-mobile-tool-icon,.learn-mobile-tool-icon svg{width:19px;height:19px}
+  .learn-mobile-tool-icon{color:#d7d7d7;display:inline-flex;align-items:center;justify-content:center}
+  .learn-mobile-tool-icon svg{fill:currentColor}
+  .learn-mobile-tool-copy{min-width:0}
+  .learn-mobile-tool-copy strong{display:block;color:#eee;font:700 10px/1.2 var(--font-conversational);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .learn-mobile-tool-copy span{display:block;margin-top:3px;color:#777;font:500 8px/1.2 var(--font-conversational);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .learn-mobile-tool-meta{color:#999;text-align:right;font:600 8px/1.2 var(--font-conversational);white-space:nowrap}
+  .learn-mobile-tool-chevron,.learn-mobile-tool-chevron svg{width:17px;height:17px}
+  .learn-mobile-tool-chevron{color:#ddd;display:flex;align-items:center;justify-content:center;transition:transform .22s ease}
+  .learn-mobile-tool-chevron svg{fill:currentColor}
+  .learn-mobile-tool-button[aria-expanded="true"] .learn-mobile-tool-chevron{transform:rotate(180deg)}
+  .learn-mobile-tool-overlay{position:relative;top:auto;left:auto;right:auto;width:100%;max-height:0;margin-top:0;overflow:hidden;opacity:0;pointer-events:none;border:1px solid transparent;border-radius:15px;background:rgba(8,8,8,.98);box-shadow:0 20px 50px rgba(0,0,0,.45);transition:max-height .24s ease,margin-top .24s ease,opacity .18s ease,border-color .18s ease}
+  .learn-mobile-tool-overlay.open{max-height:min(62vh,520px);margin-top:8px;opacity:1;pointer-events:auto;border-color:rgba(255,255,255,.12)}
+  .learn-mobile-tool-pane{display:flex;flex-direction:column;min-height:0;max-height:min(62vh,520px);overflow:hidden}
+  .learn-mobile-tool-pane[hidden]{display:none!important}
+  .learn-mobile-overlay-heading{flex:0 0 52px;min-height:52px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(255,255,255,.07)}
+  .learn-mobile-overlay-heading strong{display:block;color:#eee;font:700 11px var(--font-conversational)}
+  .learn-mobile-overlay-heading span{display:block;margin-top:3px;color:#777;font:500 8px var(--font-conversational)}
+  #learn-mobile-course-list{flex:1 1 auto;min-height:0;max-height:calc(min(62vh,520px) - 52px);overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;padding:7px}
+  #learn-mobile-course-list::-webkit-scrollbar{width:0;height:0;display:none}
+  #learn-mobile-course-list .learn-course-progress-item{margin-bottom:4px}
+  #learn-mobile-todo-list{flex:1 1 auto;min-height:0;max-height:calc(min(62vh,520px) - 52px);overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;padding:7px}
+  #learn-mobile-todo-list::-webkit-scrollbar{width:0;height:0;display:none}
+  .learn-workspace{width:100%;display:grid;grid-template-columns:1fr;grid-template-rows:auto auto;gap:10px;align-items:start}
+  .learn-video-stage{width:100%;height:auto;aspect-ratio:16/9;border-radius:14px}
+  .learn-playlist{width:100%;height:290px;min-height:290px;max-height:290px;border-radius:14px}
+  .learn-thumbnails{display:grid;grid-template-columns:1fr;grid-auto-rows:max-content;align-content:start;gap:8px;padding:7px}
+  .learn-thumb{width:100%;aspect-ratio:16/9;margin:0;border-radius:8px}
+  .learn-controls{width:100%;padding-top:11px}
+}
+
+.learn-notes-input{overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none}
+.learn-notes-input::-webkit-scrollbar{width:0;height:0;display:none}
+.learn-course-select-wrap,#learn-course-btn,#learn-course-menu,#learn-course-chevron{display:none!important}
+#learn-lecture-label{font-family:var(--font-ui);font-size:18px;line-height:1.2;font-weight:500;letter-spacing:0}
+</style>
+
 <style id="circle-profile-menu-ui">
 /* =========================================================
    PROFILE IN MORE MENU
@@ -2925,664 +3053,6 @@
     .profile-modal-card { padding:17px; border-radius:16px; }
 }
 </style>
-</style>
-
-
-<style id="circle-learn-layout-system">
-/* =========================================================
-   CIRCLE LEARN LAYOUT SYSTEM
-   One authoritative responsive layout/state system.
-   Existing Learn visual language is preserved.
-   ========================================================= */
-
-#learn-layer { box-sizing:border-box; }
-.learn-shell { box-sizing:border-box; min-width:0; }
-.learn-main-column { min-width:0; }
-
-/* ---------- Desktop: >= 1100px ---------- */
-@media (min-width:1100px) {
-    #learn-layer {
-        overflow-y:auto;
-        overflow-x:hidden;
-        padding-left:16px;
-        padding-right:16px;
-        padding-bottom:28px;
-    }
-
-    .learn-shell {
-        width:min(1840px, calc(100vw - 32px));
-        max-width:1840px;
-        margin:0 auto;
-        display:grid;
-        grid-template-columns:240px minmax(0,1fr);
-        gap:16px;
-        align-items:start;
-    }
-
-    .learn-workspace {
-        width:100%;
-        display:grid;
-        grid-template-columns:minmax(0,1fr) 340px;
-        grid-template-rows:var(--learn-fixed-panel-height, auto);
-        gap:16px;
-        align-items:start;
-        min-width:0;
-    }
-
-    .learn-video-stage {
-        width:100%;
-        height:auto;
-        min-height:0;
-        aspect-ratio:16 / 9;
-        align-self:start;
-    }
-
-    .learn-playlist {
-        width:100%;
-        height:var(--learn-fixed-panel-height, auto);
-        min-height:0;
-        max-height:var(--learn-fixed-panel-height, none);
-        aspect-ratio:auto;
-        align-self:start;
-        display:flex;
-        flex-direction:column;
-        overflow:hidden;
-        box-sizing:border-box;
-    }
-
-    .learn-thumbnails {
-        flex:1 1 auto;
-        min-height:0;
-        height:auto;
-        max-height:none;
-        overflow-y:auto;
-        overflow-x:hidden;
-        scrollbar-width:none;
-        -ms-overflow-style:none;
-        overscroll-behavior:contain;
-        padding:8px;
-    }
-
-    .learn-thumbnails::-webkit-scrollbar {
-        display:none;
-        width:0;
-        height:0;
-    }
-
-    .learn-thumb {
-        width:100%;
-        aspect-ratio:16 / 9;
-        margin:0 0 8px;
-        border-radius:9px;
-    }
-
-    /* Left column exactly follows rendered video height. */
-    .learn-left-column {
-        width:100%;
-        height:var(--learn-fixed-panel-height, auto);
-        min-height:0;
-        max-height:var(--learn-fixed-panel-height, none);
-        display:grid;
-        grid-template-columns:minmax(0,1fr);
-        grid-template-rows:minmax(0,1fr) minmax(0,1fr);
-        gap:10px;
-        position:relative;
-        overflow:visible;
-        box-sizing:border-box;
-        align-self:start;
-    }
-
-    .learn-left-column > .learn-course-sidebar,
-    .learn-left-column > .learn-todo-sidebar {
-        min-height:0;
-        height:auto;
-        max-height:none;
-        margin:0;
-        box-sizing:border-box;
-        overflow:visible;
-        position:relative;
-        display:flex;
-        flex-direction:column;
-        min-width:0;
-    }
-
-    .learn-left-column > .learn-course-sidebar { z-index:2; }
-    .learn-left-column > .learn-todo-sidebar { z-index:1; }
-
-    /* The ONLY three desktop states. */
-    .learn-left-column[data-layout="half"] {
-        grid-template-rows:minmax(0,1fr) minmax(0,1fr);
-    }
-
-    .learn-left-column[data-layout="learning-expanded"] {
-        grid-template-rows:minmax(0,1fr) 48px;
-    }
-
-    .learn-left-column[data-layout="todo-expanded"] {
-        grid-template-rows:48px minmax(0,1fr);
-    }
-
-    .learn-left-column .learn-sidebar-heading,
-    .learn-left-column .learn-collapsible-heading {
-        flex:0 0 48px;
-        box-sizing:border-box;
-    }
-
-    .learn-left-column .learn-course-sidebar-list {
-        flex:1 1 auto;
-        min-height:0;
-        height:auto;
-        max-height:none;
-        overflow-y:auto;
-        overflow-x:hidden;
-        scrollbar-width:none;
-        -ms-overflow-style:none;
-    }
-
-    .learn-left-column .learn-course-sidebar-list::-webkit-scrollbar {
-        display:none;
-        width:0;
-        height:0;
-    }
-
-    .learn-left-column .learn-todo-sidebar-body {
-        flex:1 1 auto;
-        min-height:0;
-        height:auto;
-        max-height:none;
-        overflow:hidden;
-        display:flex;
-        flex-direction:column;
-    }
-
-    /* Collapsed/minimised partner remains as a clickable header only. */
-    .learn-left-column[data-layout="learning-expanded"] .learn-todo-sidebar-body,
-    .learn-left-column[data-layout="todo-expanded"] .learn-course-sidebar-list {
-        display:none;
-    }
-
-    .learn-left-column[data-layout="learning-expanded"] > .learn-todo-sidebar,
-    .learn-left-column[data-layout="todo-expanded"] > .learn-course-sidebar {
-        overflow:visible;
-    }
-
-    /* Keep the collapsed header visually useful. */
-    .learn-left-column[data-layout="learning-expanded"] > .learn-todo-sidebar .learn-sidebar-heading,
-    .learn-left-column[data-layout="todo-expanded"] > .learn-course-sidebar .learn-sidebar-heading {
-        min-height:48px;
-    }
-
-    /* Context-aware control, with one three-action menu. */
-    .learn-sidebar-control {
-        position:relative;
-        margin-left:auto;
-        flex:0 0 auto;
-    }
-
-    .learn-sidebar-control-toggle {
-        width:32px;
-        height:32px;
-        border:1px solid rgba(255,255,255,.10);
-        background:rgba(255,255,255,.035);
-        color:#aaa;
-        border-radius:9px;
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        cursor:pointer;
-        padding:0;
-        transition:background .18s ease,border-color .18s ease,color .18s ease;
-    }
-
-    .learn-sidebar-control-toggle:hover,
-    .learn-sidebar-control-toggle[aria-expanded="true"] {
-        background:rgba(255,255,255,.08);
-        border-color:rgba(255,255,255,.20);
-        color:#fff;
-    }
-
-    .learn-sidebar-control-toggle svg {
-        width:17px;
-        height:17px;
-        fill:none;
-        stroke:currentColor;
-        stroke-width:2.5;
-        stroke-linecap:round;
-        stroke-linejoin:round;
-        transition:transform .18s ease;
-    }
-
-    .learn-sidebar-control-toggle[data-panel-state="expanded"] svg {
-        transform:translateY(-1px);
-    }
-
-    .learn-sidebar-control-toggle[data-panel-state="minimized"] svg {
-        transform:translateY(1px);
-    }
-
-    .learn-sidebar-control-menu {
-        position:absolute;
-        top:38px;
-        right:0;
-        z-index:10000;
-        display:none;
-        gap:4px;
-        padding:5px;
-        border:1px solid rgba(255,255,255,.12);
-        border-radius:11px;
-        background:rgba(10,10,10,.98);
-        box-shadow:0 16px 36px rgba(0,0,0,.48);
-        white-space:nowrap;
-    }
-
-    .learn-sidebar-control-menu.open { display:flex; }
-
-    .learn-sidebar-control-menu button {
-        width:32px;
-        height:30px;
-        border:0;
-        border-radius:8px;
-        background:transparent;
-        color:#aaa;
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        cursor:pointer;
-        padding:0;
-    }
-
-    .learn-sidebar-control-menu button:hover {
-        background:rgba(255,255,255,.08);
-        color:#fff;
-    }
-
-    .learn-sidebar-control-menu button svg {
-        width:15px;
-        height:15px;
-        fill:none;
-        stroke:currentColor;
-        stroke-width:2.2;
-        stroke-linecap:round;
-        stroke-linejoin:round;
-    }
-
-    .learn-sidebar-control-menu button[data-layout-action="half"] svg {
-        transform:none;
-    }
-}
-
-/* ---------- Tablet: 769px–1099px ---------- */
-@media (min-width:769px) and (max-width:1099px) {
-    .learn-left-column { display:none !important; }
-    #learn-layer {
-        padding-left:20px;
-        padding-right:20px;
-    }
-    .learn-shell {
-        width:min(100%, calc(100vw - 40px));
-        max-width:none;
-    }
-    .learn-workspace {
-        display:grid;
-        grid-template-columns:minmax(0,1fr) 300px;
-        grid-template-rows:auto;
-        gap:12px;
-        align-items:start;
-    }
-    .learn-video-stage {
-        width:100%;
-        height:auto;
-        aspect-ratio:16 / 9;
-    }
-    .learn-playlist {
-        width:100%;
-        height:var(--learn-fixed-panel-height, auto);
-        min-height:0;
-        max-height:var(--learn-fixed-panel-height, none);
-        display:flex;
-        flex-direction:column;
-        overflow:hidden;
-    }
-    .learn-thumbnails {
-        flex:1 1 auto;
-        min-height:0;
-        overflow-y:auto;
-        scrollbar-width:none;
-        -ms-overflow-style:none;
-    }
-    .learn-thumbnails::-webkit-scrollbar { display:none; width:0; height:0; }
-    #learn-mobile-tools { display:none !important; }
-}
-
-/* ---------- Mobile: <= 768px ---------- */
-@media (max-width:768px) {
-    #learn-layer {
-        overflow-y:auto;
-        overflow-x:hidden;
-        padding:calc(var(--shell-header-height) + 10px) 10px 28px;
-    }
-
-    .learn-shell {
-        width:100%;
-        max-width:none;
-        display:block;
-    }
-
-    .learn-left-column,
-    .learn-mobile-progress {
-        display:none !important;
-    }
-
-    /* Buttons first, then optional panel, then video. */
-    #learn-mobile-tools {
-        display:block;
-        position:relative;
-        width:100%;
-        margin:0 0 10px;
-        z-index:500;
-        overflow:visible;
-    }
-
-    .learn-mobile-tool-buttons {
-        display:grid;
-        grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-        gap:8px;
-        width:100%;
-        position:relative;
-        z-index:2;
-    }
-
-    .learn-mobile-tool-button {
-        width:100%;
-        min-width:0;
-        min-height:54px;
-        padding:9px 11px;
-        border:1px solid rgba(255,255,255,.10);
-        border-radius:13px;
-        background:linear-gradient(180deg,#111,#0a0a0a);
-        color:#fff;
-        display:grid;
-        grid-template-columns:20px minmax(0,1fr) auto 18px;
-        align-items:center;
-        gap:8px;
-        box-sizing:border-box;
-        text-align:left;
-        cursor:pointer;
-        box-shadow:0 10px 26px rgba(0,0,0,.22);
-    }
-
-    .learn-mobile-tool-button.active {
-        border-color:rgba(84,219,148,.28);
-        background:linear-gradient(180deg,#131914,#0b0d0c);
-    }
-
-    .learn-mobile-tool-icon,
-    .learn-mobile-tool-icon svg {
-        width:19px;
-        height:19px;
-    }
-
-    .learn-mobile-tool-icon {
-        color:#d4d4d4;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-    }
-
-    .learn-mobile-tool-icon svg { fill:currentColor; }
-
-    .learn-mobile-tool-copy {
-        min-width:0;
-    }
-
-    .learn-mobile-tool-copy strong {
-        display:block;
-        color:#eee;
-        font:700 10px/1.2 var(--font-conversational);
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-    }
-
-    .learn-mobile-tool-copy span {
-        display:block;
-        margin-top:3px;
-        color:#777;
-        font:500 8px/1.2 var(--font-conversational);
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-    }
-
-    .learn-mobile-tool-meta {
-        color:#999;
-        text-align:right;
-        font:600 8px/1.2 var(--font-conversational);
-        white-space:nowrap;
-    }
-
-    .learn-mobile-tool-chevron,
-    .learn-mobile-tool-chevron svg {
-        width:17px;
-        height:17px;
-    }
-
-    .learn-mobile-tool-chevron {
-        color:#ddd;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        transition:transform .22s ease,color .18s ease;
-    }
-
-    .learn-mobile-tool-chevron svg { fill:currentColor; }
-
-    .learn-mobile-tool-button[aria-expanded="true"] .learn-mobile-tool-chevron {
-        transform:rotate(180deg);
-        color:#fff;
-    }
-
-    /* Normal document flow. Opening this panel pushes the video downward. */
-    #learn-mobile-tool-overlay {
-        display:block;
-        position:relative;
-        width:100%;
-        max-height:0;
-        margin:0;
-        opacity:0;
-        visibility:hidden;
-        overflow:hidden;
-        pointer-events:none;
-        border:1px solid transparent;
-        border-radius:15px;
-        background:rgba(8,8,8,.985);
-        box-shadow:0 20px 55px rgba(0,0,0,.52);
-        transition:max-height .26s cubic-bezier(.25,1,.5,1),
-                   margin .22s ease,
-                   opacity .18s ease,
-                   border-color .18s ease;
-        box-sizing:border-box;
-        z-index:1;
-    }
-
-    #learn-mobile-tool-overlay.is-open {
-        max-height:min(62vh,520px);
-        margin:10px 0 0;
-        opacity:1;
-        visibility:visible;
-        pointer-events:auto;
-        border-color:rgba(255,255,255,.12);
-    }
-
-    .learn-mobile-tool-pane {
-        display:flex;
-        flex-direction:column;
-        min-height:0;
-        max-height:min(62vh,520px);
-        overflow:hidden;
-    }
-
-    .learn-mobile-tool-pane[hidden] { display:none !important; }
-
-    .learn-mobile-overlay-heading {
-        flex:0 0 52px;
-        min-height:52px;
-        padding:10px 12px;
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        gap:10px;
-        border-bottom:1px solid rgba(255,255,255,.07);
-    }
-
-    .learn-mobile-overlay-heading strong {
-        display:block;
-        color:#eee;
-        font:700 11px var(--font-conversational);
-    }
-
-    .learn-mobile-overlay-heading span {
-        display:block;
-        margin-top:3px;
-        color:#777;
-        font:500 8px var(--font-conversational);
-    }
-
-    #learn-mobile-course-list,
-    #learn-mobile-todo-list {
-        flex:1 1 auto;
-        min-height:0;
-        max-height:none;
-        overflow-y:auto;
-        overflow-x:hidden;
-        scrollbar-width:none;
-        -ms-overflow-style:none;
-        padding:7px;
-    }
-
-    #learn-mobile-course-list::-webkit-scrollbar,
-    #learn-mobile-todo-list::-webkit-scrollbar {
-        display:none;
-        width:0;
-        height:0;
-    }
-
-    .learn-mobile-tool-pane .learn-empty-state { padding:10px 12px; }
-    .learn-mobile-tool-pane .learn-todo-composer { margin:0 7px 7px; }
-
-    /* Video follows the optional expanded panel naturally. */
-    .learn-main-column { min-width:0; }
-    .learn-workspace {
-        width:100%;
-        display:grid;
-        grid-template-columns:1fr;
-        grid-template-rows:auto auto;
-        gap:10px;
-        align-items:start;
-        position:relative;
-        z-index:1;
-    }
-
-    .learn-video-stage {
-        width:100%;
-        height:auto;
-        aspect-ratio:16 / 9;
-        border-radius:14px;
-    }
-
-    .learn-playlist {
-        width:100%;
-        height:min(42vh,340px);
-        min-height:0;
-        max-height:min(42vh,340px);
-        display:flex;
-        flex-direction:column;
-        aspect-ratio:auto;
-        overflow:hidden;
-        border-radius:14px;
-    }
-
-    .learn-thumbnails {
-        flex:1 1 auto;
-        min-height:0;
-        height:auto;
-        max-height:none;
-        display:grid;
-        grid-template-columns:1fr;
-        grid-auto-rows:max-content;
-        align-content:start;
-        gap:8px;
-        padding:8px;
-        overflow-y:auto;
-        overflow-x:hidden;
-        scrollbar-width:none;
-        -ms-overflow-style:none;
-    }
-
-    .learn-thumbnails::-webkit-scrollbar {
-        display:none;
-        width:0;
-        height:0;
-    }
-
-    .learn-thumb {
-        width:100%;
-        height:auto;
-        aspect-ratio:16 / 9;
-        margin:0;
-        border-radius:8px;
-        overflow:hidden;
-    }
-
-    .learn-thumb img {
-        width:100%;
-        height:100%;
-        object-fit:cover;
-    }
-
-    .learn-controls {
-        padding-top:11px;
-    }
-
-    .learn-lesson-meta {
-        width:100%;
-    }
-
-    .learn-nav {
-        width:100%;
-        justify-content:flex-end;
-    }
-
-    .learn-notes-input {
-        min-height:180px;
-        overflow-y:auto;
-        scrollbar-width:none;
-        -ms-overflow-style:none;
-    }
-
-    .learn-notes-input::-webkit-scrollbar {
-        display:none;
-        width:0;
-        height:0;
-    }
-}
-
-/* Remove the obsolete selector beside Lecture number, while preserving
-   the existing course-switching/progress UI elsewhere. */
-.learn-course-select-wrap,
-#learn-course-btn,
-#learn-course-menu,
-#learn-course-chevron {
-    display:none !important;
-}
-
-/* Lecture heading styling from the existing Circle visual system. */
-#learn-lecture-label {
-    font-family:var(--font-ui);
-    font-weight:500;
-}
-</style>
-
 </head>
 <body>
 
@@ -5771,7 +5241,8 @@
             const column = document.querySelector('.learn-left-column');
             if (!column) return;
 
-            /* Exactly one source of truth for desktop left-panel layout. */
+            // Three-state desktop system only. The left column never grows beyond
+            // the fixed player height, and only one panel may occupy the full area.
             const legacyMap = {
                 'learning-minimized': 'todo-expanded',
                 'todo-minimized': 'learning-expanded'
@@ -5781,36 +5252,25 @@
             column.dataset.layout = learnLeftLayout;
 
             if (persist) {
-                try {
-                    localStorage.setItem('circle_learn_left_layout_v1', learnLeftLayout);
-                } catch (_) {}
+                try { localStorage.setItem('circle_learn_left_layout_v1', learnLeftLayout); } catch (_) {}
             }
 
+            // Update the visual state of the compact control toggles.
             column.querySelectorAll('[data-sidebar-control]').forEach(control => {
                 const which = control.dataset.sidebarControl;
                 const toggle = control.querySelector('.learn-sidebar-control-toggle');
                 if (!toggle) return;
-
-                const panelState =
-                    learnLeftLayout === 'half'
-                        ? 'split'
-                        : learnLeftLayout === (which === 'learning' ? 'learning-expanded' : 'todo-expanded')
-                            ? 'expanded'
-                            : 'minimized';
-
+                const isExpanded = learnLeftLayout === (which === 'learning' ? 'learning-expanded' : 'todo-expanded');
+                const isCollapsed = learnLeftLayout === (which === 'learning' ? 'todo-expanded' : 'learning-expanded');
                 const path = toggle.querySelector('path');
                 if (path) {
-                    /* Split = double chevron, expanded = up, minimized = down. */
-                    path.setAttribute('d',
-                        panelState === 'split'
-                            ? 'M7 6l5 5 5-5 M7 18l5-5 5 5'
-                            : panelState === 'expanded'
-                                ? 'M6.6 14.5 12 9.1l5.4 5.4'
-                                : 'M6.6 9.5 12 14.9l5.4-5.4'
-                    );
+                    path.setAttribute('d', isExpanded
+                        ? 'm6.6 15 5.4-5.4 5.4 5.4'
+                        : isCollapsed
+                            ? 'm6.6 9 5.4 5.4L17.4 9'
+                            : 'm6.6 9 5.4 5.4L17.4 9');
                 }
-
-                toggle.setAttribute('data-panel-state', panelState);
+                toggle.setAttribute('data-panel-state', isExpanded ? 'expanded' : (isCollapsed ? 'minimized' : 'split'));
                 toggle.setAttribute('aria-label', `${which === 'learning' ? 'Your Learning' : 'My Tasks'} panel controls`);
             });
 
@@ -6947,59 +6407,6 @@ setInterval(() => {
             saveLearnAuxState();
         }
 
-        function closeLearnMobilePanels() {
-            const overlay = document.getElementById('learn-mobile-tool-overlay');
-            learnMobileOpenPanel = null;
-
-            if (overlay) {
-                overlay.classList.remove('is-open');
-                overlay.setAttribute('aria-hidden', 'true');
-                /* Keep it in layout flow at zero height so open/close can animate. */
-                overlay.hidden = false;
-            }
-
-            document.querySelectorAll('.learn-mobile-tool-button').forEach(button => {
-                button.setAttribute('aria-expanded', 'false');
-                button.classList.remove('active');
-            });
-            document.querySelectorAll('.learn-mobile-tool-pane').forEach(pane => {
-                pane.hidden = true;
-            });
-        }
-
-        function toggleLearnMobilePanel(panel) {
-            const overlay = document.getElementById('learn-mobile-tool-overlay');
-            const buttons = document.querySelectorAll('.learn-mobile-tool-button');
-            const panes = document.querySelectorAll('.learn-mobile-tool-pane');
-            if (!overlay || !panel) return;
-
-            const next = learnMobileOpenPanel === panel ? null : panel;
-            learnMobileOpenPanel = next;
-
-            buttons.forEach(button => {
-                const active = button.dataset.mobilePanel === next;
-                button.setAttribute('aria-expanded', String(active));
-                button.classList.toggle('active', active);
-            });
-
-            panes.forEach(pane => {
-                pane.hidden = pane.dataset.mobilePane !== next;
-            });
-
-            overlay.hidden = false;
-            if (!next) {
-                overlay.classList.remove('is-open');
-                overlay.setAttribute('aria-hidden', 'true');
-                return;
-            }
-
-            overlay.setAttribute('aria-hidden', 'false');
-            requestAnimationFrame(() => overlay.classList.add('is-open'));
-
-            if (next === 'todo') renderLearnTodoList();
-            if (next === 'learning') renderLearnCourseSidebar();
-        }
-
         function renderLearnCourseSidebar() {
             const desktop = document.getElementById('learn-course-sidebar-list');
             const mobile = document.getElementById('learn-mobile-course-list');
@@ -7033,9 +6440,7 @@ setInterval(() => {
                 target.querySelectorAll('.learn-course-progress-item').forEach(button => {
                     button.addEventListener('click', () => {
                         loadLearnCourse(button.dataset.courseId, false);
-                        if (target === mobile) {
-                            closeLearnMobilePanels();
-                        }
+                        if (target === mobile) closeLearnMobilePanels();
                     });
                 });
             });
@@ -7219,6 +6624,42 @@ setInterval(() => {
             loadLearnNotesForCurrentLesson();
         }
 
+        function closeLearnMobilePanels() {
+            learnMobileOpenPanel = null;
+            const overlay = document.getElementById('learn-mobile-tool-overlay');
+            if (overlay) overlay.classList.remove('open');
+            document.querySelectorAll('.learn-mobile-tool-button').forEach(button => {
+                button.setAttribute('aria-expanded', 'false');
+                button.classList.remove('active');
+            });
+            document.querySelectorAll('.learn-mobile-tool-pane').forEach(pane => {
+                pane.hidden = true;
+            });
+        }
+
+        function setLearnMobilePanel(panel) {
+            const allowed = ['learning', 'todo'];
+            const requested = allowed.includes(panel) ? panel : null;
+            const next = learnMobileOpenPanel === requested ? null : requested;
+            learnMobileOpenPanel = next;
+
+            const overlay = document.getElementById('learn-mobile-tool-overlay');
+            if (overlay) overlay.classList.toggle('open', Boolean(next));
+
+            document.querySelectorAll('.learn-mobile-tool-button').forEach(button => {
+                const active = button.dataset.mobilePanel === next;
+                button.setAttribute('aria-expanded', String(active));
+                button.classList.toggle('active', active);
+            });
+
+            document.querySelectorAll('.learn-mobile-tool-pane').forEach(pane => {
+                pane.hidden = pane.dataset.mobilePane !== next;
+            });
+
+            if (next === 'todo') renderLearnTodoList();
+            if (next === 'learning') renderLearnCourseSidebar();
+        }
+
         function setupLearnStudyTools() {
             document.querySelectorAll('.learn-panel-tab').forEach(tab => {
                 tab.addEventListener('click', () => switchLearnRightPanel(tab.dataset.panel));
@@ -7228,69 +6669,34 @@ setInterval(() => {
             const notes = document.getElementById('learn-notes-input');
             if (addTodo) addTodo.addEventListener('click', () => openLearnTodoComposer('learn-todo-list'));
             if (todoList) todoList.addEventListener('click', handleLearnTodoListClick);
+
             const mobileTodoAdd = document.getElementById('learn-mobile-add-todo-btn');
             const mobileTodoList = document.getElementById('learn-mobile-todo-list');
             if (mobileTodoAdd) mobileTodoAdd.addEventListener('click', () => openLearnTodoComposer('learn-mobile-todo-list'));
             if (mobileTodoList) mobileTodoList.addEventListener('click', handleLearnTodoListClick);
+
             if (notes) {
                 notes.addEventListener('input', () => queueLearnNotesSave(notes.value));
                 notes.addEventListener('blur', flushLearnNotesSave);
             }
 
-            const mobileOverlay = document.getElementById('learn-mobile-tool-overlay');
-            const mobileButtons = document.querySelectorAll('.learn-mobile-tool-button');
-
-            /* Mobile starts closed, but the overlay stays in normal flow at zero
-               height so opening it can push the video downward naturally. */
-            if (mobileOverlay) {
-                mobileOverlay.hidden = false;
-                mobileOverlay.classList.remove('is-open');
-                mobileOverlay.setAttribute('aria-hidden', 'true');
-            }
-            closeLearnMobilePanels();
-
-            mobileButtons.forEach(button => {
+            document.querySelectorAll('.learn-mobile-tool-button').forEach(button => {
                 button.addEventListener('click', event => {
                     event.preventDefault();
                     event.stopPropagation();
-                    if (window.innerWidth <= 768) {
-                        toggleLearnMobilePanel(button.dataset.mobilePanel);
-                    }
+                    setLearnMobilePanel(button.dataset.mobilePanel);
                 });
             });
 
             document.addEventListener('click', event => {
-                if (window.innerWidth > 768 || !learnMobileOpenPanel) return;
-                if (!event.target.closest('#learn-mobile-tools')) closeLearnMobilePanels();
+                if (window.innerWidth <= 768 && learnMobileOpenPanel && !event.target.closest('#learn-mobile-tools')) {
+                    closeLearnMobilePanels();
+                }
             });
 
             document.addEventListener('keydown', event => {
                 if (event.key === 'Escape' && learnMobileOpenPanel) closeLearnMobilePanels();
             });
-
-            window.addEventListener('resize', () => {
-                if (window.innerWidth > 768 && learnMobileOpenPanel) {
-                    closeLearnMobilePanels();
-                }
-            });
-
-            /* Legacy desktop collapsible behaviour remains disabled because the
-               three-state desktop controller above owns the left side. */
-            const todoSidebarToggle = document.getElementById('learn-todo-sidebar-toggle');
-            if (todoSidebarToggle) {
-                todoSidebarToggle.addEventListener('click', event => {
-                    if (window.innerWidth >= 1100) {
-                        event.preventDefault();
-                        event.stopImmediatePropagation();
-                    }
-                }, true);
-                todoSidebarToggle.addEventListener('keydown', event => {
-                    if (window.innerWidth >= 1100) {
-                        event.preventDefault();
-                        event.stopImmediatePropagation();
-                    }
-                }, true);
-            }
 
             renderLearnCourseSidebar();
             renderLearnTodoList();
@@ -7489,39 +6895,37 @@ setInterval(() => {
         function syncLearnPlaylistHeight() {
             const stage = document.querySelector('.learn-video-stage');
             const playlist = document.querySelector('.learn-playlist');
-            const sidebar = document.querySelector('.learn-course-sidebar');
-            const workspace = document.querySelector('.learn-workspace');
+            const sidebar = document.querySelector('.learn-left-column');
+            const shell = document.querySelector('.learn-shell');
             if (!stage || !playlist) return;
 
             if (window.innerWidth <= 768) {
                 playlist.style.removeProperty('height');
                 playlist.style.removeProperty('max-height');
+                playlist.style.removeProperty('min-height');
                 if (sidebar) {
-                    sidebar.style.removeProperty('height');
-                    sidebar.style.removeProperty('max-height');
-                }
-                if (workspace) workspace.style.removeProperty('--learn-fixed-panel-height');
-                return;
-            }
-
-            const height = Math.round(stage.getBoundingClientRect().height);
-            if (height > 0) {
-                if (window.innerWidth >= 1100) applyLearnLeftLayout(learnLeftLayout, false);
-                const fixed = height + 'px';
-                if (workspace) workspace.style.setProperty('--learn-fixed-panel-height', fixed);
-                playlist.style.height = fixed;
-                playlist.style.maxHeight = fixed;
-                playlist.style.minHeight = '0px';
-                if (sidebar && window.innerWidth >= 1100) {
-                    sidebar.style.height = fixed;
-                    sidebar.style.maxHeight = fixed;
-                    sidebar.style.minHeight = '0px';
-                    sidebar.style.overflow = 'hidden';
-                } else if (sidebar) {
                     sidebar.style.removeProperty('height');
                     sidebar.style.removeProperty('max-height');
                     sidebar.style.removeProperty('min-height');
                 }
+                if (shell) shell.style.removeProperty('--learn-fixed-panel-height');
+                return;
+            }
+
+            const height = Math.round(stage.getBoundingClientRect().height);
+            if (height <= 0) return;
+            const fixed = `${height}px`;
+
+            if (shell) shell.style.setProperty('--learn-fixed-panel-height', fixed);
+            playlist.style.height = fixed;
+            playlist.style.maxHeight = fixed;
+            playlist.style.minHeight = '0px';
+
+            if (sidebar && window.innerWidth >= 1100) {
+                sidebar.style.height = fixed;
+                sidebar.style.maxHeight = fixed;
+                sidebar.style.minHeight = '0px';
+                applyLearnLeftLayout(learnLeftLayout, false);
             }
         }
 
@@ -8049,30 +7453,6 @@ setInterval(() => {
 
         window.addEventListener('pagehide', function () { flushLearnNotesSave(); persistLearnProgress(); logLearnProgressToGoogleSheets('page_hidden'); });
         window.addEventListener('beforeunload', function () { flushLearnNotesSave(); persistLearnProgress(); logLearnProgressToGoogleSheets('page_unload'); });
-        /* Final Learn course-selector binding. This intentionally uses the DOM
-           property so it cannot accumulate duplicate click listeners. */
-        document.addEventListener('DOMContentLoaded', function () {
-            const btn = document.getElementById('learn-course-btn');
-            if (btn) {
-                btn.onclick = function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    toggleLearnCourseMenu();
-                };
-            }
-
-            installLearnPlaylistHeightSync();
-            requestAnimationFrame(syncLearnPlaylistHeight);
-            window.addEventListener('load', syncLearnPlaylistHeight, { once: true });
-            if (document.fonts && document.fonts.ready) {
-                document.fonts.ready.then(() => syncLearnPlaylistHeight()).catch(() => {});
-            }
-
-            /* Keep the course popover aligned to the button after the browser
-             * has finished painting the viewport. */
-            setTimeout(syncLearnPlaylistHeight, 150);
-            setTimeout(syncLearnPlaylistHeight, 500);
-        });
 
     </script>
 </body>
