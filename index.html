@@ -5566,7 +5566,7 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
         /*******************************************************
          * 1. GOOGLE SHEETS CONFIGURATION
          *******************************************************/
-        const GOOGLE_SHEETS_ENDPOINT = "https://script.google.com/macros/s/AKfycbz-lZT2sgrNk7xHSEEOHAtD97feo9H9EZcufbJ99WZ8Ywris93zawFE2g3hRhceU4x97w/exec";
+        const GOOGLE_SHEETS_ENDPOINT = "https://script.google.com/macros/s/AKfycbzvEy_y9Hi8bw6Z0LppGaB026sdBw7Qy_Bu8Ie5NLxvQxGMkqv3Cvy1fz9MEuwChvd_/exec";
 
         /*******************************************************
          * ROBUST PREFERENCE STORAGE
@@ -6551,34 +6551,32 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
             });
         }
 
-        /* New Google Sheets workflow: record Learn progress independently for
-         * each course. The sheet row includes the course, lecture, video and
-         * current playback time so progress can be reconstructed per student. */
-        function logLearnProgressToGoogleSheets(eventName) {
+        /* Learn progress logging intentionally stays minimal. The sheet identifies
+         * a lesson by User ID + Course Code + Lecture Number. YouTube video IDs,
+         * titles, playback times and event labels are not sent to the sheet. */
+        function logLearnProgressToGoogleSheets(_eventName) {
             if (!circleUserId || !learnActiveCourseId) return;
             const course = getLearnCourse(learnActiveCourseId);
             let index = Number.isInteger(learnActiveIndex) ? learnActiveIndex : 0;
-            let videoId = learnPlaylistIds[index] || null;
-            let currentTime = null;
-            let duration = null;
+            let progressPercent = '';
 
             if (learnPlayer && learnPlayerReady) {
                 try {
                     const pIndex = safeLearnPlaylistIndex();
                     if (Number.isInteger(pIndex) && pIndex >= 0) index = pIndex;
-                    videoId = safeLearnVideoId() || videoId;
-                    currentTime = Number(learnPlayer.getCurrentTime());
-                    duration = Number(learnPlayer.getDuration());
+                    const currentTime = Number(learnPlayer.getCurrentTime());
+                    const duration = Number(learnPlayer.getDuration());
+                    if (Number.isFinite(currentTime) && Number.isFinite(duration) && duration > 0) {
+                        progressPercent = Math.max(0, Math.min(100, Math.round((currentTime / duration) * 100)));
+                    }
                 } catch (_) {}
             }
 
-            const safeTime = Number.isFinite(currentTime) ? Math.round(currentTime) : '';
-            const safeDuration = Number.isFinite(duration) ? Math.round(duration) : '';
-            const key = [circleUserId, learnActiveCourseId, index, videoId || '', eventName || 'update'].join('|');
+            const key = [circleUserId, learnActiveCourseId, index].join('|');
             const now = Date.now();
 
-            /* Avoid writing duplicate rows repeatedly for the same lesson/state
-             * during rapid YouTube BUFFERING/PAUSED events. */
+            /* Avoid excessive duplicate writes while preserving the latest lesson
+             * state. The backend also upserts by User + Course + Lecture. */
             if (key === learnProgressSheetLastKey && now - learnProgressSheetLastAt < 15000) return;
             learnProgressSheetLastKey = key;
             learnProgressSheetLastAt = now;
@@ -6588,12 +6586,8 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
                 userId: circleUserId,
                 name: userName,
                 courseId: learnActiveCourseId,
-                courseName: course.name,
                 lectureNumber: index + 1,
-                videoId: videoId,
-                currentTimeSeconds: safeTime,
-                durationSeconds: safeDuration,
-                event: eventName || 'update',
+                progressPercent,
                 timestamp: new Date().toISOString()
             });
         }
