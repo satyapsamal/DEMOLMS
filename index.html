@@ -4747,8 +4747,8 @@ body:not(.circle-ask-mode) .shell-model-slot {
         }
     </style>
 
-
-        /* Final Learn thumbnail scrolling + non-selectable surface. */
+<style id="circle-learn-scroll-protection-fix">
+/* Final Learn thumbnail scrolling + non-selectable surface. */
         .learn-thumbnails {
             overflow-y: auto !important;
             overflow-x: hidden !important;
@@ -4776,6 +4776,82 @@ body:not(.circle-ask-mode) .shell-model-slot {
             -ms-user-select: auto !important;
             user-select: auto !important;
         }
+</style>
+
+<style id="circle-learn-scroll-final-fix">
+/* Robust Learn playlist scrolling. Keep the panel itself sized by the layout,
+   then make only the thumbnail list the scroll container. */
+.learn-playlist {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+
+.learn-panel-content {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+#learn-panel-playlist.learn-panel-pane {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+#learn-thumbnails {
+    flex: 1 1 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+#learn-thumbnails::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+}
+
+@media (min-width: 769px) {
+    .learn-workspace {
+        align-items: stretch !important;
+    }
+
+    .learn-playlist {
+        height: auto !important;
+        max-height: none !important;
+        align-self: stretch !important;
+    }
+
+    .learn-panel-content {
+        min-height: 0 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .learn-playlist {
+        height: 290px !important;
+        min-height: 290px !important;
+        max-height: 290px !important;
+    }
+}
+</style>
 </head>
 <body>
 
@@ -5030,7 +5106,6 @@ body:not(.circle-ask-mode) .shell-model-slot {
                                 </span>
                                 <span class="learn-mobile-tool-meta">
                                     <span id="learn-mobile-progress-detail">Lecture 01</span>
-                                    <span id="learn-mobile-progress-percent">0%</span>
                                 </span>
                                 <span class="learn-mobile-tool-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6.6 9 5.4 5.4L17.4 9"/></svg></span>
                             </button>
