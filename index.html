@@ -4852,6 +4852,48 @@ body:not(.circle-ask-mode) .shell-model-slot {
     }
 }
 </style>
+
+<style id="circle-my-notes-fullspace">
+/* My Notes: keep all existing notes functionality/IDs, but give the editor the full pane. */
+#learn-panel-notes .learn-tool-heading,
+#learn-panel-notes .learn-tool-footnote {
+    display: none !important;
+}
+
+#learn-panel-notes.learn-panel-pane {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+}
+
+#learn-panel-notes #learn-notes-input {
+    display: block;
+    flex: 1 1 auto !important;
+    width: 100%;
+    min-height: 0 !important;
+    height: 100%;
+    margin: 0;
+    padding: 14px 13px;
+    border: 0;
+    border-radius: 0;
+    box-sizing: border-box;
+}
+
+#learn-panel-notes #learn-notes-input:focus {
+    background: transparent;
+}
+
+/* Mobile uses the same notes pane inside the existing overlay. */
+@media (max-width: 768px) {
+    #learn-panel-notes #learn-notes-input {
+        min-height: 100% !important;
+        height: 100%;
+        padding: 16px 14px;
+    }
+}
+</style>
+
 </head>
 <body>
 
@@ -5135,7 +5177,7 @@ body:not(.circle-ask-mode) .shell-model-slot {
                                     <span class="learn-panel-count" id="learn-panel-progress-count">0 / 0</span>
                                 </button>
                                 <button id="learn-panel-notes-tab" type="button" class="learn-panel-tab" data-panel="notes" role="tab" aria-selected="false" aria-controls="learn-panel-notes">
-                                    <span>Notes</span>
+                                    <span>My Notes</span>
                                 </button>
                             </div>
 
