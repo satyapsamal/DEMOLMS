@@ -3600,7 +3600,7 @@
     width:0;
     height:100%;
     border-radius:inherit;
-    background:rgba(255,255,255,.68);
+    background:rgba(100,214,145,.9);
     transition:width .3s ease;
 }
 #learn-thumbnails{flex:1 1 auto !important;min-height:0 !important;}
@@ -4806,6 +4806,9 @@ body:not(.circle-ask-mode) .shell-model-slot {
     display: flex !important;
     flex-direction: column !important;
 }
+#learn-panel-playlist.learn-panel-pane[hidden] {
+    display: none !important;
+}
 
 #learn-thumbnails {
     flex: 1 1 0 !important;
@@ -5104,7 +5107,7 @@ body:not(.circle-ask-mode) .shell-model-slot {
                     <label for="profile-edit-name">Name</label>
                     <input id="profile-edit-name" type="text" maxlength="150" autocomplete="name" placeholder="Your name">
                 </div>
-                <div class="profile-edit-note">Your profile is stored locally for personalisation and sent to Circle's connected Google account when you save changes.</div>
+                <div class="profile-edit-note">Your information stays private. It's not accessible to anyone, not even Circle.</div>
                 <div class="profile-modal-actions">
                     <button id="profile-edit-cancel" type="button">Cancel</button>
                     <button id="profile-edit-save" type="button">Save changes</button>
@@ -6663,7 +6666,7 @@ body:not(.circle-ask-mode) .shell-model-slot {
             await sleep(1200);
             nameStep.classList.add('hidden');
 
-            welcome.textContent = formatText("Welcome to Circle AI, {{Name}}.", userName);
+            welcome.textContent = formatText("Welcome to Circle, {{Name}}.", userName);
             welcome.classList.remove('hidden');
             await sleep(50);
             welcome.classList.remove('anim-enter');
@@ -8055,7 +8058,6 @@ setInterval(() => {
                          * Wait for YouTube to expose its playlist before rendering
                          * the custom thumbnail rail. */
                         refreshLearnPlaylist(0);
-                        restartLearnPlaylistRefreshTimer();
                         renderLearnCourseMenu();
                         updateLearnCourseUI();
 
@@ -8239,9 +8241,6 @@ setInterval(() => {
             });
             if (next === 'notes') {
                 loadLearnNotesForCurrentLesson();
-                refreshLearnPlaylist(0);
-            } else {
-                refreshLearnPlaylist(0);
             }
         }
 
