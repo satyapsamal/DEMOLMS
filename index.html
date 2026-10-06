@@ -4993,7 +4993,7 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
         <!-- New User Onboarding Layer -->
         <div id="onboarding-layer" class="hidden">
             <img id="intro-logo" src="circle.png" alt="Circle AI Logo" class="anim-element anim-enter hidden">
-            <h1 id="intro-brand" class="font-ui anim-element anim-enter hidden">Circle AI.</h1>
+            <h1 id="intro-brand" class="font-ui anim-element anim-enter hidden">Circle.</h1>
             <div id="intro-name-step" class="anim-element anim-enter hidden">
                 <div class="profile-onboarding-block">
                     <h1 class="onboarding-introduce-title font-ui">Introduce Yourself.</h1>
@@ -5572,48 +5572,47 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
          * ROBUST PREFERENCE STORAGE
          *******************************************************/
         function setPreference(name, value) {
-            // Write to cookie
+            // Versioned preference storage intentionally ignores legacy Circle settings.
+            const storageKey = "circle_v2_pref_" + name;
+            const cookieName = "circle_v2_pref_" + name;
             let date = new Date();
             date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
-            document.cookie = name + "=" + value + "; expires=" + date.toUTCString() + "; path=/; SameSite=Lax";
-            
-            // Write to localStorage as backup
+            document.cookie = cookieName + "=" + value + "; expires=" + date.toUTCString() + "; path=/; SameSite=Lax";
+
             try {
-                localStorage.setItem("circle_pref_" + name, value);
+                localStorage.setItem(storageKey, value);
             } catch (e) {
-                console.warn("localStorage fallback failed.");
+                console.warn("localStorage preference write failed.");
             }
-            
-            // Verify write was successful
+
             if (getPreference(name) !== value) {
                 console.warn("Preference persistence failed for", name);
             }
         }
 
         function getPreference(name, defaultValue) {
-            // Read from cookie primary
-            let nameEQ = name + "=";
-            let ca = document.cookie.split(';');
-            for(let i=0; i < ca.length; i++) {
+            const storageKey = "circle_v2_pref_" + name;
+            const cookieName = "circle_v2_pref_" + name;
+            const nameEQ = cookieName + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
                 let c = ca[i];
-                while (c.charAt(0)==' ') c = c.substring(1,c.length);
-                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                while (c.charAt(0) === ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);
             }
-            
-            // Read from localStorage fallback
+
             try {
-                const lsValue = localStorage.getItem("circle_pref_" + name);
+                const lsValue = localStorage.getItem(storageKey);
                 if (lsValue !== null) {
-                    // Restore cookie if it was missing but LS had it
                     let date = new Date();
                     date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
-                    document.cookie = name + "=" + lsValue + "; expires=" + date.toUTCString() + "; path=/; SameSite=Lax";
+                    document.cookie = cookieName + "=" + lsValue + "; expires=" + date.toUTCString() + "; path=/; SameSite=Lax";
                     return lsValue;
                 }
             } catch (e) {
-                console.warn("localStorage fallback read failed.");
+                console.warn("localStorage preference read failed.");
             }
-            
+
             return defaultValue !== undefined ? defaultValue : null;
         }
 
@@ -6419,12 +6418,12 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
         let promoBannerConsent = true; // Added live consent tracking
 
         /* Unified shell + Learn state */
-        let profilePhotoDataUrl = localStorage.getItem('circle_profile_photo_data_url') || '';
-        let circleUserId = localStorage.getItem('circle_user_id') || '';
+        let profilePhotoDataUrl = localStorage.getItem('circle_v2_profile_photo_data_url') || '';
+        let circleUserId = localStorage.getItem('circle_v2_user_id') || '';
         let learnPlayer = null;
         let learnPlayerReady = false;
         let learnPlayerApiLoading = false;
-        let learnActiveCourseId = localStorage.getItem('circle_learn_active_course') || 'businessCommunication';
+        let learnActiveCourseId = localStorage.getItem('circle_v2_learn_active_course') || 'businessCommunication';
         let learnPlaylistIds = [];
         let learnActiveIndex = 0;
         let learnLastSkipKey = null;
@@ -6444,22 +6443,22 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
         let learnMobileOpenPanel = null;
 
         try {
-            learnCourseStats = JSON.parse(localStorage.getItem('circle_learn_course_stats_v1') || '{}') || {};
+            learnCourseStats = JSON.parse(localStorage.getItem('circle_v2_learn_course_stats_v1') || '{}') || {};
         } catch (_) {
             learnCourseStats = {};
         }
         try {
-            learnNotes = JSON.parse(localStorage.getItem('circle_learn_notes_v1') || '{}') || {};
+            learnNotes = JSON.parse(localStorage.getItem('circle_v2_learn_notes_v1') || '{}') || {};
         } catch (_) {
             learnNotes = {};
         }
         try {
-            const storedLeftLayout = localStorage.getItem('circle_learn_left_layout_v1');
+            const storedLeftLayout = localStorage.getItem('circle_v2_learn_left_layout_v1');
             const normalizedLeftLayout = storedLeftLayout === 'learning-collapsed' ? 'learning-collapsed' : 'learning-expanded';
             learnLeftLayout = normalizedLeftLayout;
         } catch (_) {}
         try {
-            learnProgress = JSON.parse(localStorage.getItem('circle_learn_progress_v2') || '{}') || {};
+            learnProgress = JSON.parse(localStorage.getItem('circle_v2_learn_progress_v2') || '{}') || {};
         } catch (_) {
             learnProgress = {};
         }
@@ -6501,10 +6500,10 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
         // Track promo shown in session storage instead of window scope
         // This ensures the logic holds across manual refreshes but resets per new tab/session.
         function setPromoShownInSession() {
-            sessionStorage.setItem('circlePromoShownSession', 'true');
+            sessionStorage.setItem('circleV2PromoShownSession', 'true');
         }
         function hasPromoBeenShownInSession() {
-            return sessionStorage.getItem('circlePromoShownSession') === 'true';
+            return sessionStorage.getItem('circleV2PromoShownSession') === 'true';
         }
 
         const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -6551,24 +6550,16 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
             });
         }
 
-        /* Learn progress logging intentionally stays minimal. The sheet identifies
-         * a lesson by User ID + Course Code + Lecture Number. YouTube video IDs,
-         * titles, playback times and event labels are not sent to the sheet. */
+        /* Learn progress logging intentionally stays minimal. The backend upserts
+         * one row per User ID + Course Code, keeping the latest lecture only.
+         * YouTube video IDs, titles, playback times and event labels are not sent. */
         function logLearnProgressToGoogleSheets(_eventName) {
             if (!circleUserId || !learnActiveCourseId) return;
-            const course = getLearnCourse(learnActiveCourseId);
             let index = Number.isInteger(learnActiveIndex) ? learnActiveIndex : 0;
-            let progressPercent = '';
-
             if (learnPlayer && learnPlayerReady) {
                 try {
                     const pIndex = safeLearnPlaylistIndex();
                     if (Number.isInteger(pIndex) && pIndex >= 0) index = pIndex;
-                    const currentTime = Number(learnPlayer.getCurrentTime());
-                    const duration = Number(learnPlayer.getDuration());
-                    if (Number.isFinite(currentTime) && Number.isFinite(duration) && duration > 0) {
-                        progressPercent = Math.max(0, Math.min(100, Math.round((currentTime / duration) * 100)));
-                    }
                 } catch (_) {}
             }
 
@@ -6576,7 +6567,7 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
             const now = Date.now();
 
             /* Avoid excessive duplicate writes while preserving the latest lesson
-             * state. The backend also upserts by User + Course + Lecture. */
+             * state. The backend upserts by User + Course. */
             if (key === learnProgressSheetLastKey && now - learnProgressSheetLastAt < 15000) return;
             learnProgressSheetLastKey = key;
             learnProgressSheetLastAt = now;
@@ -6587,16 +6578,14 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
                 name: userName,
                 courseId: learnActiveCourseId,
                 lectureNumber: index + 1,
-                progressPercent,
                 timestamp: new Date().toISOString()
             });
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            const isRegistered = localStorage.getItem('circle_user_registered');
-            userName = localStorage.getItem('circle_username') || "";
+            const isRegistered = localStorage.getItem('circle_v2_user_registered');
+            userName = localStorage.getItem('circle_v2_username') || "";
             
-            localStorage.removeItem('circle_promo_shown'); // Legacy cleanup
             
             // Improve Circle Preference
             const savedImproveSetting = getPreference('circleImproveEnabled', 'true');
@@ -6621,7 +6610,7 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
             selectModelUI(currentModel);
             if (!circleUserId) {
                 circleUserId = (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : ('circle_' + Date.now() + '_' + Math.random().toString(36).slice(2));
-                localStorage.setItem('circle_user_id', circleUserId);
+                localStorage.setItem('circle_v2_user_id', circleUserId);
             }
 
             if (!LEARN_COURSES[learnActiveCourseId]) {
@@ -6715,10 +6704,10 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
 
             if (!valid) return;
 
-            localStorage.setItem('circle_user_registered', 'true');
-            localStorage.setItem('circle_username', nameVal);
-            localStorage.setItem('circle_user_id', circleUserId);
-            localStorage.setItem('circle_profile_photo_data_url', profilePhotoDataUrl);
+            localStorage.setItem('circle_v2_user_registered', 'true');
+            localStorage.setItem('circle_v2_username', nameVal);
+            localStorage.setItem('circle_v2_user_id', circleUserId);
+            localStorage.setItem('circle_v2_profile_photo_data_url', profilePhotoDataUrl);
             userName = nameVal;
 
             /*
@@ -7094,10 +7083,10 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
             if (!circleUserId) circleUserId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : `circle-${Date.now()}-${Math.random().toString(36).slice(2,10)}`;
             userName = nextName;
             profilePhotoDataUrl = profileEditPhotoDataUrl || profilePhotoDataUrl || '';
-            localStorage.setItem('circle_user_registered','true');
-            localStorage.setItem('circle_username', userName);
-            localStorage.setItem('circle_user_id', circleUserId);
-            localStorage.setItem('circle_profile_photo_data_url', profilePhotoDataUrl);
+            localStorage.setItem('circle_v2_user_registered','true');
+            localStorage.setItem('circle_v2_username', userName);
+            localStorage.setItem('circle_v2_user_id', circleUserId);
+            localStorage.setItem('circle_v2_profile_photo_data_url', profilePhotoDataUrl);
             refreshMoreProfileUI();
             const rot = document.getElementById('greeting-rotator');
             if (rot && document.body.classList.contains('circle-ask-mode') && !isChatMode) {
@@ -7120,7 +7109,7 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
             column.dataset.layout = next;
 
             if (persist) {
-                try { localStorage.setItem('circle_learn_left_layout_v1', learnLeftLayout); } catch (_) {}
+                try { localStorage.setItem('circle_v2_learn_left_layout_v1', learnLeftLayout); } catch (_) {}
             }
 
             const toggle = column.querySelector('.learn-sidebar-control-toggle');
@@ -7519,7 +7508,7 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
             
             // Check promo banner setting
             const consent = promoBannerConsent === true && getPreference('circleShowPromoBanner', 'true') === 'true';
-            const alreadyShown = sessionStorage.getItem('circlePromoShownSession') === 'true';
+            const alreadyShown = sessionStorage.getItem('circleV2PromoShownSession') === 'true';
             
             // Show promotional poster ONCE per session on first prompt IF setting is ON
             if (consent && !alreadyShown) {
@@ -7530,10 +7519,10 @@ body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
                     if (!finalConsent) {
                         return;
                     }
-                    if (sessionStorage.getItem('circlePromoShownSession') === 'true') {
+                    if (sessionStorage.getItem('circleV2PromoShownSession') === 'true') {
                         return;
                     }
-                    sessionStorage.setItem('circlePromoShownSession', 'true');
+                    sessionStorage.setItem('circleV2PromoShownSession', 'true');
                     showPromoModal();
                 }, 1500); 
             }
@@ -8224,8 +8213,8 @@ setInterval(() => {
 
         function saveLearnAuxState() {
             try {
-                localStorage.setItem('circle_learn_course_stats_v1', JSON.stringify(learnCourseStats));
-                localStorage.setItem('circle_learn_notes_v1', JSON.stringify(learnNotes));
+                localStorage.setItem('circle_v2_learn_course_stats_v1', JSON.stringify(learnCourseStats));
+                localStorage.setItem('circle_v2_learn_notes_v1', JSON.stringify(learnNotes));
             } catch (_) {}
         }
 
@@ -8581,8 +8570,8 @@ setInterval(() => {
         function persistLearnProgress() {
             if (!learnPlayer || !learnPlayerReady) {
                 try {
-                    localStorage.setItem('circle_learn_active_course', learnActiveCourseId);
-                    localStorage.setItem('circle_learn_progress_v2', JSON.stringify(learnProgress));
+                    localStorage.setItem('circle_v2_learn_active_course', learnActiveCourseId);
+                    localStorage.setItem('circle_v2_learn_progress_v2', JSON.stringify(learnProgress));
                 } catch (_) {}
                 return;
             }
@@ -8598,8 +8587,8 @@ setInterval(() => {
             };
 
             try {
-                localStorage.setItem('circle_learn_active_course', learnActiveCourseId);
-                localStorage.setItem('circle_learn_progress_v2', JSON.stringify(learnProgress));
+                localStorage.setItem('circle_v2_learn_active_course', learnActiveCourseId);
+                localStorage.setItem('circle_v2_learn_progress_v2', JSON.stringify(learnProgress));
             } catch (error) {
                 console.warn('Learn progress could not be saved:', error);
             }
@@ -8611,7 +8600,7 @@ setInterval(() => {
             if (!learnPlayerReady) {
                 learnPendingAutoPlay = Boolean(autoPlay);
                 learnActiveCourseId = nextCourseId;
-                try { localStorage.setItem('circle_learn_active_course', learnActiveCourseId); } catch (_) {}
+                try { localStorage.setItem('circle_v2_learn_active_course', learnActiveCourseId); } catch (_) {}
                 return;
             }
 
@@ -8638,7 +8627,7 @@ setInterval(() => {
             learnPendingAutoPlay = Boolean(autoPlay);
 
             try {
-                localStorage.setItem('circle_learn_active_course', learnActiveCourseId);
+                localStorage.setItem('circle_v2_learn_active_course', learnActiveCourseId);
             } catch (_) {}
 
             renderLearnThumbnails();
@@ -8678,8 +8667,8 @@ setInterval(() => {
                 updatedAt: Date.now()
             };
             try {
-                localStorage.setItem('circle_learn_active_course', learnActiveCourseId);
-                localStorage.setItem('circle_learn_progress_v2', JSON.stringify(learnProgress));
+                localStorage.setItem('circle_v2_learn_active_course', learnActiveCourseId);
+                localStorage.setItem('circle_v2_learn_progress_v2', JSON.stringify(learnProgress));
             } catch (_) {}
         }
 
@@ -8865,7 +8854,7 @@ setInterval(() => {
                     updatedAt: Date.now()
                 };
                 try {
-                    localStorage.setItem('circle_learn_progress_v2', JSON.stringify(learnProgress));
+                    localStorage.setItem('circle_v2_learn_progress_v2', JSON.stringify(learnProgress));
                 } catch (_) {}
                 logLearnProgressToGoogleSheets('ended');
 
