@@ -4867,6 +4867,12 @@ body:not(.circle-ask-mode) .shell-model-slot {
     min-height: 0;
 }
 
+/* Keep the Notes pane truly hidden whenever the native hidden attribute is set.
+   This prevents the Playlist thumbnail strip from bleeding through while My Notes is active. */
+#learn-panel-notes.learn-panel-pane[hidden] {
+    display: none !important;
+}
+
 #learn-panel-notes #learn-notes-input {
     display: block;
     flex: 1 1 auto !important;
@@ -6342,6 +6348,7 @@ body:not(.circle-ask-mode) .shell-model-slot {
         let learnCourseStats = {};
         let learnNotes = {};
         let learnNotesSaveTimer = null;
+        let learnPlaylistRefreshTimer = null;
         let learnLeftLayout = 'half';
         let profileEditPhotoDataUrl = profilePhotoDataUrl;
         let learnPendingNotePayload = null;
@@ -8048,6 +8055,7 @@ setInterval(() => {
                          * Wait for YouTube to expose its playlist before rendering
                          * the custom thumbnail rail. */
                         refreshLearnPlaylist(0);
+                        restartLearnPlaylistRefreshTimer();
                         renderLearnCourseMenu();
                         updateLearnCourseUI();
 
@@ -8229,7 +8237,12 @@ setInterval(() => {
                 pane.classList.toggle('active', active);
                 pane.hidden = !active;
             });
-            if (next === 'notes') loadLearnNotesForCurrentLesson();
+            if (next === 'notes') {
+                loadLearnNotesForCurrentLesson();
+                refreshLearnPlaylist(0);
+            } else {
+                refreshLearnPlaylist(0);
+            }
         }
 
         function loadLearnNotesForCurrentLesson() {
@@ -8426,6 +8439,29 @@ setInterval(() => {
             }
         }
 
+        function restartLearnPlaylistRefreshTimer() {
+            if (learnPlaylistRefreshTimer) {
+                clearInterval(learnPlaylistRefreshTimer);
+                learnPlaylistRefreshTimer = null;
+            }
+            if (!learnPlayer || !learnPlayerReady) return;
+
+            /* YouTube exposes the current playlist through getPlaylist(). Refresh
+             * periodically so totals and progress labels follow playlist changes
+             * made after Circle was opened, without requiring a page reload. */
+            learnPlaylistRefreshTimer = setInterval(() => {
+                if (!learnPlayer || !learnPlayerReady) return;
+                refreshLearnPlaylist(0);
+            }, 15000);
+        }
+
+        function stopLearnPlaylistRefreshTimer() {
+            if (learnPlaylistRefreshTimer) {
+                clearInterval(learnPlaylistRefreshTimer);
+                learnPlaylistRefreshTimer = null;
+            }
+        }
+
         function persistLearnProgress() {
             if (!learnPlayer || !learnPlayerReady) {
                 try {
@@ -8496,6 +8532,7 @@ setInterval(() => {
             /* Do not reuse the old YouTube playlist player. Recreate the player
              * with the NEW playlist URL so a course change can never continue
              * the previous course's playlist state. */
+            stopLearnPlaylistRefreshTimer();
             try {
                 if (learnPlayer && typeof learnPlayer.destroy === 'function') {
                     learnPlayer.destroy();
