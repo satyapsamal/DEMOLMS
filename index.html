@@ -4903,6 +4903,89 @@ body:not(.circle-ask-mode) .shell-model-slot {
 }
 </style>
 
+<style id="circle-final-notes-and-newchat-ui">
+/* My Notes: dynamic lecture context above the per-lecture editor. */
+#learn-panel-notes .learn-notes-context {
+    flex: 0 0 auto;
+    padding: 12px 12px 10px;
+    background: transparent;
+}
+#learn-panel-notes .learn-notes-context-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+#learn-panel-notes #learn-notes-lecture-name {
+    min-width: 0;
+    color: #ddd;
+    font: 700 12px/1.25 var(--font-conversational);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#learn-panel-notes #learn-notes-lecture-progress {
+    flex: 0 0 auto;
+    color: #777;
+    font: 600 10px/1 var(--font-conversational);
+}
+#learn-panel-notes .learn-notes-progress-track {
+    width: 100%;
+    height: 4px;
+    margin-top: 9px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(255,255,255,.08);
+}
+#learn-panel-notes .learn-notes-progress-track > span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: rgba(100,214,145,.9);
+    transition: width .3s ease;
+}
+#learn-panel-notes .learn-tool-heading[aria-hidden="true"],
+#learn-panel-notes .learn-tool-footnote {
+    display: none !important;
+}
+#learn-panel-notes #learn-notes-input {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+}
+
+/* New Chat belongs to the Ask experience. It stays visually separate from Learn
+   and fades away whenever Learn is active, even if a stale JS visibility class remains. */
+#app-new-chat-btn {
+    font-family: var(--font-conversational) !important;
+}
+body:not(.circle-ask-mode) #app-new-chat-btn {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(-3px) !important;
+}
+body.circle-ask-mode.chat-active #app-new-chat-btn.visible {
+    opacity: 1 !important;
+    pointer-events: auto;
+    transform: translateY(0) !important;
+}
+@media (max-width: 768px) {
+    #learn-panel-notes .learn-notes-context {
+        padding: 14px 14px 11px;
+    }
+    #learn-panel-notes #learn-notes-lecture-name {
+        font-size: 12px;
+    }
+    #learn-panel-notes #learn-notes-lecture-progress {
+        font-size: 10px;
+    }
+    #learn-panel-notes .learn-notes-progress-track {
+        height: 4px;
+    }
+}
+</style>
+
 </head>
 <body>
 
@@ -5095,7 +5178,7 @@ body:not(.circle-ask-mode) .shell-model-slot {
         <div id="profile-modal" aria-hidden="true">
             <div class="profile-modal-card" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
                 <div class="profile-modal-header">
-                    <strong id="profile-modal-title">Your Profile</strong>
+                    <strong id="profile-modal-title">My Profile</strong>
                     <button id="profile-edit-close" class="profile-modal-close" type="button" aria-label="Close profile">×</button>
                 </div>
                 <label class="profile-edit-photo-label" for="profile-edit-photo-input">
@@ -5201,14 +5284,15 @@ body:not(.circle-ask-mode) .shell-model-slot {
                                 </section>
 
                                 <section id="learn-panel-notes" class="learn-panel-pane" data-pane="notes" role="tabpanel" hidden>
-                                    <div class="learn-tool-heading">
-                                        <div>
-                                            <strong>Self notes</strong>
-                                            <span id="learn-notes-course-label">Business Communication • Lecture 01</span>
-                                        </div>
+                                    <div class="learn-panel-course-line">
+                                        <strong id="learn-notes-lecture-name">Business Communication</strong>
+                                        <span id="learn-notes-lecture-progress">1 / 1</span>
+                                    </div>
+                                    <div class="learn-panel-progress-track"><span id="learn-notes-progress-bar"></span></div>
+                                    <textarea id="learn-notes-input" class="learn-notes-input" placeholder="Write your notes for this lecture…" spellcheck="true"></textarea>
+                                    <div class="learn-tool-heading" aria-hidden="true">
                                         <span id="learn-notes-save-status" class="learn-save-status">Saved locally</span>
                                     </div>
-                                    <textarea id="learn-notes-input" class="learn-notes-input" placeholder="Write your notes for this lecture…" spellcheck="true"></textarea>
                                     <div class="learn-tool-footnote">Notes are saved in this browser and synced to your Circle Google Sheet.</div>
                                 </section>
                             </div>
@@ -7900,6 +7984,7 @@ setInterval(() => {
                 setShellModeButton('learn');
                 closeMoreMenu();
                 document.getElementById('model-btn').classList.add('hidden');
+                document.getElementById('app-new-chat-btn').classList.remove('visible');
                 closeLearnCourseMenu();
                 initializeLearnIfNeeded();
             } else {
@@ -7924,8 +8009,11 @@ setInterval(() => {
                         }
                     }, 0);
                 }
+                const appNewChatBtn = document.getElementById('app-new-chat-btn');
                 if (isChatMode) {
-                    document.getElementById('app-new-chat-btn').classList.add('visible');
+                    appNewChatBtn.classList.add('visible');
+                } else {
+                    appNewChatBtn.classList.remove('visible');
                 }
             }
         }
@@ -8215,6 +8303,7 @@ setInterval(() => {
             const total = getLearnCourseTotal(learnActiveCourseId);
             const current = Math.min(learnActiveIndex + 1, total || learnActiveIndex + 1);
             const count = total ? `${current} / ${total}` : `${current}`;
+            const percent = getLearnCourseProgressPercent(learnActiveCourseId);
             const courseName = document.getElementById('learn-panel-course-name');
             const courseProgress = document.getElementById('learn-panel-course-progress');
             const progressCount = document.getElementById('learn-panel-progress-count');
@@ -8222,7 +8311,17 @@ setInterval(() => {
             if (courseName) courseName.textContent = course.name;
             if (courseProgress) courseProgress.textContent = count;
             if (progressCount) progressCount.textContent = count;
-            if (progressBar) progressBar.style.width = getLearnCourseProgressPercent(learnActiveCourseId) + '%';
+            if (progressBar) progressBar.style.width = percent + '%';
+
+            /* Keep My Notes visually identical to Playlist by using the exact
+               same course label, count, and progress percentage from this
+               single source of truth. */
+            const notesName = document.getElementById('learn-notes-lecture-name');
+            const notesProgress = document.getElementById('learn-notes-lecture-progress');
+            const notesBar = document.getElementById('learn-notes-progress-bar');
+            if (notesName) notesName.textContent = course.name;
+            if (notesProgress) notesProgress.textContent = count;
+            if (notesBar) notesBar.style.width = percent + '%';
         }
 
         function switchLearnRightPanel(panel) {
@@ -8244,13 +8343,36 @@ setInterval(() => {
             }
         }
 
+        function getCurrentLearnLectureDisplayName() {
+            const course = getLearnCourse(learnActiveCourseId);
+            let title = '';
+            if (learnPlayer && learnPlayerReady) {
+                try {
+                    title = String(learnPlayer.getVideoData()?.title || '').trim();
+                } catch (_) {}
+            }
+            if (!title) {
+                title = `${course.name} • Lecture ${String(learnActiveIndex + 1).padStart(2, '0')}`;
+            }
+            return title;
+        }
+
+        function updateLearnNotesContext() {
+            const course = getLearnCourse(learnActiveCourseId);
+            /* Playlist and My Notes intentionally use one shared progress
+               calculation so their text and fill can never drift apart. */
+            updateLearnRightPanelHeader();
+
+            const legacyLabel = document.getElementById('learn-notes-course-label');
+            if (legacyLabel) legacyLabel.textContent = `${course.name} • Lecture ${String(learnActiveIndex + 1).padStart(2, '0')}`;
+        }
+
         function loadLearnNotesForCurrentLesson() {
             const key = getLearnLessonKey();
             const input = document.getElementById('learn-notes-input');
             if (!input) return;
             input.value = String(learnNotes[key] || '');
-            const label = document.getElementById('learn-notes-course-label');
-            if (label) label.textContent = `${getLearnCourse(learnActiveCourseId).name} • Lecture ${String(learnActiveIndex + 1).padStart(2, '0')}`;
+            updateLearnNotesContext();
             const status = document.getElementById('learn-notes-save-status');
             if (status) status.textContent = 'Saved locally';
         }
@@ -8286,6 +8408,7 @@ setInterval(() => {
             const label = `${course.name} • Lecture ${String(learnActiveIndex + 1).padStart(2, '0')}`;
             const notesLabel = document.getElementById('learn-notes-course-label');
             if (notesLabel) notesLabel.textContent = label;
+            updateLearnNotesContext();
             loadLearnNotesForCurrentLesson();
         }
 
@@ -8688,6 +8811,7 @@ setInterval(() => {
             logLearnProgressToGoogleSheets('lesson_opened');
             updateLearnCourseUI();
             renderLearnThumbnails();
+            updateLearnNotesContext();
         }
 
         function enforceLearnIntroSkip(attempt = 0) {
@@ -8714,6 +8838,7 @@ setInterval(() => {
                 learnActiveIndex = safeLearnPlaylistIndex();
                 updateLearnCourseUI();
                 renderLearnThumbnails();
+                updateLearnNotesContext();
 
                 const videoId = safeLearnVideoId();
                 const key = learnActiveCourseId + '::' + videoId;
