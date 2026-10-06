@@ -1891,23 +1891,37 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: min(330px, 92vw);
+            width: min(430px, 92vw);
+        }
+
+        .onboarding-introduce-title {
+            font-size: clamp(34px, 3.2vw, 46px);
+            line-height: 1.08;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: #fff;
+            margin: 0 0 28px;
+            text-align: center;
         }
 
         #onboarding-photo-picker {
             position: relative;
-            width: 104px;
-            height: 104px;
+            width: 148px;
+            height: 148px;
+            flex: 0 0 148px;
             border-radius: 50%;
-            border: 1px solid rgba(255,255,255,.22);
-            background: rgba(255,255,255,.04);
+            border: 4px solid #fff;
+            background: rgba(255,255,255,.035);
             cursor: pointer;
-            overflow: hidden;
+            overflow: visible;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
+            margin: 0 0 28px;
             -webkit-tap-highlight-color: transparent;
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,.12),
+                0 16px 45px rgba(0,0,0,.3);
         }
 
         #onboarding-photo-preview {
@@ -1915,26 +1929,185 @@
             height: 100%;
             object-fit: cover;
             display: none;
+            border-radius: 50%;
+            overflow: hidden;
         }
 
         #onboarding-photo-placeholder {
-            color: rgba(255,255,255,.48);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,.82);
             font: 400 11px var(--font-conversational);
             text-align: center;
-            padding: 12px;
-            line-height: 1.4;
+        }
+
+        .onboarding-camera-icon {
+            width: 40px;
+            height: 40px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .onboarding-photo-shield {
+            position: absolute;
+            right: -3px;
+            bottom: -3px;
+            width: 42px;
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid #000;
+            border-radius: 50%;
+            background: #fff;
+            color: #000;
+            box-shadow: 0 5px 18px rgba(0,0,0,.45);
+            z-index: 3;
+        }
+
+        .onboarding-photo-shield svg {
+            width: 21px;
+            height: 21px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         #onboarding-photo-picker.has-photo #onboarding-photo-preview { display: block; }
         #onboarding-photo-picker.has-photo #onboarding-photo-placeholder { display: none; }
 
+        #onboarding-photo-picker.has-photo .onboarding-photo-shield {
+            display: inline-flex;
+        }
+
         #onboarding-photo-input { display: none; }
 
-        .profile-photo-note {
-            margin-top: -10px;
-            margin-bottom: 18px;
-            color: rgba(255,255,255,.38);
-            font: 400 10px var(--font-conversational);
+        .profile-photo-note { display: none !important; }
+
+        .onboarding-question {
+            font-size: clamp(27px, 2.5vw, 34px);
+            line-height: 1.15;
+            font-weight: 400;
+            color: #fff;
+            margin: 0 0 22px;
+            text-align: center;
+        }
+
+        .name-input-wrapper {
+            width: min(340px, 84vw);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255,255,255,.3);
+            padding-bottom: 9px;
+            transition: border-color 0.3s ease;
+        }
+
+        .onboarding-name-explanation {
+            width: min(370px, 88vw);
+            margin-top: 13px;
+            color: rgba(255,255,255,.58);
+            font-size: 11px;
+            line-height: 1.55;
+            text-align: center;
+        }
+
+        .onboarding-encryption-pill {
+            position: fixed;
+            left: 50%;
+            bottom: 22px;
+            transform: translateX(-50%);
+            width: min(700px, calc(100vw - 32px));
+            min-height: 42px;
+            padding: 9px 17px;
+            border: 1px solid rgba(255,255,255,.14);
+            border-radius: 999px;
+            background: rgba(255,255,255,.055);
+            box-shadow:
+                0 12px 32px rgba(0,0,0,.38),
+                inset 0 1px 0 rgba(255,255,255,.045);
+            color: rgba(255,255,255,.76);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            font-size: 10px;
+            line-height: 1.35;
+            text-align: left;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .onboarding-lock-icon {
+            width: 20px;
+            height: 20px;
+            flex: 0 0 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .onboarding-lock-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.7;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @media (max-width: 768px) {
+            .profile-onboarding-block {
+                width: min(360px, 90vw);
+                padding-bottom: 78px;
+            }
+
+            .onboarding-introduce-title {
+                font-size: clamp(30px, 8vw, 38px);
+                margin-bottom: 24px;
+            }
+
+            #onboarding-photo-picker {
+                width: 132px;
+                height: 132px;
+                flex-basis: 132px;
+                margin-bottom: 24px;
+            }
+
+            .onboarding-question {
+                font-size: clamp(24px, 6.8vw, 30px);
+                margin-bottom: 20px;
+            }
+
+            .onboarding-name-explanation {
+                font-size: 10px;
+                width: min(330px, 86vw);
+            }
+
+            .onboarding-encryption-pill {
+                bottom: 14px;
+                width: calc(100vw - 24px);
+                padding: 9px 13px;
+                font-size: 9px;
+                gap: 7px;
+            }
+
+            .onboarding-lock-icon {
+                width: 18px;
+                height: 18px;
+                flex-basis: 18px;
+            }
         }
 
         @media (max-width: 900px) {
@@ -4492,6 +4665,117 @@ body:not(.circle-ask-mode) .shell-model-slot {
 }
 </style>
 
+
+    <style id="onboarding-final-layout-fix">
+        /* Final onboarding composition: title at viewport top, profile form centered. */
+        #intro-name-step {
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100dvh !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        #intro-name-step .profile-onboarding-block {
+            position: relative !important;
+            width: min(430px, 92vw) !important;
+            height: 100dvh !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important;
+        }
+
+        #intro-name-step .onboarding-introduce-title {
+            position: fixed !important;
+            top: clamp(72px, 11vh, 120px) !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            width: max-content !important;
+            max-width: 92vw !important;
+            margin: 0 !important;
+            z-index: 2 !important;
+        }
+
+        #intro-name-step .onboarding-encryption-pill {
+            width: min(440px, calc(100vw - 48px)) !important;
+            min-height: 38px !important;
+            padding: 8px 15px !important;
+            gap: 8px !important;
+            font-size: 11px !important;
+            font-weight: 600 !important;
+            line-height: 1.3 !important;
+            color: rgba(255,255,255,.84) !important;
+            white-space: normal !important;
+        }
+
+        #intro-name-step .onboarding-encryption-pill .onboarding-lock-icon {
+            flex: 0 0 19px !important;
+            width: 19px !important;
+            height: 19px !important;
+        }
+
+        #intro-name-step .onboarding-encryption-pill .onboarding-lock-icon svg {
+            width: 17px !important;
+            height: 17px !important;
+        }
+
+        @media (max-width: 768px) {
+            #intro-name-step .profile-onboarding-block {
+                width: 100% !important;
+                height: 100dvh !important;
+            }
+
+            #intro-name-step .onboarding-introduce-title {
+                top: 64px !important;
+                max-width: 94vw !important;
+            }
+
+            #intro-name-step .onboarding-encryption-pill {
+                width: min(340px, calc(100vw - 32px)) !important;
+                min-height: 38px !important;
+                padding: 8px 13px !important;
+                font-size: 10px !important;
+                gap: 7px !important;
+            }
+        }
+    </style>
+
+
+        /* Final Learn thumbnail scrolling + non-selectable surface. */
+        .learn-thumbnails {
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+        }
+        .learn-thumbnails::-webkit-scrollbar {
+            width: 0 !important;
+            height: 0 !important;
+            display: none !important;
+        }
+
+        /* Keep the app surface non-selectable/non-callout across desktop and mobile. */
+        html, body, #app {
+            -webkit-touch-callout: none !important;
+            -webkit-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+        input, textarea, [contenteditable="true"] {
+            -webkit-touch-callout: default;
+            -webkit-user-select: auto !important;
+            -ms-user-select: auto !important;
+            user-select: auto !important;
+        }
 </head>
 <body>
 
@@ -4502,20 +4786,46 @@ body:not(.circle-ask-mode) .shell-model-slot {
             <h1 id="intro-brand" class="font-ui anim-element anim-enter hidden">Circle AI.</h1>
             <div id="intro-name-step" class="anim-element anim-enter hidden">
                 <div class="profile-onboarding-block">
+                    <h1 class="onboarding-introduce-title font-ui">Introduce Yourself.</h1>
+
                     <label id="onboarding-photo-picker" for="onboarding-photo-input" aria-label="Choose profile picture">
                         <img id="onboarding-photo-preview" src="" alt="Profile picture preview">
-                        <span id="onboarding-photo-placeholder">Add your profile picture</span>
+                        <span id="onboarding-photo-placeholder" aria-hidden="true">
+                            <svg class="onboarding-camera-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M8.5 5.5 10 3.5h4l1.5 2H18a3 3 0 0 1 3 3v7.5a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V8.5a3 3 0 0 1 3-3h2.5Z"/>
+                                <circle cx="12" cy="12.5" r="3.4"/>
+                            </svg>
+                        </span>
+                        <span class="onboarding-photo-shield" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2.75 19 5.5v5.35c0 4.35-2.75 8.12-7 10.4-4.25-2.28-7-6.05-7-10.4V5.5l7-2.75Z"/>
+                                <path d="m8.6 12.2 2.15 2.15 4.65-4.65"/>
+                            </svg>
+                        </span>
                         <input id="onboarding-photo-input" type="file" accept="image/jpeg,image/png,image/webp">
                     </label>
-                    <div class="profile-photo-note font-conversational">Used only to personalise Circle.</div>
-                    <h2 class="font-ui">What's your name?</h2>
+
+                    <h2 class="onboarding-question font-ui">What should I call you?</h2>
+
                     <div class="name-input-wrapper" id="name-wrapper">
                         <input type="text" id="name-input" class="font-conversational" placeholder="Your name" autocomplete="name">
                         <button id="name-submit" class="font-ui" aria-label="Continue">→</button>
                     </div>
-                    <div class="name-privacy-footnote font-conversational">
-                        Your name and profile picture are used for personalisation. With your permission, Circle sends them to its connected Google account for profile storage. They are not used for advertising.
+
+                    <div class="onboarding-name-explanation font-conversational">
+                        Your name helps keep Circle personal, trusted, and safer from impersonation.
                     </div>
+
+                    <div class="onboarding-encryption-pill font-conversational">
+                        <span class="onboarding-lock-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="5" y="10" width="14" height="10" rx="2"/>
+                                <path d="M8 10V7.75a4 4 0 0 1 8 0V10"/>
+                            </svg>
+                        </span>
+                        <span>Your information stays private. It’s not accessible to anyone, not even Circle.</span>
+                    </div>
+
                     <div id="profile-upload-error" class="font-conversational" style="display:none;color:#ff6666;font-size:11px;margin-top:10px;text-align:center;">Please add a profile picture to continue.</div>
                 </div>
             </div>
@@ -6186,7 +6496,7 @@ body:not(.circle-ask-mode) .shell-model-slot {
             if (!profilePhotoDataUrl) {
                 photoPicker.style.borderColor = '#ff4444';
                 photoError.style.display = 'block';
-                setTimeout(() => { photoPicker.style.borderColor = 'rgba(255,255,255,0.22)'; }, 1500);
+                setTimeout(() => { photoPicker.style.borderColor = '#fff'; }, 1500);
                 valid = false;
             } else {
                 photoError.style.display = 'none';
@@ -6259,7 +6569,7 @@ body:not(.circle-ask-mode) .shell-model-slot {
                 const picker = document.getElementById('onboarding-photo-picker');
                 preview.src = profilePhotoDataUrl;
                 picker.classList.add('has-photo');
-                picker.style.borderColor = 'rgba(255,255,255,.22)';
+                picker.style.borderColor = '#fff';
                 document.getElementById('profile-upload-error').style.display = 'none';
             } catch (error) {
                 console.error('Profile image processing failed:', error);
@@ -8655,7 +8965,12 @@ setInterval(() => {
                     event.stopPropagation();
                     return;
                 }
-                if (key === 'f12' || (modifier && event.shiftKey && ['i', 'j', 'c'].includes(key))) {
+                const devtoolsCombo = event.shiftKey && ['i', 'j', 'c'].includes(key);
+                const devtoolsMacCombo = event.altKey && ['i', 'j', 'c'].includes(key);
+                const saveSourceCombo = ['s', 'u', 'p'].includes(key);
+                const saveAsCombo = event.shiftKey && key === 's';
+
+                if (key === 'f12' || (modifier && (devtoolsCombo || devtoolsMacCombo || saveSourceCombo || saveAsCombo))) {
                     event.preventDefault();
                     event.stopPropagation();
                 }
@@ -8678,6 +8993,23 @@ setInterval(() => {
                 const key = String(event.key || '');
                 if ((event.ctrlKey || event.metaKey) && ['+', '-', '=', '0'].includes(key)) {
                     event.preventDefault();
+                }
+            }, { capture: true });
+
+            /* Additional common browser/devtools command variants. */
+            window.addEventListener('keydown', function(event) {
+                const key = String(event.key || '').toLowerCase();
+                const modifier = event.ctrlKey || event.metaKey;
+                const browserSource = modifier && key === 'u';
+                const browserSave = modifier && (key === 's' || (event.shiftKey && key === 's'));
+                const browserPrint = modifier && key === 'p';
+                const chromeFirefoxDevTools = modifier && event.shiftKey && ['i', 'j', 'c'].includes(key);
+                const macDevTools = event.metaKey && event.altKey && ['i', 'j', 'c'].includes(key);
+                const devtoolsMenu = key === 'f12';
+
+                if (browserSource || browserSave || browserPrint || chromeFirefoxDevTools || macDevTools || devtoolsMenu) {
+                    event.preventDefault();
+                    event.stopPropagation();
                 }
             }, { capture: true });
         })();
